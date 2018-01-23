@@ -1,0 +1,64 @@
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title>お帰りなさい</mat-card-title>
+      <mat-card-subtitle>御主人様</mat-card-subtitle>
+    </mat-card-header>
+
+    <img mat-card-image src="assets/login_image/miku.jpg" alt="Photo of a Shiba Inu">
+    <mat-card-content class="moji">今日气温：晴。</mat-card-content>
+  </mat-card>
+  <mat-card class="login-box">
+    <mat-card-title>{{title}}</mat-card-title>
+    <mat-card-content class="box-content">
+
+      <form  class="login-innerbox" *ngIf="mode==='login'" [formGroup]="userLogin" (ngSubmit)="onSubmit()">
+        <mat-form-field>
+          <input type="text" matInput placeholder="ID" formControlName="ID">
+
+          <mat-error *ngIf="userLogin.controls['ID'].valid === false">wwwwww</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="password" matInput placeholder="Password" formControlName="Password">
+
+          <mat-error *ngIf="userLogin.controls['Password'].valid === false">wwwwww</mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button  type="onSubmit"><mat-icon svgIcon="ok"></mat-icon></button>
+        <p>
+            <button mat-raised-button  type="onSubmit"><mat-icon svgIcon="ok"></mat-icon></button>
+          or <button mat-icon-button type="button" (click)="register()">注册<mat-icon svgIcon="sign"></mat-icon></button>
+        </p>
+
+
+      </form>
+      <form  class="login-innerbox" *ngIf="mode==='register'" [formGroup]="userRegister" (ngSubmit)="onSubmit()">
+        <mat-form-field>
+          <input type="text" matInput placeholder="ID" formControlName="ID">
+
+          <mat-error *ngIf="userRegister.controls['ID'].valid === false">wwwwww</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="text" matInput placeholder="Email" formControlName="Email">
+
+          <mat-error *ngIf="userRegister.controls['Email'].valid === false">wwwwww</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="password" matInput placeholder="Password" formControlName="Password">
+
+          <mat-error *ngIf="userRegister.controls['Password'].valid === false">wwwwww</mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button type="onSubmit"><mat-icon svgIcon="arrow-right"></mat-icon>login</button>
+        <p>
+          or <button mat-icon-button  type="button" (click)="login()">登录<mat-icon svgIcon="login"></mat-icon></button>
+        </p>
+
+
+
+      </form>
+    </mat-card-content>
+
+  </mat-card>
+
+</div>

@@ -1,0 +1,22 @@
+<p>
+  detail works!
+</p>
+<div class="detail-box" *ngIf="detailInfo">
+  <div class="in-box">
+    <ul>
+      <li *ngFor="let inDeatil of detailInfo.in; let i = index">
+        收入：{{detailInfo.in[i].quantity}}
+        时间：{{detailInfo.in[i].time}}
+      </li>
+    </ul>
+  </div>
+  <div class="out-box">
+    <ul>
+      <li *ngFor="let inDeatil of detailInfo.out; let i = index">
+        支出：{{detailInfo.out[i].quantity}}
+        时间：{{detailInfo.out[i].time}}
+      </li>
+    </ul>
+  </div>
+</div>
+

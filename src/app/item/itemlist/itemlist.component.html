@@ -1,0 +1,23 @@
+<div class="table-container">
+  <ngx-datatable class="datatable"
+    [ngClass]="{'dark':dackMode === true, 'material':dackMode === false}"
+    [headerHeight]="50"
+    [columnMode]="'force'"
+    [rows]="rows"
+    [limit]="13"
+
+    [footerHeight]="50"
+    [rowHeight]="'50'"
+    [selectionType]="'single'"
+    [columns]="columns"
+    (select)='onSelect($event)'>
+  </ngx-datatable>
+  <div class="find">
+    按名称搜索：<input type="text" (keyup)='updateFilter($event)'>
+  </div>
+
+  <app-function [number]="selectedNumber"></app-function>
+
+  <router-outlet class="detail"></router-outlet>
+</div>
+
