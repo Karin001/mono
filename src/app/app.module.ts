@@ -9,12 +9,15 @@ import { ItemlistComponent } from './item/itemlist/itemlist.component';
 import { DetailComponent } from './item/detail/detail.component'
 import { LoginModule } from './login/login.module';
 import { LoginComponent } from './login/login/login.component';
+import { AvatarComponent } from './login/avatar/avatar.component';
 import { RestapiService } from './restapi.service';
 import {LocaldataService} from './localdata.service';
+
 const routes: Routes = [
   { path: '', redirectTo: '/itemlist', pathMatch: 'full' },
   { path: 'itemlist', component: ItemlistComponent, pathMatch: 'full' },
-  { path: 'login', component: LoginComponent, pathMatch: 'full' }
+  { path: 'login', component: LoginComponent, pathMatch: 'full' },
+  { path: 'avatar', component: AvatarComponent}
 
 
 
@@ -23,6 +26,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
+   
 
   ],
   imports: [

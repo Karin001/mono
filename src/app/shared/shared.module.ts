@@ -10,6 +10,7 @@ MatListModule,
 MatIconModule,
 MatFormFieldModule,
 MatInputModule,
+MatMenuModule,
 
 
 } from '@angular/material';
@@ -24,6 +25,7 @@ MatInputModule,
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
+    MatMenuModule,
 
     BrowserAnimationsModule
   ],
@@ -38,6 +40,7 @@ MatInputModule,
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
+    MatMenuModule,
     BrowserAnimationsModule
   ]
 })

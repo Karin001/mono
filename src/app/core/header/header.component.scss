@@ -1,0 +1,86 @@
+.header-bar{
+    height: 50px;
+    padding: 0;
+    background-color:#398DEE;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    .nav{
+        flex: 1;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: row;
+        list-style: none;
+        justify-content: space-between;
+        align-items: center;
+        .logo{
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 250px;
+            mat-icon{
+                padding-left: 30px;
+                height:100%;
+                
+            }
+            .title{
+                
+                padding-left: 5px;
+                
+                color: #e6e6e6;
+                font-family: '微软雅黑';
+            } 
+        }
+        .user{
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            .dummy-avatar{
+                width: 35px;
+                height: 35px;
+                border-radius: 10px;
+                line-height: 50px;
+                text-align: center;
+            }
+            .user-menu-box{
+                z-index: 1000;
+                position: relative;
+                mat-icon{
+                    &:hover{
+                        cursor: pointer;
+                    }
+                    line-height: 50px;
+                }
+                .user-menu{
+                    padding: 0;
+                    box-shadow:  0px 1px 16px 0 rgba(90, 109, 122, 0.41);
+                    color: #999;
+                    transition: box-shadow 0.5s, transform 0.5s;
+                    position: absolute;
+                    top:45px;
+                    right:-38px;
+                    font-size: 14px;
+                    background-color: #ffffff;
+                    li{
+                        padding: 0 20px;
+                        &:hover{
+                            cursor: pointer;
+                            color: rgb(137, 131, 226);
+                            background-color: rgba(22, 141, 38, 0.1);
+                        }
+                    }
+                }
+            }
+           
+            
+            .theme{
+                padding:0 30px;                
+            }
+           
+        }
+    }   
+}

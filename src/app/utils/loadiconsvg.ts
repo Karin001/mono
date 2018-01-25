@@ -1,4 +1,4 @@
-export const iconDir = 'assets/icons'
+export const iconDir = 'assets/icons';
 export const loadIconSvg = (iconRegistry, sanitizer) => {
   iconRegistry.addSvgIcon(
     'anime',
@@ -15,11 +15,22 @@ export const loadIconSvg = (iconRegistry, sanitizer) => {
   iconRegistry.addSvgIcon(
     'sign',
     sanitizer.bypassSecurityTrustResourceUrl(`${iconDir}/sign.svg`));
-    iconRegistry.addSvgIcon(
-      'ok',
-      sanitizer.bypassSecurityTrustResourceUrl(`${iconDir}/ok.svg`));
-      iconRegistry.addSvgIcon(
-        'arrow-right',
-        sanitizer.bypassSecurityTrustResourceUrl(`${iconDir}/arrow-circle-right.svg`));
-
-}
+  iconRegistry.addSvgIcon(
+    'ok',
+    sanitizer.bypassSecurityTrustResourceUrl(`${iconDir}/ok.svg`));
+  iconRegistry.addSvgIcon(
+    'arrow-right',
+    sanitizer.bypassSecurityTrustResourceUrl(`${iconDir}/arrow-circle-right.svg`));
+  iconRegistry.addSvgIcon(
+    'house',
+    sanitizer.bypassSecurityTrustResourceUrl(`${iconDir}/house.svg`));
+  iconRegistry.addSvgIcon(
+    'arrow-down',
+    sanitizer.bypassSecurityTrustResourceUrl(`${iconDir}/arrow-down.svg`));
+  iconRegistry.addSvgIcon(
+    'theme-light-dark',
+    sanitizer.bypassSecurityTrustResourceUrl(`${iconDir}/theme-light-dark.svg`));
+  iconRegistry.addSvgIcon(
+    'add',
+    sanitizer.bypassSecurityTrustResourceUrl(`${iconDir}/add.svg`));
+};

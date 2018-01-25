@@ -4,16 +4,21 @@
 @import '~@swimlane/ngx-datatable/release/themes/dark.css';
 @import '~@swimlane/ngx-datatable/release/themes/material.css';
 @import '~@swimlane/ngx-datatable/release/assets/icons.css';
+*{
+  list-style: none;
+}
 html, body{
   padding: 0;
   margin: 0;
   height: 100%;
-
+ 
 }
 app-root{
   height: 100%;
-  mat-sidenav-container{
-    height:100%;
+  display: flex;
+  flex-direction: column;
+  mat-drawer-container{
+    flex:1;
   }
 }
 

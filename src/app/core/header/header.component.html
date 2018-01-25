@@ -1,6 +1,28 @@
-<mat-toolbar>
-  <button mat-button type="button" (click)="onclick()">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span>blog</span>
+<mat-toolbar class="header-bar">
+  <ul class="nav">
+    <li class="logo">
+      <mat-icon mat-list-icon svgIcon="house"></mat-icon>
+      <span class="title">{{title}}</span>
+    </li>
+    <li class="user">
+
+      <img src="assets/sys/dummy_user.jpg" alt="" class="dummy-avatar">
+
+      <div class="user-menu-box">
+        <mat-icon  mat-list-icon svgIcon="arrow-down" (click)="menuToggle()"></mat-icon>
+        <ul *ngIf="usermenu_open" class="user-menu">
+          <li>上传新头像</li>
+          <li>修改密码</li>
+          <li>意见反馈</li>
+          <li>注销登录</li>
+        </ul>
+      </div> 
+      
+      <mat-icon mat-list-icon svgIcon="theme-light-dark" class="theme"></mat-icon>
+
+      <div></div>
+      <div></div>
+    </li>
+  </ul>
+
 </mat-toolbar>
