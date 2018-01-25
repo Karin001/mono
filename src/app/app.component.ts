@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +7,16 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
+  drag_axis = {
+    x: true,
+    y: false
+  }
+  drawerWidth = 450;
+  constructor(private elementRef: ElementRef) {
+
+  }
+  dragEnd($event){
+    console.log($event);
+    this.drawerWidth += $event.x;
+  }
 }

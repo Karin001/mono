@@ -12,7 +12,7 @@ import { LoginComponent } from './login/login/login.component';
 import { AvatarComponent } from './login/avatar/avatar.component';
 import { RestapiService } from './restapi.service';
 import {LocaldataService} from './localdata.service';
-
+import { DragAndDropModule } from 'angular-draggable-droppable';
 const routes: Routes = [
   { path: '', redirectTo: '/itemlist', pathMatch: 'full' },
   { path: 'itemlist', component: ItemlistComponent, pathMatch: 'full' },
@@ -26,7 +26,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-   
+
 
   ],
   imports: [
@@ -36,6 +36,7 @@ const routes: Routes = [
     SharedModule,
     LoginModule,
     ItemModule,
+    DragAndDropModule.forRoot()
   ],
   providers: [RestapiService, LocaldataService],
   bootstrap: [AppComponent]

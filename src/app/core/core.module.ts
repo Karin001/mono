@@ -7,10 +7,12 @@ import { loadIconSvg } from '../utils/loadiconsvg';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
+
 @NgModule({
   imports: [
     SharedModule,
-    HttpClientModule
+    HttpClientModule,
+
   ],
   declarations: [HeaderComponent, SidebarComponent, FooterComponent],
   exports: [HeaderComponent, SidebarComponent, FooterComponent]
