@@ -10,13 +10,21 @@ export class AppComponent {
   drag_axis = {
     x: true,
     y: false
-  }
-  drawerWidth = 450;
+  };
+  dragging = false;
+  drawerWidth = 250;
   constructor(private elementRef: ElementRef) {
 
   }
-  dragEnd($event){
+  dragPointerDown() {
+    this.dragging = true;
+  }
+  mouseup() {
+    this.dragging = false;
+  }
+  dragEnd($event) {
     console.log($event);
     this.drawerWidth += $event.x;
+    this.dragging = false;
   }
 }
