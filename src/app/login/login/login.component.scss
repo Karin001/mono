@@ -1,36 +1,19 @@
-.login-container{
-  height: 100%;
+.log-container{
+  margin-top: 100px;
+  width: 500px;
+  height: 260px;
+  padding: 30px;
+  box-shadow: 0 0 18px 0 rgba(57, 141, 238, 0.12);
+  flex: 1;
   display: flex;
-  background-color: #7F8D85;
-  flex-direction: row;
-  justify-content: center;
   align-items: center;
-  .login-card{
-    width: 400px;
-    height: 400px;
-  }
-  .login-box{
-    width: 400px;
-    height: 400px;
+  .log-innerbox{
     display: flex;
     flex-direction: column;
-    .box-content{
-      flex: 1;
+    width: 100%;
+    p{
+      align-self: flex-end;
     }
-    .login-innerbox{
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      button{
-        align-self: flex-end;
-      }
-    }
+
   }
-
-
 }
-.example-header-image{
-  background-image: url('../../../assets/login_image/miku.jpg')
-}
-

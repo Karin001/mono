@@ -4,7 +4,7 @@
 <div class="body-container">
   <mat-drawer-container>
     <mat-drawer [ngStyle]="{'width': drawerWidth+'px'}"  mode="side" opened="true" #drawer class="drawer">
-      <app-sidebar></app-sidebar>
+      <app-sidebar [slimMode]="drawerWidth===80?true:false"></app-sidebar>
 
     </mat-drawer>
     <mat-drawer-content [ngStyle]="{'margin-left': drawerWidth+'px'}">
@@ -18,9 +18,9 @@
 
 
   </mat-drawer-container>
-  <div class="drag-line" [ngStyle]="{'left': drawerWidth+'px'}" mwlDraggable 
-  (mousedown)="dragPointerDown()" (mouseup)="mouseup()" dragCursor="ew-resize" 
-  [dragAxis]="drag_axis" (dragEnd)="dragEnd($event)">
-    <div class="drag-inner-line" [ngClass]="{'dragging': dragging}"></div>
+  <div class="drag-line" #dragline mwlDraggable
+  [ghostDragEnabled]="false" [ngStyle]="{'left': drawerWidth+'px'}"  dragCursor="ew-resize"
+  [dragAxis]="drag_axis" (dragging)="dragmove($event)" (dragEnd)="dragEnd($event)">
+    <div class="drag-inner-line" ></div>
   </div>
 </div>

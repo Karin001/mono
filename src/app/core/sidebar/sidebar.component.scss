@@ -2,18 +2,21 @@
     background-color:#F5F5F5;
     flex:1;
     font-family: "微软雅黑";
-    
+
     display: flex;
     flex-direction: column;
-    .add{
-        width: 100%;
-        align-self: center;
-        font-size: 14px;
-        border-bottom: 1px solid #E0E1E5;
-        display: flex;
-        justify-content: center;
-        mat-icon{
-            padding: 0 10px;
-        }
+
+    .menu{
+     width: 100%;
+      mat-icon{
+        width: 20px;
+      }
+    }
+    .slimMenu{
+      display: flex;
+      justify-content: center;
+      mat-icon{
+        width: 30px;
+      }
     }
 }
