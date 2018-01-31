@@ -1,16 +1,22 @@
-<header>
+<header [appDrag]="true" dragClass="drag" dragTag="header">
   <app-header></app-header>
 </header>
-<div class="body-container">
+<div  class="body-container">
   <mat-drawer-container>
     <mat-drawer [ngStyle]="{'width': drawerWidth+'px'}"  mode="side" opened="true" #drawer class="drawer">
-      <app-sidebar [slimMode]="drawerWidth===80?true:false"></app-sidebar>
+      <app-sidebar   [slimMode]="drawerWidth===80?true:false"></app-sidebar>
 
     </mat-drawer>
     <mat-drawer-content [ngStyle]="{'margin-left': drawerWidth+'px'}">
       <div class="flexbox-col">
         <main>
           <router-outlet class="mainrouter"></router-outlet>
+          <div class="test" [appDrag]="true" dragClass="drag" dragTag="div1"   appDrop [dropClass]="'drop'" [dropTags]="['header','a2']" (dragDrop)="dropTest($event)">
+            1
+          <div class="test2" [appDrag]="true" dragClass="drag" dragTag="div2">
+          2
+          </div>
+          </div>
         </main>
       </div>
 

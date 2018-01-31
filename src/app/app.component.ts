@@ -19,7 +19,9 @@ export class AppComponent {
   constructor(private elementRef: ElementRef, private rd: Renderer2) {
 
   }
-
+  dropTest(ev:Event){
+    console.log(ev);
+  }
   mouseup() {
     this.dragging = false;
   }

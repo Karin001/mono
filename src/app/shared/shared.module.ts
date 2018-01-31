@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DragDropModule } from '../directive/drag-drop/drag-drop.module';
 import {
 MatButtonModule,
 MatToolbarModule,
@@ -26,7 +27,7 @@ MatMenuModule,
     MatFormFieldModule,
     MatInputModule,
     MatMenuModule,
-
+    DragDropModule,
     BrowserAnimationsModule
   ],
   declarations: [],
@@ -41,6 +42,7 @@ MatMenuModule,
     MatFormFieldModule,
     MatInputModule,
     MatMenuModule,
+    DragDropModule,
     BrowserAnimationsModule
   ]
 })

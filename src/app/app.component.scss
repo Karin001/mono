@@ -1,3 +1,19 @@
+.test{
+  width: 300px;
+  height: 300px;
+  background-color: green;
+}
+.test2{
+  width: 100px;
+  height: 100px;
+  background-color: yellow;
+}
+.drag{
+  border: 2px dashed red;
+}
+.drop{
+  border: 2px dashed #6B1D5A;
+}
 header{
   z-index: 200;
 }
@@ -8,7 +24,8 @@ header{
   justify-content: flex-start;
 }
 .body-container{
-    height: 100%;
+    display: flex;
+    flex: 1;
   .drag-line{
     position: absolute;
     height: 100%;
