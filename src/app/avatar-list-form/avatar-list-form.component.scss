@@ -1,0 +1,18 @@
+.aidingyi{
+  margin-top: 10px;
+  border-bottom: 1px solid rgba(59, 86, 207,.7)
+}
+.avatar-zone{
+    overflow-y: auto;
+}
+.avatar{
+    border-radius: 50%;
+    &:hover{
+        cursor: pointer;
+        opacity: 0.2;
+    }
+}
+
+.ex-header{
+  height: 60px !important;
+}

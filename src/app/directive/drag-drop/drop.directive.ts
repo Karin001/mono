@@ -24,9 +24,11 @@ export class DropDirective {
     ev.stopPropagation();
     if(this.el.nativeElement === ev.target){
       this.service.getMessage().take(1).subscribe(tag => {
-        if(this.dropTags.indexOf(tag) > -1) {
+        if(this.dropTags.indexOf(tag) > -1){
           this.rd.addClass(this.el.nativeElement, this.dropClass);
         }
+        console.log(`enter ${tag}`);
+
       })
 
     }

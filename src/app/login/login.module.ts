@@ -3,15 +3,19 @@ import { CommonModule } from '@angular/common';
 import { LoginComponent } from './login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
-import { ImageCropperComponent } from 'ng2-img-cropper';
-import { AvatarComponent } from './avatar/avatar.component';
+import { SignupComponent } from './signup/signup.component';
+import {AvatarListFormModule} from '../avatar-list-form/avatar-list-form.module';
+
 @NgModule({
   imports: [
     CommonModule,
     ReactiveFormsModule,
     SharedModule,
+    AvatarListFormModule
+
+
   ],
-  declarations: [LoginComponent, ImageCropperComponent, AvatarComponent],
+  declarations: [LoginComponent, SignupComponent],
   exports:[LoginComponent]
 })
 export class LoginModule { }

@@ -1,0 +1,17 @@
+<div class="imgcro">
+  <a class="a-upload">
+        点此选择自定义图片
+      <input id="custom-input" type="file" (change)="fileChangeListener($event)">
+    </a>
+
+    <img-cropper *ngIf="open" #cropper [image]="data" [settings]="cropperSettings"></img-cropper>
+
+    <!-- <img [src]="data.image" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight"> -->
+
+    <button  mat-raised-button (click)="sendImg()" *ngIf="data.image"> 剪裁完毕<mat-icon svgIcon="ok" ></mat-icon></button>
+
+
+
+
+
+</div>

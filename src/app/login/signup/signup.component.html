@@ -1,0 +1,41 @@
+<div class="sign-container">
+
+<h1 class="title">注册</h1>
+
+  <div class="sign-innerbox" [formGroup]="signUp">
+
+      <mat-form-field>
+        <input type="text" matInput placeholder="用户名" formControlName="ID" [appEmitFocusBlur]="signUp.controls['ID']">
+      </mat-form-field>
+      <div class="hintbox">
+        <app-hint *ngFor="let item of errorInfos_idps" [errorMessage]="item.message" [errorCode]="item.errorCode" [changeClasses]="changecs"
+          [appSlave]="signUp.controls['ID']"></app-hint>
+      </div>
+      <mat-form-field>
+        <input type="password" matInput placeholder="密码" formControlName="Password" [appEmitFocusBlur]="signUp.controls['Password']">
+      </mat-form-field>
+      <div class="hintbox">
+        <app-hint *ngFor="let item of errorInfos_idps" [errorMessage]="item.message" [errorCode]="item.errorCode" [changeClasses]="changecs"
+          [appSlave]="signUp.controls['Password']"></app-hint>
+      </div>
+      <mat-form-field>
+        <input type="email" matInput placeholder="邮箱" formControlName="Email" [appEmitFocusBlur]="signUp.controls['Email']">
+      </mat-form-field>
+
+      <div class="hintbox">
+        <app-hint *ngFor="let item of errorInfos_em" [errorMessage]="item.message" [errorCode]="item.errorCode" [changeClasses]="changecs"
+          [appSlave]="signUp.controls['Email']"></app-hint>
+      </div>
+
+    <div class="avatar">
+      <app-avatar-list-form cols="5" width="400px" [img_width]="'50px'" rowHeight="60" [urls]="avatarUrls"></app-avatar-list-form>
+    </div>
+
+
+    <button mat-raised-button class="signup-button" type="onSubmit" appEmitClick>SIGNUP</button>
+
+
+  </div>
+
+
+</div>

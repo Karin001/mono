@@ -9,7 +9,7 @@ import { ItemlistComponent } from './item/itemlist/itemlist.component';
 import { DetailComponent } from './item/detail/detail.component'
 import { LoginModule } from './login/login.module';
 import { LoginComponent } from './login/login/login.component';
-import { AvatarComponent } from './login/avatar/avatar.component';
+import { SignupComponent} from './login/signup/signup.component';
 import { RestapiService } from './restapi.service';
 import {LocaldataService} from './localdata.service';
 import { DragAndDropModule } from 'angular-draggable-droppable';
@@ -17,7 +17,8 @@ const routes: Routes = [
   { path: '', redirectTo: '/itemlist', pathMatch: 'full' },
   { path: 'itemlist', component: ItemlistComponent, pathMatch: 'full' },
   { path: 'login', component: LoginComponent, pathMatch: 'full' },
-  { path: 'avatar', component: AvatarComponent}
+  { path: 'signup', component: SignupComponent, pathMatch: 'full' }
+
 
 
 

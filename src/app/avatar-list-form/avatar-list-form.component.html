@@ -1,0 +1,28 @@
+
+<mat-expansion-panel>
+
+  <mat-expansion-panel-header  class="ex-header">
+    <mat-panel-title>
+      <img [src]="selected" alt="avatar" [ngStyle]="{'width': '50px','height': '50px'}">
+
+    </mat-panel-title>
+    <mat-panel-description>
+      <span [ngStyle]="{'align-self': 'center'}">选择头像</span>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <div class="avatar-zone" [ngStyle]="{'height':rowHeight*3+'px'}" >
+    <mat-grid-list [cols]="cols" [rowHeight]="rowHeight" [ngStyle]="{'width': width}">
+      <mat-grid-tile *ngFor="let url of urls">
+        <img [src]="url" alt="avatar" [ngStyle]="{'width': img_width}" class="avatar" (click)="select(url)">
+
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+  <div class="aidingyi">
+    <app-imgupload (imgSrc)="getCropImg($event)" canvasWidth="300" canvasHeight="200" croppedWidth="50" croppedHeight="50"></app-imgupload>
+  </div>
+
+
+</mat-expansion-panel>
+
+

@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '../directive/drag-drop/drag-drop.module';
+import { ImguploadModule } from './imgupload/imgupload.module';
+import {ErrorHintModule} from '../error-hint/error-hint.module'
+
 import {
 MatButtonModule,
 MatToolbarModule,
@@ -12,6 +15,9 @@ MatIconModule,
 MatFormFieldModule,
 MatInputModule,
 MatMenuModule,
+MatGridListModule,
+MatExpansionModule,
+MatAutocompleteModule
 
 
 } from '@angular/material';
@@ -27,8 +33,13 @@ MatMenuModule,
     MatFormFieldModule,
     MatInputModule,
     MatMenuModule,
+    MatGridListModule,
+    MatAutocompleteModule,
+    MatExpansionModule,
     DragDropModule,
-    BrowserAnimationsModule
+    ImguploadModule,
+    BrowserAnimationsModule,
+  ErrorHintModule
   ],
   declarations: [],
   exports: [
@@ -42,8 +53,13 @@ MatMenuModule,
     MatFormFieldModule,
     MatInputModule,
     MatMenuModule,
+    MatGridListModule,
+    MatAutocompleteModule,
+    MatExpansionModule,
     DragDropModule,
-    BrowserAnimationsModule
+    ImguploadModule,
+    BrowserAnimationsModule,
+  ErrorHintModule
   ]
 })
 export class SharedModule { }
