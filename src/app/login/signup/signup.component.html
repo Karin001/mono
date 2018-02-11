@@ -2,7 +2,7 @@
 
 <h1 class="title">注册</h1>
 
-  <div class="sign-innerbox" [formGroup]="signUp">
+  <div class="sign-innerbox" [formGroup]="signUp" >
 
       <mat-form-field>
         <input type="text" matInput placeholder="用户名" formControlName="ID" [appEmitFocusBlur]="signUp.controls['ID']">
@@ -28,11 +28,14 @@
       </div>
 
     <div class="avatar">
-      <app-avatar-list-form cols="5" width="400px" [img_width]="'50px'" rowHeight="60" [urls]="avatarUrls"></app-avatar-list-form>
+      <app-avatar-list-form cols="5" width="400px" formControlName="Avatar" [appEmitFocusBlur]="signUp.controls['Avatar']" [img_width]="'50px'" rowHeight="60" [urls]="avatarUrls"></app-avatar-list-form>
     </div>
+    <div class="hintbox">
+        <app-hint *ngFor="let item of errorInfos_ava" [errorMessage]="item.message" [errorCode]="item.errorCode" [changeClasses]="changecs"
+          [appSlave]="signUp.controls['Avatar']"></app-hint>
+      </div>
 
-
-    <button mat-raised-button class="signup-button" type="onSubmit" appEmitClick>SIGNUP</button>
+    <button mat-raised-button class="signup-button" type="onSubmit" appEmitClick (click)="onSubmit()">SIGNUP</button>
 
 
   </div>

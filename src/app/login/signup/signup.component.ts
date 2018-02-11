@@ -20,6 +20,10 @@ export class SignupComponent implements OnInit {
   errorInfos_em = [{
     errorCode: 'email',
     message: '请输入正确格式邮箱'
+  }];
+  errorInfos_ava = [{
+    errorCode: 'message',
+    message: '请选择头像'
   }]
   mailOptions = [
     '163.com','qq.com'
@@ -51,11 +55,12 @@ export class SignupComponent implements OnInit {
     this.signUp = this.fb.group({
       'ID': ['', [myValidators.min_maxLength(4, 16), myValidators.eng_numChar]],
       'Password': ['', [myValidators.min_maxLength(6, 16), myValidators.eng_numChar]],
-      'Email': ['', [myValidators.email]]
+      'Email': ['', [myValidators.email]],
+      'Avatar':['']
     });
   }
-  onsubmit(){
-
+  onSubmit(){
+    console.log(this.signUp)
   }
 
 
