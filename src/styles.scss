@@ -20,6 +20,7 @@ html, body{
   height: 100%;
 
 }
+
 app-root{
   height: 100%;
   display: flex;
@@ -27,5 +28,9 @@ app-root{
   mat-drawer-container{
     flex:1;
   }
+}
+app-itemlist{
+  display: flex;
+  flex: 1;
 }
 

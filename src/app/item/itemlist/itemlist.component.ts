@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewEncapsulation, Input, ViewChild, TemplateRef, EventEmitter, Output} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input, ViewChild, TemplateRef, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { RestapiService } from '../../restapi.service';
 import { LocaldataService } from '../../localdata.service';
@@ -25,11 +25,11 @@ export class ItemlistComponent implements OnInit {
     // this.fetch((data) => {
     //   this.rows = data;
     // });
-    this.restapi.stream_allItem().subscribe((data)=>{
-      if(data['code'] === 'not_logIn'){
+    this.restapi.stream_allItem().subscribe((data) => {
+      if (data['code'] === 'not_logIn') {
         this.rows = [];
         console.log(data['message']);
-      } else if(data['code'] === 'no_data'){
+      } else if (data['code'] === 'no_data') {
         this.rows = [];
         console.log(data['message']);
       } else {
@@ -43,22 +43,22 @@ export class ItemlistComponent implements OnInit {
 
   ngOnInit() {
     this.columns = [
-    { prop: 'name', name:'名称'} ,
-    { prop: 'marking', name:'型号' },
-    { prop: 'quantity', name:'数量' },
-    { prop: 'unit', name:'单位'},
-    { prop: 'where', name:'位置' },
-    { prop: 'number', name:'系统编号' }
-  ];
+      { prop: 'name', name: '名称' },
+      { prop: 'marking', name: '型号' },
+      { prop: 'quantity', name: '数量' },
+      { prop: 'unit', name: '单位' },
+      { prop: 'where', name: '位置' },
+      { prop: 'number', name: '系统编号' }
+    ];
   }
   onSelect({ selected }) {
     console.log('Select Event', selected);
-    if( this. selectedNumber === selected[0]['number']){
+    if (this.selectedNumber === selected[0]['number']) {
       this.selectedChange = false;
     } else {
       this.selectedChange = true;
       this.selectedNumber = selected[0]['number'];
-      this.router.navigateByUrl("/itemlist/"+this.selectedNumber)
+      this.router.navigateByUrl("/itemlist/" + this.selectedNumber)
     }
 
     this.select = true;
@@ -81,7 +81,7 @@ export class ItemlistComponent implements OnInit {
     const val = event.target.value.toLowerCase();
 
     // filter our data
-    const temp = this.localdata.localData.filter(function(d) {
+    const temp = this.localdata.localData.filter(function (d) {
       return d.name.toLowerCase().indexOf(val) !== -1 || !val;
     });
 
