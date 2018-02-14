@@ -15,8 +15,8 @@ export class FunctionComponent implements OnInit {
   ngOnInit() {
 
   }
-  openDialog(){
-    let dialogRef = this.dialog.open(AdditemComponent, {
+  openDialog() {
+    const dialogRef = this.dialog.open(AdditemComponent, {
       width: '500px',
 
 

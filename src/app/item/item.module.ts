@@ -10,6 +10,7 @@ import { FindComponent } from './find/find.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import {MatDialogModule} from '@angular/material';
+import { find } from 'rxjs/operators/find';
 const routes: Routes = [
   { path: 'itemlist', component: ItemlistComponent,
   children: [
@@ -30,6 +31,7 @@ const routes: Routes = [
   ],
   declarations: [ItemlistComponent, AdditemComponent, FunctionComponent, DetailComponent, FindComponent],
   entryComponents: [AdditemComponent],
+  exports:[FindComponent]
 
 })
 export class ItemModule { }

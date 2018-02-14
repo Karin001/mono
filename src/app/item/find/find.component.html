@@ -1,6 +1,11 @@
-<p>
-  find works!
-  请输入名称：
-</p>
-<input type="text" [value]="[(name)]">
+<mat-form-field class="search">
+    <input matInput type="text" class="searchInput" [matAutocomplete]="auto" [formControl]="search">
+    <mat-icon svgIcon="search" class="searchIcon"></mat-icon>
+    <mat-autocomplete #auto="matAutocomplete"  [displayWith]="displayFn">
+      <mat-option *ngFor="let option of showOptions" [value]="option">
+        {{ option}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+
 

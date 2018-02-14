@@ -22,23 +22,23 @@ export class ItemlistComponent implements OnInit {
     private restapi: RestapiService,
     private localdata: LocaldataService
   ) {
-    // this.fetch((data) => {
-    //   this.rows = data;
-    // });
-    this.restapi.stream_allItem().subscribe((data) => {
-      if (data['code'] === 'not_logIn') {
-        this.rows = [];
-        console.log(data['message']);
-      } else if (data['code'] === 'no_data') {
-        this.rows = [];
-        console.log(data['message']);
-      } else {
-        console.log(data);
-        this.rows = data['fb']['items'];
-        this.localdata.localData = data['fb']['items'];
-      }
+    this.fetch((data) => {
+      this.rows = data;
+    });
+    // this.restapi.stream_allItem().subscribe((data) => {
+    //   if (data['code'] === 'not_logIn') {
+    //     this.rows = [];
+    //     console.log(data['message']);
+    //   } else if (data['code'] === 'no_data') {
+    //     this.rows = [];
+    //     console.log(data['message']);
+    //   } else {
+    //     console.log(data);
+    //     this.rows = data['fb']['items'];
+    //     this.localdata.localData = data['fb']['items'];
+    //   }
 
-    })
+    // })
   }
 
   ngOnInit() {
