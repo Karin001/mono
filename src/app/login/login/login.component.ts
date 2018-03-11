@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit,OnDestroy  } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, FormGroupDirective, NgForm, AbstractControl } from '@angular/forms';
 import { RestapiService } from '../../restapi.service';
-import {myValidators} from '../../my-validators/myValidators';
-
-
-
+import { MyValidators } from '../../service/myValidators';
+import { logState } from '../../state/state';
+import { Subscription } from 'rxjs/Subscription';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -12,9 +12,9 @@ import {myValidators} from '../../my-validators/myValidators';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit,OnDestroy {
 
-
+  disabled = true;
   userLogin: FormGroup;
   errorInfos = [{
     errorCode: 'min_maxLength',
@@ -30,18 +30,37 @@ export class LoginComponent implements OnInit {
     okMode: 'ok',
     alertMode: 'alert'
   };
-
+  btnDisable$: Subscription;
+  logState$: Subscription;
   constructor(
     private fb: FormBuilder,
-    private restapi: RestapiService
+    private restapi: RestapiService,
+    private myValidators: MyValidators,
+    private router: Router
   ) {
     this.creatForm();
     console.log(this.userLogin);
   }
 
   ngOnInit() {
+    this.btnDisable$ = this.userLogin.statusChanges
+      .map(v => v === 'INVALID' ? true : false)
+      .subscribe(v => {
+        this.disabled = v;
+      });
+    this.logState$ = this.restapi.getLogState().subscribe(state => {
+      this.disabled = false;
+      console.log(4455);
+      console.log(state);
+      if (state === logState.login) {
+        this.router.navigateByUrl('/itemlist');
+     }
+    });
 
-
+  }
+  ngOnDestroy() {
+    this.btnDisable$.unsubscribe();
+    this.logState$.unsubscribe();
   }
 
 
@@ -49,35 +68,27 @@ export class LoginComponent implements OnInit {
 
   creatForm() {
 
-      this.userLogin = this.fb.group({
-        'ID': ['', [myValidators.min_maxLength(4,16),myValidators.eng_numChar]],
-        'Password': ['', [myValidators.min_maxLength(6,16),myValidators.eng_numChar]]
-      });
+    this.userLogin = this.fb.group({
+      'ID': ['', [this.myValidators.min_maxLength(4, 16), this.myValidators.eng_numChar]],
+      'Password': ['', [this.myValidators.min_maxLength(6, 16), this.myValidators.eng_numChar]]
+    });
 
 
   }
 
 
   onSubmit() {
+    console.log(1);
+    if (this.userLogin.valid) {
+      console.log(3);
+      this.disabled = true;
       this.restapi.logIn({
         username: this.userLogin.value['ID'],
         password: this.userLogin.value['Password']
-      }).subscribe((data) => {
-        if (data['code'] === 'logged') {
-
-        } else if (data['code'] === 'mongo_err') {
-
-        } else if (data['code'] === 'invalid_user') {
-
-        } else if (data['code'] === 'invalid_password') {
-
-        } else if (data['code'] === 'success') {
-
-        } else {
-
-        }
       });
-      //验证正确 跳转
+
+    }
+
 
   }
 }

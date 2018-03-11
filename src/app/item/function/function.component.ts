@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { AdditemComponent } from '../additem/additem.component';
+import { EcomponentFormComponent } from '../../ecomponent-form/ecomponent-form/ecomponent-form.component';
 @Component({
   selector: 'app-function',
   templateUrl: './function.component.html',
@@ -16,8 +16,8 @@ export class FunctionComponent implements OnInit {
 
   }
   openDialog() {
-    const dialogRef = this.dialog.open(AdditemComponent, {
-      width: '500px',
+    const dialogRef = this.dialog.open(EcomponentFormComponent, {
+      width: '800px',
 
 
     });

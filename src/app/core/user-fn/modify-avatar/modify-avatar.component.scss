@@ -1,0 +1,15 @@
+.avatar{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+button{
+position: relative;
+mat-spinner{
+    position: absolute;
+    top:12px;
+    right:10px;
+}
+ 
+}

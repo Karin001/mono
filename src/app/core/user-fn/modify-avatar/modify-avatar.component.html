@@ -1,0 +1,10 @@
+<div class="avatar" [formGroup]="changeAvatar">
+    
+  <app-avatar-list-form formControlName="Avatar" [expanded]="true" cols="5" width="400px"  [img_width]="'50px'" rowHeight="90" [urls]="avatarUrls"></app-avatar-list-form>
+  <button mat-raised-button type="button" (click)="onSubmit()" [disabled]="disabled">
+    <mat-spinner diameter="20" strokeWidth="3" *ngIf="load"></mat-spinner>
+    <span>确定</span>  
+    
+   
+  </button>
+</div>

@@ -10,6 +10,7 @@ import { SharedModule } from '../shared/shared.module';
  
   ],
   declarations: [AvatarListFormComponent],
+  entryComponents:[AvatarListFormComponent],
   exports: [AvatarListFormComponent]
 })
 export class AvatarListFormModule { }

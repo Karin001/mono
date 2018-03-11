@@ -1,12 +1,19 @@
 .log-container{
   margin-top: 100px;
   width: 500px;
-  height: 260px;
+  
   padding: 30px;
   box-shadow: 0 0 18px 0 rgba(57, 141, 238, 0.12);
   flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
+  .title{
+    align-self: flex-start;
+    font-family: "微软雅黑";
+    font-size: 30px;
+    margin: 0 0 20px 0;
+  }
   .log-innerbox{
     display: flex;
     flex-direction: column;

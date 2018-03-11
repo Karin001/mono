@@ -7,8 +7,10 @@ import {ErrorHintModule} from '../error-hint/error-hint.module'
 
 import {
 MatButtonModule,
+MatButtonToggleModule,
 MatToolbarModule,
 MatSidenavModule,
+MatSelectModule,
 MatCardModule,
 MatListModule,
 MatIconModule,
@@ -17,7 +19,12 @@ MatInputModule,
 MatMenuModule,
 MatGridListModule,
 MatExpansionModule,
-MatAutocompleteModule
+MatAutocompleteModule,
+MatStepperModule,
+MatRadioModule,
+MatTabsModule,
+MatProgressSpinnerModule,
+MatSnackBarModule
 
 
 } from '@angular/material';
@@ -25,6 +32,8 @@ MatAutocompleteModule
   imports: [
     CommonModule,
     MatButtonModule,
+    MatButtonToggleModule,
+    MatRadioModule,
     MatToolbarModule,
     MatSidenavModule,
     MatCardModule,
@@ -38,6 +47,11 @@ MatAutocompleteModule
     MatExpansionModule,
     DragDropModule,
     ImguploadModule,
+    MatSelectModule,
+    MatTabsModule,
+    MatStepperModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
     BrowserAnimationsModule,
   ErrorHintModule
   ],
@@ -45,6 +59,8 @@ MatAutocompleteModule
   exports: [
     CommonModule,
     MatButtonModule,
+    MatButtonToggleModule,
+    MatRadioModule,
     MatToolbarModule,
     MatSidenavModule,
     MatCardModule,
@@ -52,12 +68,17 @@ MatAutocompleteModule
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
+    MatTabsModule,
     MatMenuModule,
     MatGridListModule,
     MatAutocompleteModule,
     MatExpansionModule,
     DragDropModule,
     ImguploadModule,
+    MatStepperModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
     BrowserAnimationsModule,
   ErrorHintModule
   ]

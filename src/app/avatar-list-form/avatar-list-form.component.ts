@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, forwardRef} from '@angular/core';
+import { Component, OnInit, Input, forwardRef,ViewChild} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, ValidationErrors, FormControl} from '@angular/forms';
 import { CropperSettings } from 'ng2-img-cropper';
 @Component({
@@ -19,7 +19,7 @@ import { CropperSettings } from 'ng2-img-cropper';
 ]
 })
 export class AvatarListFormComponent implements OnInit, ControlValueAccessor {
-
+  mode = 'sys';
   @Input()
   cols: number;
   @Input()
@@ -28,6 +28,8 @@ export class AvatarListFormComponent implements OnInit, ControlValueAccessor {
   rowHeight: number;
   @Input()
   urls: string[];
+  @Input()
+  expanded = false;
   @Input()
   img_width: string;
   selected: string;
@@ -66,5 +68,10 @@ export class AvatarListFormComponent implements OnInit, ControlValueAccessor {
       message:"you must select avatar"
     }
   }
+  onChange(ev){
+    console.log(ev);
+    this.mode = ev.value;
+  }
+ 
 
 }

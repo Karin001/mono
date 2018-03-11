@@ -1,0 +1,26 @@
+.hint{
+    color:red;
+    font: 14px "微软雅黑";
+    padding-right:5px;
+}
+.ps{
+    display: flex;
+    flex-direction: column;
+    .head{
+        align-self: center;
+       padding-bottom: 10px;
+        width: 100%; 
+        display: flex;
+        justify-content: center;       
+    }
+
+}
+button{
+    position: relative;
+    mat-spinner{
+        position: absolute;
+        top:12px;
+        right:10px;
+    }
+     
+}

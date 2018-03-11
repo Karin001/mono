@@ -48,7 +48,7 @@ export class SlaveDirective implements OnDestroy,AfterViewInit {
   chargeHint_or_OkMode() {
     this.hint_or_ok$ = this.service.getFocus()
       .filter(fc => fc === this.master)
-      .merge(this.master.valueChanges)
+      .merge(this.master.statusChanges)
       .subscribe(e => {
         if (this.master.hasError(this.errorCode)) {
           this.rd.removeClass(this.el.nativeElement, this.changeClasses.alertMode);

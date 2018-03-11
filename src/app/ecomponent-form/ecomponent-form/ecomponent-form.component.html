@@ -1,0 +1,57 @@
+
+
+  <mat-horizontal-stepper linear class="stepper" (selectionChange)="onSelectionChange($event)">
+    <mat-step [stepControl]="fgSign" >
+      <form [formGroup]="fgSign">
+        <mat-form-field>
+          <mat-select placeholder="名称"  formControlName="name">
+            <mat-option *ngFor="let name of names" [value]="name">
+              {{name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="型号" formControlName="marking">
+          <mat-error >
+            Please enter a valid marking
+          </mat-error>
+        </mat-form-field>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="fgParam">
+      <form [formGroup]="fgParam">
+        <div class="value">
+         
+          <app-button-toggle-form showName="值" [items]="Runits" formControlName="value"></app-button-toggle-form>
+        </div>
+        <div class="power">
+         
+          <app-button-toggle-form showName="功率" [items]="Wunits" formControlName="power"></app-button-toggle-form>
+        </div>
+        <div class="power">
+         
+          <mat-form-field>
+            <input matInput placeholder="封装" formControlName="footprint" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete"  [displayWith]="displayFn">
+              <mat-option *ngFor="let option of footprint$ | async" [value]="option">
+                {{ option}}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-error>请输入正确格式</mat-error>
+          </mat-form-field>
+        </div>
+        <button type="button" (click)="test()"></button>
+        
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="fgQuantity">
+      <form [formGroup]="fgQuantity">
+      <mat-form-field>
+        <input matInput placeholder="数量" formControlName="quantity" >
+      </mat-form-field>
+        
+      </form>
+    </mat-step>
+  </mat-horizontal-stepper>
+
+

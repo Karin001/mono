@@ -1,0 +1,9 @@
+<mat-form-field >
+  <input matInput [placeholder]="showName" [formControl]="valueNumber" (change)="test($event)" >
+  <mat-error>请输入正确数值</mat-error>
+</mat-form-field>
+<mat-button-toggle-group #group="matButtonToggleGroup" (change)="onChange($event)" >
+  <mat-button-toggle [value]="item.value" *ngFor="let item of items" [checked]="setUnit===item.value? true:false">
+    {{item.moji}}
+  </mat-button-toggle>
+</mat-button-toggle-group>

@@ -8,14 +8,14 @@
         <input type="text" matInput placeholder="用户名" formControlName="ID" [appEmitFocusBlur]="signUp.controls['ID']">
       </mat-form-field>
       <div class="hintbox">
-        <app-hint *ngFor="let item of errorInfos_idps" [errorMessage]="item.message" [errorCode]="item.errorCode" [changeClasses]="changecs"
+        <app-hint *ngFor="let item of errorInfos_id" [errorMessage]="item.message" [errorCode]="item.errorCode" [changeClasses]="changecs"
           [appSlave]="signUp.controls['ID']"></app-hint>
       </div>
       <mat-form-field>
         <input type="password" matInput placeholder="密码" formControlName="Password" [appEmitFocusBlur]="signUp.controls['Password']">
       </mat-form-field>
       <div class="hintbox">
-        <app-hint *ngFor="let item of errorInfos_idps" [errorMessage]="item.message" [errorCode]="item.errorCode" [changeClasses]="changecs"
+        <app-hint *ngFor="let item of errorInfos_ps" [errorMessage]="item.message" [errorCode]="item.errorCode" [changeClasses]="changecs"
           [appSlave]="signUp.controls['Password']"></app-hint>
       </div>
       <mat-form-field>
@@ -35,7 +35,7 @@
           [appSlave]="signUp.controls['Avatar']"></app-hint>
       </div>
 
-    <button mat-raised-button class="signup-button" type="onSubmit" appEmitClick (click)="onSubmit()">SIGNUP</button>
+    <button #submitButton mat-raised-button class="signup-button" type="onSubmit" appEmitClick (click)="onSubmit()" [disabled]="disabled">SIGNUP</button>
 
 
   </div>

@@ -13,6 +13,8 @@ import { SignupComponent} from './login/signup/signup.component';
 import { RestapiService } from './restapi.service';
 import {LocaldataService} from './localdata.service';
 import { DragAndDropModule } from 'angular-draggable-droppable';
+import { DuplicateCheckDirective } from './directive/duplicate-check/duplicate-check.directive';
+
 const routes: Routes = [
   { path: '', redirectTo: '/itemlist', pathMatch: 'full' },
   { path: 'itemlist', component: ItemlistComponent, pathMatch: 'full' },
@@ -27,6 +29,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
+    DuplicateCheckDirective,
 
 
   ],

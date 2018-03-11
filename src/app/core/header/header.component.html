@@ -11,19 +11,26 @@
      
     </li>
     <li class="user">
+      <div class="user-ava">
+        <img [src]="imgSrc" alt="" class="dummy-avatar">
 
-      <img src="assets/sys/dummy_user.jpg" alt="" class="dummy-avatar">
+        <div *ngIf="usermenu_able" class="user-menu-box">
+          <mat-icon  mat-list-icon svgIcon="arrow-down" (click)="menuToggle()"></mat-icon>
+          <ul *ngIf="usermenu_open" class="user-menu">
+            <li (click)="openDialog_ava()">修改头像</li>
+            <li (click)="openDialog_ps()">修改密码</li>
+            <li>意见反馈</li>
+            <li (click)="logOut()">注销登录</li>
+          </ul>
+        </div> 
 
-      <div class="user-menu-box">
-        <mat-icon  mat-list-icon svgIcon="arrow-down" (click)="menuToggle()"></mat-icon>
-        <ul *ngIf="usermenu_open" class="user-menu">
-          <li>上传新头像</li>
-          <li>修改密码</li>
-          <li>意见反馈</li>
-          <li>注销登录</li>
-        </ul>
-      </div> 
+      </div>
       
+      <div *ngIf="loginBtn">
+        <a routerLink="/login" >登录</a>
+        <span>|</span>
+        <a routerLink="/signup">注册</a>
+      </div>
       <mat-icon mat-list-icon svgIcon="theme-light-dark" class="theme"></mat-icon>
 
       <div></div>

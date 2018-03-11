@@ -1,41 +1,39 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { searchMove } from '../../anims/anim';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { startWith } from 'rxjs/operator/startWith';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/map';
+import { Subscription } from 'rxjs/Subscription';
+
+import { AutoComplateService } from '../../service/auto-complate.service';
 @Component({
   selector: 'app-find',
   templateUrl: './find.component.html',
   styleUrls: ['./find.component.scss'],
 
 })
-export class FindComponent implements OnInit, AfterViewInit {
+export class FindComponent implements OnInit, AfterViewInit, OnDestroy {
   name;
 
   options = [
     '112',
+    '112',
+    '112',
+    '112',
+    '112',
     '2213',
     '321321'
   ]
-  filteredOptions;
+  filteredOptions: Subscription;
   showOptions;
   search = new FormControl();
-  constructor() {
-    this.filteredOptions = this.search.valueChanges
-      .startWith('')
-      .map(val =>  this.filter(val))
-      .subscribe(val => {
-          this.showOptions = val;
-      });
+  constructor(private auto: AutoComplateService) {
+    this.filteredOptions = this.auto.autoComlate(this.search, this.options)
+      .subscribe(val => this.showOptions = val);
 
-  }
-  filter(val: string): string[] {
-    return this.options.filter(option =>
-      option.toLowerCase().indexOf(val.toLowerCase()) === 0 && val !== '');
   }
 
   ngOnInit() {
+  }
+  ngOnDestroy() {
+    this.filteredOptions.unsubscribe();
   }
   ngAfterViewInit() {
 

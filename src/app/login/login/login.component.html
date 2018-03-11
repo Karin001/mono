@@ -1,6 +1,6 @@
 <div class="log-container">
 
-
+  <h1 class="title">请登录</h1>
 
   <div class="log-innerbox" [formGroup]="userLogin" >
     <mat-form-field >
@@ -23,7 +23,7 @@
 
     </div>
 
-    <button mat-raised-button type="onSubmit" appEmitClick >LOGIN</button>
+    <button mat-raised-button (click)="onSubmit()" appEmitClick [disabled]="disabled">LOGIN</button>
 
 
   </div>
