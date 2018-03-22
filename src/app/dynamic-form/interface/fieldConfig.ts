@@ -3,6 +3,7 @@ export interface FieldConfig {
     name: string;
     validations?: ValidatorFn[];
     value?: any;
+    error?: { name: string; message: string; };
     disabled?: boolean;
     placeholder?: string;
     type: string;

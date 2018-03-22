@@ -1,4 +1,4 @@
-<form (ngSubmit)="handleSubmit($event)" [formGroup]="form" class="dynamic-form">
+<form (ngSubmit)="handleSubmit($event)" [formGroup]="form" class="dynamic-field">
   <ng-container *ngFor="let config of configs" appDynamicField [config]="config" [group]="form">
 
   </ng-container>

@@ -1,5 +1,16 @@
+.selected{
+    
+    border-bottom: 1px solid black;
+    transition: all 0.2s ease;
+}
 .radio-group{
     margin-bottom: 10px;
+}
+.radio-box{
+    display:flex;
+    .radio-ele{
+        padding-right: 20px;
+    }
 }
 .label-title{
     font:400 16px "微软雅黑";
@@ -44,8 +55,6 @@
     top: 5px;
     left: 5px;
     border-radius: 100%;
-    -webkit-transition: all 0.2s ease;
-    transition: all 0.2s ease;
 }
 [type="radio"]:not(:checked) + label:after {
     opacity: 0;

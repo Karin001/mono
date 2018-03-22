@@ -1,31 +1,11 @@
-<p>
-  additem works!
-</p>
-<form  [formGroup]="newItem"  (ngSubmit)="onSubmit()" >
-  <mat-form-field >
-    <input type="text" matInput placeholder="名称" formControlName="name" >
+<div class="type-sel">
+    <label>请选择物件的种类</label>
+    <select placeholder="" [(ngModel)]="selectedBomType" name="item" (change)="changeForm(selectedBomType)">
+        <option class="sel" *ngFor="let item of bomTypes" [value]="item.value">
+            {{item.viewValue}}
+        </option>
+    </select>
+</div>
 
-    <mat-error *ngIf="newItem.controls['name'].valid === false">wwwwww</mat-error>
-  </mat-form-field>
-  <mat-form-field >
-    <input type="password" matInput placeholder="型号" formControlName="marking" >
-    <mat-error *ngIf="newItem.controls['marking'].valid === false">wwwwww</mat-error>
-  </mat-form-field>
-  <mat-form-field >
-    <input type="password" matInput placeholder="数量" formControlName="quantity" >
-    <mat-error *ngIf="newItem.controls['quantity'].valid === false">wwwwww</mat-error>
-  </mat-form-field>
-  <mat-form-field >
-    <input type="password" matInput placeholder="单位" formControlName="unit" >
-    <mat-error *ngIf="newItem.controls['unit'].valid === false">wwwwww</mat-error>
-  </mat-form-field>
-  <mat-form-field >
-    <input type="password" matInput placeholder="位置" formControlName="where" >
-    <mat-error *ngIf="newItem.controls['where'].valid === false">wwwwww</mat-error>
-  </mat-form-field>
-
-  <button mat-raised-button color="primary" type="onSubmit">提交</button>
-
-
-
-</form>
+<app-dynamic-form *ngIf="selectedBomType" #dynamicForm [configs]="formFieldConfigs" (submit)="onSubmit($event)">
+</app-dynamic-form>

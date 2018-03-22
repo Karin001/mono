@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
+import { DynamicFormModule } from '../dynamic-form/dynamic-form.module';
 import { Router, RouterModule, Routes } from '@angular/router';
 import { ItemlistComponent } from './itemlist/itemlist.component';
 import { AdditemComponent } from './additem/additem.component';
@@ -24,6 +25,7 @@ const routes: Routes = [
   imports: [
     SharedModule,
     MatDialogModule,
+    DynamicFormModule,
     FormsModule,
     ReactiveFormsModule,
     NgxDatatableModule,

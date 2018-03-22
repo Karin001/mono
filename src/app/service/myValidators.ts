@@ -2,7 +2,7 @@ import { ValidatorFn, ValidationErrors, FormControl, AsyncValidatorFn } from '@a
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { QueryUsernameResp } from '../interface/userType'; 
+import { QueryUsernameResp } from '../interface/userType';
 function regCheck(c: FormControl, reg: RegExp, name: string, message: string) {
   const match = reg.test(c.value);
   return !match ? {
@@ -16,7 +16,7 @@ export class MyValidators {
     private http: HttpClient
   ) {
     console.log(this.http);
-   }
+  }
   minLength(num: number): ValidatorFn {
     return (c: FormControl): ValidationErrors => {
       return c.value.length < num ? {
@@ -64,11 +64,17 @@ export class MyValidators {
   footprint(c: FormControl): ValidationErrors {
     return regCheck(c, /^[A-Za-z0-9\-]+$/, 'footprint', '请输入正确格式封装');
   }
+  num_point(c: FormControl): ValidationErrors {
+    return regCheck(c, /^[0-9]+(.[0-9]{1,2})?$/, 'num_point', '请输入数字，最多两位小数');
+  }
+  volt(c: FormControl): ValidationErrors {
+    return regCheck(c, /^[0-9]{1,3}$/, 'volt', '请输入三位以下数字');
+  }
   duplicateCheckfn(): AsyncValidatorFn {
     return (c: FormControl): Observable<ValidationErrors> => {
       return this.http.get('api/username')
         .retry(3)
-        .map((resp:QueryUsernameResp) => {
+        .map((resp: QueryUsernameResp) => {
           console.log(121);
           if (resp.code === 'mongo_err') {
             console.log('mongo_err');
@@ -83,6 +89,6 @@ export class MyValidators {
         });
     };
   }
-  
+
 }
 
