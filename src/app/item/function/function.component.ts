@@ -18,7 +18,7 @@ export class FunctionComponent implements OnInit {
   }
   openDialog() {
     const dialogRef = this.dialog.open(AdditemComponent, {
-      width: '800px',
+      width: '850px',
 
 
     });

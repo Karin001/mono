@@ -5,6 +5,7 @@ import { DynamicFormComponent } from '../../dynamic-form/container/dynamic-form/
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MyValidators } from '../../service/myValidators';
 import { Ename } from '../../ecomponent-form/eTypeDef/eTypeDef';
+
 @Component({
   selector: 'app-additem',
   templateUrl: './additem.component.html',
@@ -14,6 +15,15 @@ export class AdditemComponent implements OnInit, AfterViewInit {
   @ViewChild('dynamicForm')
   dynamicForm: DynamicFormComponent;
   newItem;
+  FOOTPRINT =   {
+    type: 'input',
+    label: '封装',
+    name: 'footprint',
+    disabled: false,
+    placeholder: '',
+    validations: [Validators.required, this.myValidators.footprint, Validators.maxLength(30)],
+    error: { name: 'footprint', message: '输入限定为英文和数字，或特殊符号横杠-,最多30个字符 ' }
+  };
   bomTypes = Ename;
   selectedBomType = Ename[0].value;
   formsPool: { [formType: string]: FieldConfig[] } = {
@@ -24,8 +34,17 @@ export class AdditemComponent implements OnInit, AfterViewInit {
         name: 'marking',
         placeholder: '',
         disabled: false,
-        validations: [this.myValidators.eng_numChar],
-        error: { name: 'eng_numChar', message: '输入限定为英文和数字' }
+        validations: [this.myValidators.eng_numChar, Validators.maxLength(30)],
+        error: { name: 'eng_numChar,maxlength', message: '输入限定为英文和数字,最多30个字符' }
+      },
+      {
+        type: 'radio',
+        label: '电阻类型',
+        name: 'childType',
+        disabled: false,
+        placeholder: '',
+        options: ['普通', '可变', '光敏', '压敏', '热敏'],
+        validations: [Validators.required],
       },
       {
         type: 'input',
@@ -33,8 +52,8 @@ export class AdditemComponent implements OnInit, AfterViewInit {
         name: 'value',
         disabled: false,
         placeholder: '',
-        validations: [Validators.required, this.myValidators.num_point],
-        error: { name: 'num_point', message: '输入限定为数字，最多两位小数' }
+        validations: [Validators.required, this.myValidators.num_point, Validators.maxLength(10)],
+        error: { name: 'num_point,maxlength', message: '输入限定为10位以下数字，最多两位小数' }
       },
       {
         type: 'radio',
@@ -51,8 +70,8 @@ export class AdditemComponent implements OnInit, AfterViewInit {
         name: 'footprint',
         disabled: false,
         placeholder: '',
-        validations: [Validators.required, this.myValidators.footprint],
-        error: { name: 'footprint', message: '输入限定为英文和数字，或特殊符号横杠 - ' }
+        validations: [Validators.required, this.myValidators.footprint, Validators.maxLength(30)],
+        error: { name: 'footprint,maxlength', message: '输入限定为英文和数字，或特殊符号横杠-,最多30个字符 ' }
       },
       {
         type: 'radio',
@@ -87,8 +106,17 @@ export class AdditemComponent implements OnInit, AfterViewInit {
         name: 'marking',
         placeholder: '',
         disabled: false,
-        validations: [this.myValidators.eng_numChar],
-        error: { name: 'eng_numChar', message: '输入限定为英文和数字' }
+        validations: [this.myValidators.eng_numChar, Validators.maxLength(30)],
+        error: { name: 'eng_numChar,maxlength', message: '输入限定为英文和数字,最多30个字符' }
+      },
+      {
+        type: 'radio',
+        label: '电容类型',
+        name: 'childType',
+        disabled: false,
+        placeholder: '',
+        options: ['电解', '陶瓷', '纸介', '云母', '薄膜'],
+        validations: [Validators.required],
       },
       {
         type: 'input',
@@ -96,8 +124,8 @@ export class AdditemComponent implements OnInit, AfterViewInit {
         name: 'value',
         disabled: false,
         placeholder: '',
-        validations: [Validators.required, this.myValidators.num_point],
-        error: { name: 'num_point', message: '输入限定为数字，最多两位小数' }
+        validations: [Validators.required, this.myValidators.num_point, Validators.maxLength(10)],
+        error: { name: 'num_point,maxlength', message: '输入限定为10位以下数字，最多两位小数' }
       },
       {
         type: 'radio',
@@ -105,7 +133,7 @@ export class AdditemComponent implements OnInit, AfterViewInit {
         name: 'unit',
         disabled: false,
         placeholder: '',
-        options: ['pf', 'nf', 'uf', 'mf', 'f'],
+        options: ['pF', 'nF', 'uF', 'mF', 'F'],
         validations: [Validators.required],
       },
       {
@@ -123,8 +151,350 @@ export class AdditemComponent implements OnInit, AfterViewInit {
         name: 'footprint',
         disabled: false,
         placeholder: '',
-        validations: [Validators.required, this.myValidators.footprint],
-        error: { name: 'footprint', message: '输入限定为英文和数字，或特殊符号横杠 - ' }
+        validations: [Validators.required, this.myValidators.footprint, Validators.maxLength(30)],
+        error: { name: 'footprint,maxlength', message: '输入限定为英文和数字，或特殊符号横杠-,最多30个字符 ' }
+      },
+      {
+        type: 'input',
+        label: '已采购数量',
+        name: 'quantity',
+        value: '0',
+        disabled: false,
+        placeholder: '',
+        validations: [Validators.required, this.myValidators.quantity],
+        error: { name: 'quantity', message: '输入限定为有意义的数字，未采购填0' }
+      },
+      {
+        label: 'Submit',
+        name: 'submit',
+        type: 'button',
+        disabled: false,
+      }
+    ],
+    DIODE: [
+      {
+        type: 'input',
+        label: '型号',
+        name: 'marking',
+        placeholder: '',
+        disabled: false,
+        validations: [this.myValidators.eng_numChar, Validators.maxLength(30)],
+        error: { name: 'eng_numChar,maxlength', message: '输入限定为英文和数字,最多30个字符' }
+      },
+      {
+        type: 'radio',
+        label: '二极管类型',
+        name: 'childType',
+        disabled: false,
+        placeholder: '',
+        options: ['肖特基', '整流', '稳压', '变容', '普通', '发光'],
+        validations: [Validators.required],
+      },
+      {
+        type: 'input',
+        label: '封装',
+        name: 'footprint',
+        disabled: false,
+        placeholder: '',
+        validations: [Validators.required, this.myValidators.footprint, Validators.maxLength(30)],
+        error: { name: 'footprint,maxlength', message: '输入限定为英文和数字，或特殊符号横杠-,最多30个字符 ' }
+      },
+      {
+        type: 'input',
+        label: '已采购数量',
+        name: 'quantity',
+        value: '0',
+        disabled: false,
+        placeholder: '',
+        validations: [Validators.required, this.myValidators.quantity],
+        error: { name: 'quantity', message: '输入限定为有意义的数字，未采购填0' }
+      },
+      {
+        label: 'Submit',
+        name: 'submit',
+        type: 'button',
+        disabled: false,
+      }
+    ],
+    INDUCTOR: [
+      {
+        type: 'input',
+        label: '型号',
+        name: 'marking',
+        placeholder: '',
+        disabled: false,
+        validations: [this.myValidators.eng_numChar, Validators.maxLength(30)],
+        error: { name: 'eng_numChar,maxlength', message: '输入限定为英文和数字,最多30个字符' }
+      },
+      {
+        type: 'input',
+        label: '电感值',
+        name: 'value',
+        disabled: false,
+        placeholder: '',
+        validations: [Validators.required, this.myValidators.num_point, Validators.maxLength(10)],
+        error: { name: 'num_point,maxlength', message: '输入限定10位以下数字，最多两位小数' }
+      },
+      {
+        type: 'radio',
+        label: '电感值单位',
+        name: 'unit',
+        disabled: false,
+        placeholder: '',
+        options: ['nH', 'uH', 'mH', 'H'],
+        validations: [Validators.required],
+      },
+      {
+        type: 'input',
+        label: '封装',
+        name: 'footprint',
+        disabled: false,
+        placeholder: '',
+        validations: [Validators.required, this.myValidators.footprint, Validators.maxLength(30)],
+        error: { name: 'footprint,maxlength', message: '输入限定为英文和数字，或特殊符号横杠-,最多30个字符 ' }
+      },
+      {
+        type: 'input',
+        label: '已采购数量',
+        name: 'quantity',
+        value: '0',
+        disabled: false,
+        placeholder: '',
+        validations: [Validators.required, this.myValidators.quantity],
+        error: { name: 'quantity', message: '输入限定为有意义的数字，未采购填0' }
+      },
+      {
+        label: 'Submit',
+        name: 'submit',
+        type: 'button',
+        disabled: false,
+      }
+    ],
+    TRIODE: [
+      {
+        type: 'input',
+        label: '型号',
+        name: 'marking',
+        placeholder: '',
+        disabled: false,
+        validations: [this.myValidators.eng_numChar, Validators.maxLength(30)],
+        error: { name: 'eng_numChar,maxlength', message: '输入限定为英文和数字,最多30个字符' }
+      },
+      {
+        type: 'radio',
+        label: '三极管类型',
+        name: 'childType',
+        disabled: false,
+        placeholder: '',
+        options: ['NPN', 'PNP'],
+        validations: [Validators.required],
+      },
+      {
+        type: 'input',
+        label: '封装',
+        name: 'footprint',
+        disabled: false,
+        placeholder: '',
+        validations: [Validators.required, this.myValidators.footprint, Validators.maxLength(30)],
+        error: { name: 'footprint,maxlength', message: '输入限定为英文和数字，或特殊符号横杠-,最多30个字符 ' }
+      },
+      {
+        type: 'input',
+        label: '已采购数量',
+        name: 'quantity',
+        value: '0',
+        disabled: false,
+        placeholder: '',
+        validations: [Validators.required, this.myValidators.quantity],
+        error: { name: 'quantity', message: '输入限定为有意义的数字，未采购填0' }
+      },
+      {
+        label: 'Submit',
+        name: 'submit',
+        type: 'button',
+        disabled: false,
+      }
+    ],
+    MOS: [
+      {
+        type: 'input',
+        label: '型号',
+        name: 'marking',
+        placeholder: '',
+        disabled: false,
+        validations: [this.myValidators.eng_numChar, Validators.maxLength(30)],
+        error: { name: 'eng_numChar,maxlength', message: '输入限定为英文和数字,最多30个字符' }
+      },
+      {
+        type: 'input',
+        label: '封装',
+        name: 'footprint',
+        disabled: false,
+        placeholder: '',
+        validations: [Validators.required, this.myValidators.footprint, Validators.maxLength(30)],
+        error: { name:'footprint,maxlength', message: '输入限定为英文和数字，或特殊符号横杠-,最多30个字符 ' }
+      },
+      {
+        type: 'input',
+        label: '已采购数量',
+        name: 'quantity',
+        value: '0',
+        disabled: false,
+        placeholder: '',
+        validations: [Validators.required, this.myValidators.quantity],
+        error: { name: 'quantity', message: '输入限定为有意义的数字，未采购填0' }
+      },
+      {
+        label: 'Submit',
+        name: 'submit',
+        type: 'button',
+        disabled: false,
+      }
+    ],
+    'MCU|IC|DSP|FPGA': [
+      {
+        type: 'input',
+        label: '型号',
+        name: 'marking',
+        placeholder: '',
+        disabled: false,
+        validations: [this.myValidators.eng_numChar, Validators.maxLength(30)],
+        error: { name: 'eng_numChar,maxlength', message: '输入限定为英文和数字,最多30个字符' }
+      },
+      {
+        type: 'input',
+        label: '封装',
+        name: 'footprint',
+        disabled: false,
+        placeholder: '',
+        validations: [Validators.required, this.myValidators.footprint, Validators.maxLength(30)],
+        error: { name: 'footprint,maxlength', message: '输入限定为英文和数字，或特殊符号横杠-,最多30个字符 ' }
+      },
+      {
+        type: 'input',
+        label: '自定义标签',
+        name: 'tag',
+        disabled: false,
+        placeholder: '',
+        validations: [Validators.required, Validators.maxLength(20)],
+        error: { name: 'maxlength', message: '输入限定为20个以下字符' }
+      },
+      {
+        type: 'input',
+        label: '已采购数量',
+        name: 'quantity',
+        value: '0',
+        disabled: false,
+        placeholder: '',
+        validations: [Validators.required, this.myValidators.quantity],
+        error: { name: 'quantity', message: '输入限定为有意义的数字，未采购填0' }
+      },
+      {
+        label: 'Submit',
+        name: 'submit',
+        type: 'button',
+        disabled: false,
+      }
+    ],
+    'HOKA': [
+      {
+        type: 'input',
+        label: '型号',
+        name: 'marking',
+        placeholder: '',
+        disabled: false,
+        validations: [this.myValidators.eng_numChar, Validators.maxLength(30)],
+        error: { name: 'eng_numChar,maxlength', message: '输入限定为英文和数字,最多30个字符' }
+      },
+      {
+        type: 'input',
+        label: '值（可选填）',
+        name: 'curValue',
+        placeholder: '',
+        disabled: false,
+        validations: [Validators.maxLength(20)],
+        error: { name: 'maxlength', message: '输入限定最多20个字符' }
+      },
+      {
+        type: 'input',
+        label: '封装',
+        name: 'footprint',
+        disabled: false,
+        placeholder: '',
+        validations: [Validators.required, this.myValidators.footprint, Validators.maxLength(30)],
+        error: { name: 'footprint,maxlength', message: '输入限定为英文和数字，或特殊符号横杠-,最多30个字符 ' }
+      },
+      {
+        type: 'input',
+        label: '自定义标签',
+        name: 'tag',
+        disabled: false,
+        placeholder: '',
+        validations: [Validators.required, Validators.maxLength(20)],
+        error: { name: 'maxlength', message: '输入限定为20个以下字符' }
+      },
+      {
+        type: 'input',
+        label: '已采购数量',
+        name: 'quantity',
+        value: '0',
+        disabled: false,
+        placeholder: '',
+        validations: [Validators.required, this.myValidators.quantity],
+        error: { name: 'quantity', message: '输入限定为有意义的数字，未采购填0' }
+      },
+      {
+        label: 'Submit',
+        name: 'submit',
+        type: 'button',
+        disabled: false,
+      }
+    ],
+    'OSCILLATOR': [
+      {
+        type: 'input',
+        label: '型号',
+        name: 'marking',
+        placeholder: '',
+        disabled: false,
+        validations: [this.myValidators.eng_numChar, Validators.maxLength(30)],
+        error: { name: 'eng_numChar,maxlength', message: '输入限定为英文和数字,最多30个字符' }
+      },
+      {
+        type: 'radio',
+        label: '晶振类型',
+        name: 'childType',
+        disabled: false,
+        placeholder: '',
+        options: ['有源', '无源'],
+        validations: [Validators.required],
+      },
+      {
+        type: 'input',
+        label: '频率值',
+        name: 'value',
+        disabled: false,
+        placeholder: '',
+        validations: [Validators.required, this.myValidators.num_point, Validators.maxLength(10)],
+        error: { name: 'num_point,maxlength', message: '输入限定10位以下数字，最多两位小数' }
+      },
+      {
+        type: 'radio',
+        label: '频率值单位',
+        name: 'unit',
+        disabled: false,
+        placeholder: '',
+        options: ['kHz', 'MHz'],
+        validations: [Validators.required],
+      },
+      {
+        type: 'input',
+        label: '封装',
+        name: 'footprint',
+        disabled: false,
+        placeholder: '',
+        validations: [Validators.required, this.myValidators.footprint, Validators.maxLength(30)],
+        error: { name: 'footprint,maxlength', message: '输入限定为英文和数字，或特殊符号横杠-,最多30个字符 ' }
       },
       {
         type: 'input',
@@ -202,8 +572,5 @@ export class AdditemComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.dynamicForm.setDisabled('submit', true);
     });
-  }
-  createSelForm() {
-
   }
 }

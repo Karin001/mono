@@ -9,7 +9,6 @@ import { FieldConfig } from '../../interface/fieldConfig';
 export class FormInputComponent implements OnInit {
   group: FormGroup;
   config: FieldConfig;
-
   constructor() { }
 
   ngOnInit() {

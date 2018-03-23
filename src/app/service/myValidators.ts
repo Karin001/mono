@@ -48,6 +48,16 @@ export class MyValidators {
   chn_engChar(c: FormControl): ValidationErrors {
     return regCheck(c, /^[\u4E00-\u9FA5A-Za-z]+$/, 'chn_engChar', '请输入中英文字符');
   }
+  tag(c: FormControl): ValidationErrors {
+    if (c.value.length > 20) {
+      return {
+        tag: `只能输入20位以下字符`
+      };
+    } else {
+      return regCheck(c, /^[\u4E00-\u9FA5A-Za-z]+$/, 'tag', '请输入中英文字符');
+    }
+
+  }
   mobile(c: FormControl): ValidationErrors {
     return regCheck(c, /^1(3[0-9]|4[579]|5[0-35-9]|7[0-9]|8[0-9])\d{8}$/, 'mobile', '请输入合法手机号');
   }

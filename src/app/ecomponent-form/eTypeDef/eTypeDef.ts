@@ -13,7 +13,7 @@ export const Footprint = [
     'MCM', 'MFP', 'MQFP', 'MQUAD', 'MSP', 'OPMAC', 'PAC', 'PCLP', 'PFPF',
     'PiggyBack', 'COB', 'CSP', 'AXIAL', 'TO', 'DB9', 'SOT-223', 'TO-220T', 'TO-92', 'TO-220',
     '0201', '0402', '0603', '0805', '1206', '1210', '1812', '2225'
-]
+];
 export const Runit = [
     { value: 'R', moji: '欧' },
     { value: 'mR', moji: '毫欧' },
@@ -47,26 +47,18 @@ export enum WUnit {
 }
 export const footprintType = [
 
-]
+];
 export const Ename = [
     { value: 'RES', viewValue: '电阻' },
     { value: 'CAP', viewValue: '电容' },
     { value: 'DIODE', viewValue: '二极管' },
     { value: 'INDUCTOR', viewValue: '电感' },
-    { value: 'LED', viewValue: '发光二极管' },
     { value: 'TRIODE', viewValue: '三极管' },
     { value: 'MOS', viewValue: '场效应管' },
-    { value: 'SW', viewValue: '开关' },
-    { value: 'RELAYAP', viewValue: '继电器' },
-    { value: 'OPAMP', viewValue: '运算放大器' },
-    { value: 'FUSE', viewValue: '保险丝' },
-    { value: 'IC', viewValue: '集成电路' },
-    { value: 'MCU', viewValue: '微控制器' },
-    { value: 'DSP', viewValue: 'DSP' },
-    { value: 'FPGA', viewValue: 'FPGA' },
-    { value: 'CPLD', viewValue: 'CPLD' },
-    { value: 'OSCILLATOR', viewValue: '晶振' }
-]
+    { value: 'MCU|IC|DSP|FPGA', viewValue: '微控制器|集成电路|DSP|FPGA' },
+    { value: 'OSCILLATOR', viewValue: '晶振' },
+    { value: 'HOKA', viewValue: '其他' },
+];
 export enum EName {
     RES = 0,
     CAP,
