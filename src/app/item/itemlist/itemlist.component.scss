@@ -1,16 +1,18 @@
 .table-container{
  display: flex;
- flex: 1;
+ padding-left:6px;
+ width:1000px;
+
   .datatable{
     flex: 1;
     margin-right:20px;
-    
+
 
   }
 
 }
 app-function{
- 
+
 }
 
 .detail,app-detail{

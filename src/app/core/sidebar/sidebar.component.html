@@ -1,12 +1,27 @@
 <mat-nav-list class="sidebar">
   <mat-list-item [ngClass]="{'slimMenu': slimMode, 'menu': !slimMode}">
     <mat-icon  mat-list-icon svgIcon="add"></mat-icon>
-    <span mat-line *ngIf="!slimMode">新元件</span>
+    <span mat-line *ngIf="!slimMode">Add</span>
     <span mat-line *ngIf="!slimMode">增加一个新原件</span>
   </mat-list-item>
   <mat-list-item [ngClass]="{'slimMenu': slimMode, 'menu': !slimMode}">
     <mat-icon  mat-list-icon svgIcon="fileset"></mat-icon>
-    <span mat-line *ngIf="!slimMode">项目</span>
+    <span mat-line *ngIf="!slimMode">Delete</span>
+    <span mat-line *ngIf="!slimMode">删除该元件</span>
+  </mat-list-item>
+  <mat-list-item [ngClass]="{'slimMenu': slimMode, 'menu': !slimMode}">
+    <mat-icon  mat-list-icon svgIcon="fileset"></mat-icon>
+    <span mat-line *ngIf="!slimMode">In</span>
+    <span mat-line *ngIf="!slimMode">增加该元件数量</span>
+  </mat-list-item>
+  <mat-list-item [ngClass]="{'slimMenu': slimMode, 'menu': !slimMode}">
+    <mat-icon  mat-list-icon svgIcon="fileset"></mat-icon>
+    <span mat-line *ngIf="!slimMode">Out</span>
+    <span mat-line *ngIf="!slimMode">减少该元件数量</span>
+  </mat-list-item>
+  <mat-list-item [ngClass]="{'slimMenu': slimMode, 'menu': !slimMode}">
+    <mat-icon  mat-list-icon svgIcon="fileset"></mat-icon>
+    <span mat-line *ngIf="!slimMode">Pro</span>
     <span mat-line *ngIf="!slimMode">浏览所有项目</span>
   </mat-list-item>
 </mat-nav-list>

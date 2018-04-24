@@ -4,7 +4,7 @@ import { LoginComponent } from './login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { SignupComponent } from './signup/signup.component';
-import {AvatarListFormModule} from '../avatar-list-form/avatar-list-form.module';
+import { AvatarListFormModule } from '../avatar-list-form/avatar-list-form.module';
 
 @NgModule({
   imports: [
@@ -16,6 +16,6 @@ import {AvatarListFormModule} from '../avatar-list-form/avatar-list-form.module'
 
   ],
   declarations: [LoginComponent, SignupComponent],
-  exports:[LoginComponent]
+  exports: [LoginComponent]
 })
 export class LoginModule { }

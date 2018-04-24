@@ -14,6 +14,7 @@ import { RestapiService } from './restapi.service';
 import {LocaldataService} from './localdata.service';
 import { DragAndDropModule } from 'angular-draggable-droppable';
 import { DuplicateCheckDirective } from './directive/duplicate-check/duplicate-check.directive';
+import {ItemSelectService} from './service/item-select.service';
 
 const routes: Routes = [
   { path: '', redirectTo: '/itemlist', pathMatch: 'full' },
@@ -42,7 +43,7 @@ const routes: Routes = [
     ItemModule,
     DragAndDropModule.forRoot()
   ],
-  providers: [RestapiService, LocaldataService],
+  providers: [RestapiService, LocaldataService, ItemSelectService],
   bootstrap: [AppComponent]
 
 })

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewEncapsulation, Input, ViewChild, TemplateRef, Ev
 import { Router } from '@angular/router';
 import { RestapiService } from '../../restapi.service';
 import { LocaldataService } from '../../localdata.service';
+import { ItemSelectService } from '../../service/item-select.service';
 @Component({
   selector: 'app-itemlist',
   templateUrl: './itemlist.component.html',
@@ -20,7 +21,8 @@ export class ItemlistComponent implements OnInit {
   constructor(
     private router: Router,
     private restapi: RestapiService,
-    private localdata: LocaldataService
+    private localdata: LocaldataService,
+    private itemSelect: ItemSelectService
   ) {
     this.fetch((data) => {
       this.rows = data;
@@ -56,9 +58,10 @@ export class ItemlistComponent implements OnInit {
     if (this.selectedNumber === selected[0]['number']) {
       this.selectedChange = false;
     } else {
+      this.itemSelect.doSelect(selected[0]['marking']);
       this.selectedChange = true;
       this.selectedNumber = selected[0]['number'];
-      this.router.navigateByUrl("/itemlist/" + this.selectedNumber)
+      this.router.navigateByUrl("/itemlist/" + this.selectedNumber);
     }
 
     this.select = true;
