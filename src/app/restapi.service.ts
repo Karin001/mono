@@ -51,6 +51,9 @@ export class RestapiService {
   ) {
 
   }
+  addItem(item:ItemSchema):Observable<ResponseType>{
+    return this.hc.post('/api/itemlist/add', item) as Observable<ResponseType>;
+  }
   addFirstItem(item: ItemSchema): Observable<ResponseType> {
     return this.hc.post('/api/itemlist/addFirst', item) as Observable<ResponseType>;
   }

@@ -15,7 +15,8 @@ import {LocaldataService} from './localdata.service';
 import { DragAndDropModule } from 'angular-draggable-droppable';
 import { DuplicateCheckDirective } from './directive/duplicate-check/duplicate-check.directive';
 import {ItemSelectService} from './service/item-select.service';
-
+import {ItemModifyService} from './service/item-modify.service';
+import { SnackBarService } from './service/snack-bar.service';
 const routes: Routes = [
   { path: '', redirectTo: '/itemlist', pathMatch: 'full' },
   { path: 'itemlist', component: ItemlistComponent, pathMatch: 'full' },
@@ -43,7 +44,7 @@ const routes: Routes = [
     ItemModule,
     DragAndDropModule.forRoot()
   ],
-  providers: [RestapiService, LocaldataService, ItemSelectService],
+  providers: [RestapiService, LocaldataService, ItemSelectService, ItemModifyService, SnackBarService],
   bootstrap: [AppComponent]
 
 })

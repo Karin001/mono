@@ -6,6 +6,8 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { MyValidators } from '../../service/myValidators';
 import { Ename } from '../../ecomponent-form/eTypeDef/eTypeDef';
 import { RestapiService } from '../../restapi.service';
+import { ItemModifyService } from '../../service/item-modify.service';
+import { SnackBarService } from '../../service/snack-bar.service';
 interface FormsVal {
   childType?: String;
   footprint?: String;
@@ -559,7 +561,9 @@ export class AdditemComponent implements OnInit, AfterViewInit {
   constructor(
     public dialogRef: MatDialogRef<AdditemComponent>,
     private myValidators: MyValidators,
-    private restApi: RestapiService
+    private restApi: RestapiService,
+    private itemModify: ItemModifyService,
+    private snackBar: SnackBarService,
   ) {
 
   }
@@ -582,6 +586,7 @@ export class AdditemComponent implements OnInit, AfterViewInit {
 
   }
   onSubmit(ev: FormsData) {
+    this.dialogRef.close();
     console.log(ev);
     let name, _quantity, marking, setUpTime,_property:any;
     _property = [];
@@ -596,16 +601,39 @@ export class AdditemComponent implements OnInit, AfterViewInit {
       console.log(_property);
     }
     setUpTime = new Date();
-    this.restApi.addFirstItem({
-      name: this.selectedBomType,
-      quantity:_quantity,
-      marking:marking,
-      setUpTime:setUpTime,
-      property:_property
-    })
-    .subscribe(res=>{
-      console.log(res);
-    })
+    if(this.restApi.localItemList.items){
+      this.restApi.addItem({
+        name: this.selectedBomType,
+        quantity:_quantity,
+        marking:marking,
+        setUpTime:setUpTime,
+        property:_property
+      })
+      .subscribe(res=>{
+        console.log(res);
+        if(res.code === 'success'){
+          this.snackBar.openSnackBar('sucess');
+          this.itemModify.doModify();
+        }
+      });
+    } else{
+      this.restApi.addFirstItem({
+        name: this.selectedBomType,
+        quantity:_quantity,
+        marking:marking,
+        setUpTime:setUpTime,
+        property:_property
+      })
+      .subscribe(res=>{
+        console.log(res);
+        if(res.code === 'success'){
+          this.snackBar.openSnackBar('sucess');
+          this.itemModify.doModify();
+          
+        }
+      })
+    }
+    
   }
   changeForm(formType) {
     this.formFieldConfigs = this.formsPool[formType];
@@ -613,4 +641,5 @@ export class AdditemComponent implements OnInit, AfterViewInit {
       this.dynamicForm.setDisabled('submit', true);
     });
   }
+
 }

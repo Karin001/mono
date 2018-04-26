@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { RestapiService } from '../../restapi.service';
 import { LocaldataService } from '../../localdata.service';
 import { ItemSelectService } from '../../service/item-select.service';
+import { ItemModifyService } from '../../service/item-modify.service';
 @Component({
   selector: 'app-itemlist',
   templateUrl: './itemlist.component.html',
@@ -25,16 +26,9 @@ export class ItemlistComponent implements OnInit {
     private localdata: LocaldataService,
     private itemSelect: ItemSelectService,
     private zone: NgZone,
+    private itemModify: ItemModifyService
   ) {
-      this.restapi.stream_allItem().subscribe(res => {
-        if(!res.fb){
-          console.log(res);
-        } else {
-          this.rows = res.fb['items'];
-          this.restapi.localItemList = res.fb;
-          console.log(this.restapi.localItemList);
-        }
-      })
+      this.getDatas();
     // this.restapi.stream_allItem().subscribe((data) => {
     //   if (data['code'] === 'not_logIn') {
     //     this.rows = [];
@@ -50,13 +44,29 @@ export class ItemlistComponent implements OnInit {
 
     // })
   }
-
+  getDatas(){
+    this.restapi.stream_allItem().subscribe(res => {
+      if(!res.fb){
+        console.log(res);
+      } else {
+        this.rows = res.fb['items'];
+        this.restapi.localItemList = res.fb;
+        console.log(this.restapi.localItemList);
+      }
+    })
+  }
   ngOnInit() {
     this.columns = [
       { prop: 'name', name: '名称' },
       { prop: 'marking', name: '型号' },
       { prop: 'quantity', name: '数量' },
     ];
+    this.itemModify.getItemState().subscribe(state => {
+      if(state === 'modified'){
+        this.getDatas();
+      }
+    })
+
   }
   public onSelect({ selected }): void {
     this.zone.run(() => {
