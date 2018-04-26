@@ -11,22 +11,57 @@ import { IfObservable } from 'rxjs/observable/IfObservable';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/take';
+interface IteminoutSchema {
+  quantity: Number;
+  time: Date;
+}
+interface ItemSchema {
+  name: String;
+  marking: String;
+  quantity: Number;
+  property?: String[];
+  in?: IteminoutSchema[],
+  out?: IteminoutSchema[],
+  project?: String[];
+  setUpTime: Date;
+  id?: String;
+}
+
+
+interface ItemListSchema {
+  username: String;
+  items: ItemSchema[];
+  _id: String;
+}
+interface ResponseType {
+  message: any;
+  fb: any | ItemListSchema;
+  err: Object;
+  code: String;
+}
 @Injectable()
 export class RestapiService {
   logged = new BehaviorSubject<number>(null);
   avatarFreshed = new BehaviorSubject<boolean>(null);
   psFreshed = new BehaviorSubject<boolean>(null);
+  localItemList: ItemListSchema;
   constructor(
     private hc: HttpClient,
-    private router: Router) { }
+    private router: Router
+  ) {
+
+  }
+  addFirstItem(item: ItemSchema): Observable<ResponseType> {
+    return this.hc.post('/api/itemlist/addFirst', item) as Observable<ResponseType>;
+  }
   streamMock_allItem() {
     return this.hc.get(`assets/data/itemlist.json`);
   }
   streamMock_itemDetail() {
     return this.hc.get(`assets/data/itemdetail.json`);
   }
-  stream_allItem() {
-    return this.hc.get('/api/itemlist');
+  stream_allItem(): Observable<ResponseType> {
+    return this.hc.get('/api/itemlist') as Observable<ResponseType>;
   }
   getLogState(): Observable<number> {
     return this.logged.asObservable();

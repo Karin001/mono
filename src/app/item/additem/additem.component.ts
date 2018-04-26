@@ -5,7 +5,23 @@ import { DynamicFormComponent } from '../../dynamic-form/container/dynamic-form/
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MyValidators } from '../../service/myValidators';
 import { Ename } from '../../ecomponent-form/eTypeDef/eTypeDef';
-
+import { RestapiService } from '../../restapi.service';
+interface FormsVal {
+  childType?: String;
+  footprint?: String;
+  marking: String;
+  quantity: Number;
+  unit?: String;
+  value?: String;
+  precise?: String;
+  volt?: Number;
+  tag?: String;
+}
+interface FormsData {
+  checkboxVal: string[];
+  formVal: FormsVal;
+  valid: Boolean;
+}
 @Component({
   selector: 'app-additem',
   templateUrl: './additem.component.html',
@@ -15,7 +31,7 @@ export class AdditemComponent implements OnInit, AfterViewInit {
   @ViewChild('dynamicForm')
   dynamicForm: DynamicFormComponent;
   newItem;
-  FOOTPRINT =   {
+  FOOTPRINT = {
     type: 'input',
     label: '封装',
     name: 'footprint',
@@ -332,7 +348,7 @@ export class AdditemComponent implements OnInit, AfterViewInit {
         disabled: false,
         placeholder: '',
         validations: [Validators.required, this.myValidators.footprint, Validators.maxLength(30)],
-        error: { name:'footprint,maxlength', message: '输入限定为英文和数字，或特殊符号横杠-,最多30个字符 ' }
+        error: { name: 'footprint,maxlength', message: '输入限定为英文和数字，或特殊符号横杠-,最多30个字符 ' }
       },
       {
         type: 'input',
@@ -542,7 +558,8 @@ export class AdditemComponent implements OnInit, AfterViewInit {
   select;
   constructor(
     public dialogRef: MatDialogRef<AdditemComponent>,
-    private myValidators: MyValidators
+    private myValidators: MyValidators,
+    private restApi: RestapiService
   ) {
 
   }
@@ -564,8 +581,31 @@ export class AdditemComponent implements OnInit, AfterViewInit {
     });
 
   }
-  onSubmit(ev) {
+  onSubmit(ev: FormsData) {
     console.log(ev);
+    let name, _quantity, marking, setUpTime,_property:any;
+    _property = [];
+    for (const key in ev.formVal) {
+      if (key === 'marking') {
+        marking = ev.formVal.marking;
+      } else if(key === 'quantity') {
+        _quantity = ev.formVal.quantity;
+      } else {
+        _property.push(key +":"+ ev.formVal[key]);
+      }
+      console.log(_property);
+    }
+    setUpTime = new Date();
+    this.restApi.addFirstItem({
+      name: this.selectedBomType,
+      quantity:_quantity,
+      marking:marking,
+      setUpTime:setUpTime,
+      property:_property
+    })
+    .subscribe(res=>{
+      console.log(res);
+    })
   }
   changeForm(formType) {
     this.formFieldConfigs = this.formsPool[formType];

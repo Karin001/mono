@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, Input, ViewChild, TemplateRef, EventEmitter, Output } from '@angular/core';
+import { Component, NgZone, OnInit, ViewEncapsulation, Input, ViewChild, TemplateRef, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { RestapiService } from '../../restapi.service';
 import { LocaldataService } from '../../localdata.service';
@@ -15,18 +15,26 @@ export class ItemlistComponent implements OnInit {
   @Input() dackMode = false;
   rows;
   columns = [];
-  select;
-  selectedNumber;
+  selected;
+  rowHeight = 40;
+  selectedMarking;
   selectedChange;
   constructor(
     private router: Router,
     private restapi: RestapiService,
     private localdata: LocaldataService,
-    private itemSelect: ItemSelectService
+    private itemSelect: ItemSelectService,
+    private zone: NgZone,
   ) {
-    this.fetch((data) => {
-      this.rows = data;
-    });
+      this.restapi.stream_allItem().subscribe(res => {
+        if(!res.fb){
+          console.log(res);
+        } else {
+          this.rows = res.fb['items'];
+          this.restapi.localItemList = res.fb;
+          console.log(this.restapi.localItemList);
+        }
+      })
     // this.restapi.stream_allItem().subscribe((data) => {
     //   if (data['code'] === 'not_logIn') {
     //     this.rows = [];
@@ -48,25 +56,36 @@ export class ItemlistComponent implements OnInit {
       { prop: 'name', name: '名称' },
       { prop: 'marking', name: '型号' },
       { prop: 'quantity', name: '数量' },
-      { prop: 'unit', name: '单位' },
-      { prop: 'where', name: '位置' },
-      { prop: 'number', name: '系统编号' }
     ];
   }
-  onSelect({ selected }) {
-    console.log('Select Event', selected);
-    if (this.selectedNumber === selected[0]['number']) {
-      this.selectedChange = false;
-    } else {
-      this.itemSelect.doSelect(selected[0]['marking']);
-      this.selectedChange = true;
-      this.selectedNumber = selected[0]['number'];
-      this.router.navigateByUrl("/itemlist/" + this.selectedNumber);
-    }
+  public onSelect({ selected }): void {
+    this.zone.run(() => {
+      console.log('Select Event', selected);
+      if (this.selectedMarking === selected[0]['marking']) {
+        this.selectedChange = false;
+      } else {
+        this.itemSelect.doSelect(selected[0]['marking']);
+        this.selectedChange = true;
+        this.selectedMarking = selected[0]['marking'];
 
-    this.select = true;
-
+        //this.router.navigateByUrl("/itemlist/" + this.selectedNumber);
+      }
+    });
   }
+  // onSelect({ selected }) {
+  //   console.log('Select Event', selected);
+  //   if (this.selectedNumber === selected[0]['number']) {
+  //     this.selectedChange = false;
+  //   } else {
+  //     this.itemSelect.doSelect(selected[0]['marking']);
+  //     this.selectedChange = true;
+  //     this.selectedNumber = selected[0]['number'];
+  //     //this.router.navigateByUrl("/itemlist/" + this.selectedNumber);
+  //   }
+
+  //   this.select = true;
+
+  // }
 
   //只需更改此函数即可更换图片数据来源，数据格式需要与imglist.json一致
   fetch(cb) {

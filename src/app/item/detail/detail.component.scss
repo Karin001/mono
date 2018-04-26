@@ -1,0 +1,67 @@
+.container{
+   height: 100%;
+    width: 500px;
+    .property{
+        height: 30%;
+        width: 100%;
+        border-bottom: 1px solid rgb(188, 188, 250);
+        h3{
+            font:16px '微软雅黑';
+            margin:10px;
+        }
+        mat-chip-list{
+            display: flex;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            mat-chip{
+            margin:5px 10px;
+            
+            }
+ 
+        }
+    
+    }
+    .inOut{
+      
+        border-bottom: 1px solid rgb(188, 188, 250);
+        display: flex;
+        
+       
+        .childbox{
+            display: flex;
+            flex:1;
+            flex-direction: column;
+            h3{
+                font:16px '微软雅黑';
+                margin:10px;
+            }
+            ul{
+                height:155px;
+                overflow-y: scroll;
+                li{
+                    margin-bottom: 5px;
+                    .in{
+                        background: rgb(216, 216, 216);
+                    }
+                    .time{
+                        color: rgb(207, 207, 207);
+                    }
+                }
+             
+            }
+        } 
+       
+    }
+    .program{
+
+        h3{
+            font:16px '微软雅黑';
+            margin:10px;
+        }
+        ul{
+            height:100px;
+            overflow-y: scroll;
+        }
+    }
+}
+

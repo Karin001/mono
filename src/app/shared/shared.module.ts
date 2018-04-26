@@ -24,7 +24,8 @@ MatStepperModule,
 MatRadioModule,
 MatTabsModule,
 MatProgressSpinnerModule,
-MatSnackBarModule
+MatSnackBarModule,
+MatChipsModule
 
 
 } from '@angular/material';
@@ -53,7 +54,8 @@ MatSnackBarModule
     MatSnackBarModule,
     MatProgressSpinnerModule,
     BrowserAnimationsModule,
-  ErrorHintModule
+  ErrorHintModule,
+  MatChipsModule
   ],
   declarations: [],
   exports: [
@@ -80,7 +82,8 @@ MatSnackBarModule
     MatSnackBarModule,
     MatProgressSpinnerModule,
     BrowserAnimationsModule,
-  ErrorHintModule
+  ErrorHintModule,
+  MatChipsModule
   ]
 })
 export class SharedModule { }

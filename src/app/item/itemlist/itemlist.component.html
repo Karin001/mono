@@ -4,20 +4,20 @@
     [headerHeight]="50"
     [columnMode]="'force'"
     [rows]="rows"
-    [limit]="13"
-
+    [scrollbarV]="true"
     [footerHeight]="50"
-    [rowHeight]="'50'"
+    [rowHeight]="rowHeight"
     [selectionType]="'single'"
     [columns]="columns"
-    (select)='onSelect($event)'>
+    (select)="onSelect($event)">
   </ngx-datatable>
-  <div class="find">
+  <!-- <div class="find">
     按名称搜索：<input type="text" (keyup)='updateFilter($event)'>
-  </div>
+  </div> -->
 
-  <app-function [number]="selectedNumber"></app-function>
+  <!-- <app-function [number]="selectedNumber"></app-function> -->
+  <app-detail></app-detail>    
 
-  <router-outlet class="detail"></router-outlet>
+  <!-- <router-outlet class="detail"></router-outlet> -->
 </div>
 

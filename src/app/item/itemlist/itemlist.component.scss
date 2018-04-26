@@ -1,28 +1,22 @@
 .table-container{
  display: flex;
  padding-left:6px;
- width:1000px;
+ height:100%;
+ flex:1;
 
   .datatable{
-    flex: 1;
+    flex: 1;flex: 1;
     margin-right:20px;
 
 
   }
+  app-detail{
+    flex: 1 1 400;
+  }
 
 }
-app-function{
 
-}
 
-.detail,app-detail{
-  position: fixed;
-  margin-right: 30px;
-  width: 500px;
-  right: 0;
-  top: 300px;
-
-}
 .find{
   position: fixed;
   margin-right: 30px;

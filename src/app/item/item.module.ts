@@ -13,12 +13,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import {MatDialogModule} from '@angular/material';
 import { find } from 'rxjs/operators/find';
 const routes: Routes = [
-  { path: 'itemlist', component: ItemlistComponent,
-  children: [
-    {path: ':number', component: DetailComponent}
-  ]
-
-}
+  { path: 'itemlist', component: ItemlistComponent}
 
 ];
 @NgModule({

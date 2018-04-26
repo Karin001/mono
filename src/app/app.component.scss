@@ -22,11 +22,10 @@ header{
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  main{
-    display: flex;
-    flex-direction: row;
-    
-  }
+ 
+}
+mat-drawer-content {
+  flex: 1;
 }
 .body-container{
     display: flex;

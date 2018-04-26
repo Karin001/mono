@@ -1,22 +1,62 @@
-<p>
-  detail works!
-</p>
-<div class="detail-box" *ngIf="detailInfo">
-  <div class="in-box">
-    <ul>
-      <li *ngFor="let inDeatil of detailInfo.in; let i = index">
-        收入：{{detailInfo.in[i].quantity}}
-        时间：{{detailInfo.in[i].time}}
-      </li>
-    </ul>
-  </div>
-  <div class="out-box">
-    <ul>
-      <li *ngFor="let inDeatil of detailInfo.out; let i = index">
-        支出：{{detailInfo.out[i].quantity}}
-        时间：{{detailInfo.out[i].time}}
-      </li>
-    </ul>
-  </div>
-</div>
+<div class="container">
+  <div class="property">
+    <h3>参数</h3>
+    <mat-chip-list *ngIf="detailInfo.property">
+      <mat-chip *ngFor="let item of detailInfo.property">{{item}}</mat-chip>
 
+      
+    </mat-chip-list>
+    
+   
+  </div>
+  <div class="inOut">
+   <div class="childbox">
+      <h3>收入</h3>
+      <ul *ngIf="detailInfo.setUpTime">
+        <li>
+          <p class="in">{{detailInfo.quantity}}pic</p> 
+          <p class="time">{{detailInfo.setUpTime |  date: 'medium'}}</p> 
+       
+         </li>
+       
+     
+      </ul>
+   </div>
+   <div class="childbox">
+      <h3>支出</h3>
+      <ul *ngIf="detailInfo.setUpTime">
+        <li>
+          <p class="in">{{detailInfo.quantity}}pic</p> 
+          <p class="time">{{detailInfo.setUpTime |  date: 'medium'}}</p> 
+       
+         </li>
+       
+     
+      </ul>
+   </div>
+    
+  </div>
+  <div class="program">
+    <h3>项目</h3>
+    <ul>
+      <li>program1</li>
+      <li>program1</li>
+      <li>program1</li>
+      <li>program1</li>
+      <li>program1</li>
+      <li>program1</li>
+      <li>program1</li>
+      <li>program1</li>
+      <li>program1</li>
+      <li>program1</li>
+      <li>program1</li>
+      <li>program1</li>
+      <li>program1</li>
+      <li>program1</li>
+      <li>program1</li>
+      <li>program1</li>
+    </ul>
+  </div>
+  
+  
+</div>

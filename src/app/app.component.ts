@@ -14,8 +14,8 @@ export class AppComponent {
   };
   draggable = true;
   dragging = false;
-  drawerStartWidth = 220;
-  drawerWidth = 220;
+  drawerStartWidth = 170;
+  drawerWidth = 170;
   constructor(private elementRef: ElementRef, private rd: Renderer2) {
 
   }
@@ -28,8 +28,8 @@ export class AppComponent {
   dragmove($event) {
     if(this.drawerStartWidth + $event.x<80){
       this.drawerWidth =80;
-    } else if(this.drawerStartWidth + $event.x>220) {
-      this.drawerWidth =220;
+    } else if(this.drawerStartWidth + $event.x>170) {
+      this.drawerWidth =170;
     } else{
       this.drawerWidth =this.drawerStartWidth + $event.x;
     }
