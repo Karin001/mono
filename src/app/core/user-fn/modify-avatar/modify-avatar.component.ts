@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { RestapiService } from '../../../restapi.service';
-import { MatSnackBar } from '@angular/material';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { SnackBarService } from '../../../service/snack-bar.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 @Component({
   selector: 'app-modify-avatar',
   templateUrl: './modify-avatar.component.html',
@@ -24,7 +24,7 @@ export class ModifyAvatarComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private restApi: RestapiService,
-    public snackBar: MatSnackBar,
+    public snackBar: SnackBarService,
     public dialogRef: MatDialogRef<ModifyAvatarComponent>
   ) { }
 
@@ -49,7 +49,7 @@ export class ModifyAvatarComponent implements OnInit {
         () => {
           this.load = false;
           this.disabled = false;
-          this.openSnackBar('头像修改成功');
+          this.snackBar.openSnackBar('头像修改成功');
           this.dialogRef.close();
         },
         () => {
@@ -59,10 +59,6 @@ export class ModifyAvatarComponent implements OnInit {
       );
     }
   }
-  openSnackBar(message: string) {
-    this.snackBar.open(message, '', {
-      duration: 2000,
-    });
-  }
+
 
 }
