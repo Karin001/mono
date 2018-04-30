@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { RestapiService } from '../../../restapi.service';
+import { RestapiService } from '../../../service/restapi.service';
 import { SnackBarService } from '../../../service/snack-bar.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 @Component({

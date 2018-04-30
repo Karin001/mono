@@ -1,102 +1,94 @@
-.signup-button{
 
-  margin: 50px;
-  height: 50px;
-  background-color: #398DEE;
-  color:white;
-}
-.sign-container{
-  .title{
-    align-self: flex-start;
-    font-family: "微软雅黑";
-    font-size: 30px;
-    margin: 0 0 20px 0;
-  }
-  margin-top: 100px;
-  background-color: white;
-  padding: 30px;
-  box-shadow: 0 0 18px 0 rgba(57, 141, 238, 0.12);
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  .sign-innerbox{
+.sign-container {
     display: flex;
-    flex-direction: column;
+    margin: 100px;
+    width: 600px;
+    height: 400px;
+    background-color: white;
+    padding-left: 30px;
+    box-shadow: 0 0 18px 0 rgba(57, 141, 238, 0.12);
 
-    width: 100%;
-    p{
-      align-self: flex-end;
+    .signup-button-disable {
+        margin: 0 30px;
+        width: 200px;
+        border: none;
+        transition: all 1s;
+        color: white;
     }
-
-  }
-}
-.baseInfo{
-  border-right: 1px solid blueviolet;
-}
-app-hint{
-  padding: 5px 0 0 0;
-  animation:myfirst 0.1s;
-
- }
- @keyframes myfirst
- {
- from {height: 0;}
- to {height:18px;}
- }
-
- .hint{
-
-
-     font-family: "微软雅黑";
-     font-size: 14px;
-     display: flex;
-     align-items: center;
-     &::before{
-       content: '';
-       margin-right: 5px;
-       background-image: url('../../../assets/info.png');
-       width: 18px;
-       height: 18px;
-
-
-     }
- }
- .ok{
-
-     font-family: "微软雅黑";
-     font-size: 14px;
-     display: flex;
-     align-items: center;
-     &::before{
-       content: '';
-       margin-right: 5px;
-       background-image: url('../../../assets/green.png');
-       width: 18px;
-       height: 18px;
-
-
-     }
- }
- .alert{
-   font-family: "微软雅黑";
-     font-size: 14px;
-     color: red;
-     display: flex;
-     align-items: center;
-   &::before{
-     content: '';
-     margin-right: 5px;
-     background-image: url('../../../assets/error.png');
-     width: 18px;
-     height: 18px;
-
-
-   }
- }
-.hintbox{
-  margin-bottom: 10px;
-}
-.avatar{
-  margin: 10px 0;
+    .signup-button-able {
+        margin: 0 30px;
+        width: 200px;
+        border: none;
+        color: white;
+        background-color: #398DEE;
+        transition: all 1s;
+        &:hover {
+            cursor: pointer;
+        }
+    }
+    .sign-innerbox {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+        mat-progress-bar{
+          height:2px;
+          margin-bottom: 3px;
+        }
+        app-hint {
+            padding: 5px 0 0 0;
+            animation: myfirst 0.1s;
+        }
+        @keyframes myfirst {
+            from {
+                height: 0;
+            }
+            to {
+                height: 18px;
+            }
+        }
+        .hint {
+            font-family: "微软雅黑";
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            &::before {
+                content: '';
+                margin-right: 5px;
+                background-image: url('../../../assets/info.png');
+                width: 18px;
+                height: 18px;
+            }
+        }
+        .ok {
+            font-family: "微软雅黑";
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            &::before {
+                content: '';
+                margin-right: 5px;
+                background-image: url('../../../assets/green.png');
+                width: 18px;
+                height: 18px;
+            }
+        }
+        .alert {
+            font-family: "微软雅黑";
+            font-size: 14px;
+            color: red;
+            display: flex;
+            align-items: center;
+            &::before {
+                content: '';
+                margin-right: 5px;
+                background-image: url('../../../assets/error.png');
+                width: 18px;
+                height: 18px;
+            }
+        }
+        .hintbox {
+            margin-bottom: 10px;
+        }
+    }
 }

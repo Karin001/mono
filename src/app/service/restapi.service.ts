@@ -5,39 +5,43 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import {
   SignUpInfo, SignUpRespInfo, LoginInfo, LoginRespInfo,
   LogOutRespInfo, GeneralResp, PicInfo, RestPSInfo
-} from './interface/userType';
-import { logState } from './state/state';
+} from '../interface/userType';
+import { logState } from '../state/state';
 import { IfObservable } from 'rxjs/observable/IfObservable';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/take';
 interface IteminoutSchema {
-  quantity: Number;
+  quantity: number;
   time: Date;
 }
 interface ItemSchema {
-  name: String;
-  marking: String;
-  quantity: Number;
-  property?: String[];
-  in?: IteminoutSchema[],
-  out?: IteminoutSchema[],
-  project?: String[];
+  name: string;
+  marking: string;
+  quantity: number;
+  value?: number;
+  unit?: string;
+  footprint?: string;
+  childType?: string;
+  property?: string[];
+  in?: IteminoutSchema[];
+  out?: IteminoutSchema[];
+  project?: string[];
   setUpTime: Date;
-  id?: String;
+  id?: string;
 }
 
 
 interface ItemListSchema {
-  username: String;
+  username: string;
   items: ItemSchema[];
-  _id: String;
+  _id: string;
 }
 interface ResponseType {
   message: any;
   fb: any | ItemListSchema;
   err: Object;
-  code: String;
+  code: string;
 }
 @Injectable()
 export class RestapiService {
@@ -51,7 +55,7 @@ export class RestapiService {
   ) {
 
   }
-  addItem(item:ItemSchema):Observable<ResponseType>{
+  addItem(item: ItemSchema): Observable<ResponseType> {
     return this.hc.post('/api/itemlist/add', item) as Observable<ResponseType>;
   }
   addFirstItem(item: ItemSchema): Observable<ResponseType> {
@@ -75,7 +79,7 @@ export class RestapiService {
   getPsFreshState() {
     return this.psFreshed.asObservable();
   }
-  logIn(userinfo: LoginInfo) {
+  logIn(userinfo: LoginInfo, callback = () => { }) {
     return this.hc.post('api/logIn', userinfo)
       .catch((e: HttpErrorResponse) => {
         const resp = e.error as LoginRespInfo;
@@ -88,18 +92,24 @@ export class RestapiService {
         } else if (resp.code === 'invalid_password') {
           this.logged.next(logState.invalid_user_ps);
         }
+        this.router.navigateByUrl('/login');
+        callback();
         throw (e);
       })
       .subscribe(
-        (resp: LoginRespInfo) => {
-          if (resp.code === 'logged') {
-            this.logged.next(logState.logged);
-          } else if (resp.code === 'success') {
-            this.logged.next(logState.login);
-          } else {
-            console.log('没考虑到的状态');
-          }
+      (resp: LoginRespInfo) => {
+        if (resp.code === 'logged') {
+          this.logged.next(logState.logged);
+          this.router.navigateByUrl('/itemlist');
+        } else if (resp.code === 'success') {
+          this.logged.next(logState.login);
+          this.router.navigateByUrl('/itemlist');
+        } else {
+          console.log('没考虑到的状态');
         }
+        callback();
+      }
+
       );
   }
   subscribeAvatar() {
@@ -114,14 +124,14 @@ export class RestapiService {
         throw (e);
       })
       .map(
-        (resp: LoginRespInfo) => {
-          if (resp.code === 'success') {
-            return resp.message as string;
-          } else {
-            return null;
-          }
-        },
-        err => { console.log('getAvatar subscribe err'); }
+      (resp: LoginRespInfo) => {
+        if (resp.code === 'success') {
+          return resp.message as string;
+        } else {
+          return null;
+        }
+      },
+      err => { console.log('getAvatar subscribe err'); }
       );
 
   }
@@ -137,30 +147,31 @@ export class RestapiService {
         throw (e);
       })
       .subscribe(
-        (resp: LoginRespInfo) => {
-          if (resp.code === 'success') {
-            callback(resp.message);
-          }
-        },
-        err => { console.log('getAvatar subscribe err'); }
+      (resp: LoginRespInfo) => {
+        if (resp.code === 'success') {
+          callback(resp.message);
+        }
+      },
+      err => { console.log('getAvatar subscribe err'); }
       );
 
   }
   logOut() {
     return this.hc.post('api/logOut', {})
       .subscribe(
-        (resp: LogOutRespInfo) => {
-          if (resp.code === 'session_err') {
-            this.logged.next(logState.session_err);
-          } else if (resp.code === 'success') {
-            this.logged.next(logState.logout);
-          } else {
-            console.log('没考虑到的状态');
-          }
+      (resp: LogOutRespInfo) => {
+        if (resp.code === 'session_err') {
+          this.logged.next(logState.session_err);
+        } else if (resp.code === 'success') {
+          this.logged.next(logState.logout);
+          this.router.navigateByUrl('/login');
+        } else {
+          console.log('没考虑到的状态');
         }
+      }
       );
   }
-  signUp(userinfo: SignUpInfo) {
+  signUp(userinfo: SignUpInfo, callback = () => { }) {
     return this.hc.post('api/signUp', userinfo)
       .subscribe((resp: SignUpRespInfo) => {
         if (resp.code === 'mongo_err') {
@@ -169,8 +180,9 @@ export class RestapiService {
           console.log(resp.message);
           this.router.navigateByUrl('/login');
         } else {
-          return;
+
         }
+        callback();
       });
   }
   changeAvatarPic(picInfo: PicInfo, successCall: Function, unsuccessCall: Function) {
@@ -202,15 +214,15 @@ export class RestapiService {
         throw (e);
       })
       .subscribe(
-        (resp: GeneralResp) => {
-          if (resp.code === 'success') {
-            console.log(resp);
-            successCall();
-          } else {
-            console.log(resp);
-            console.log('没考虑到的状态');
-          }
+      (resp: GeneralResp) => {
+        if (resp.code === 'success') {
+          console.log(resp);
+          successCall();
+        } else {
+          console.log(resp);
+          console.log('没考虑到的状态');
         }
+      }
       );
   }
 

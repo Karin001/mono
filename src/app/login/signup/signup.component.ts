@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, FormGroupDirective, NgForm, AbstractControl } from '@angular/forms';
-import { RestapiService } from '../../restapi.service';
+import { RestapiService } from '../..//service/restapi.service';
 import { MyValidators } from '../../service/myValidators';
 import { HttpClient } from '@angular/common/http';
 import { UsernameCheckService } from '../../service/username-check.service';
@@ -16,6 +16,7 @@ export class SignupComponent implements OnInit {
     return this.signUp.controls['ID'];
   }
   disabled = true;
+  progressBarSet = false;
   @ViewChild('submitButton') submitButton;
   errorInfos_id = [{
     errorCode: 'min_maxLength',
@@ -40,18 +41,14 @@ export class SignupComponent implements OnInit {
   }];
   errorInfos_em = [
     {
-    errorCode: 'email',
-    message: '输入正确格式邮箱'
-  }
-];
-  errorInfos_ava = [{
-    errorCode: 'message',
-    message: '选择头像'
-  }];
+      errorCode: 'email',
+      message: '输入正确格式邮箱'
+    }
+  ];
 
   mailOptions = [
     '163.com', 'qq.com'
-  ]
+  ];
   changecs = {
     hintMode: 'hint',
     okMode: 'ok',
@@ -79,28 +76,44 @@ export class SignupComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.myValidators.getDuplicationCheckState().subscribe(state => {
+      console.log('progressBar', state);
+      if (state === 'start') {
+        this.progressBarSet = true;
+      } else if (state === 'end') {
+        this.progressBarSet = false;
+      }
+    });
     this.signUp.statusChanges
-      .map(v => v === 'INVALID' ? true : false)
-    
+      .map(v => v === 'VALID' ? false : true)
+
       .subscribe(v => {
         this.disabled = v;
+        console.log(v);
       });
-    this.signUp.valueChanges.subscribe(v => { console.log(this.signUp); });
+    this.signUp.controls['ID'].valueChanges.subscribe(v => {
+      if (this.signUp.controls['ID'].hasError('min_maxLength') ||
+        this.signUp.controls['ID'].hasError('eng_numChar')) {
+        this.progressBarSet = false;
+      } else {
+        this.myValidators.DuplicationCheckStart();
+      }
+    });
+
+
   }
   creatForm() {
     this.signUp = this.fb.group({
       'ID': ['', [
         this.myValidators.min_maxLength(4, 16),
         this.myValidators.eng_numChar,
-       ]
+      ]
       ],
       'Password': ['', [this.myValidators.min_maxLength(6, 16), this.myValidators.eng_numChar]],
       'Email': ['', [this.myValidators.email]],
-      'Avatar': ['']
+
     });
-    this.signUp.get('ID').setAsyncValidators( this.myValidators.duplicateCheckfn());
-    this.signUp.get('ID').setAsyncValidators( this.myValidators.duplicateCheckfn());
+    this.signUp.get('ID').setAsyncValidators(this.myValidators.duplicateCheckfn());
   }
   onSubmit() {
 

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ItemSelectService } from '../../service/item-select.service';
-import { RestapiService } from '../../restapi.service';
+import { RestapiService } from '../../service/restapi.service';
 import 'rxjs/add/operator/mergeMap';
 @Component({
   selector: 'app-detail',
@@ -25,13 +25,13 @@ export class DetailComponent implements OnInit {
             this.detailInfo.property = item.property || [];
             this.detailInfo.quantity = item.quantity;
             this.detailInfo.project = item.project || [];
-            
+
             console.log(this.detailInfo);
             return;
           }
         })
       }
-     
+
     })
     // this.activatedRoute.params
     // .mergeMap((data) => {

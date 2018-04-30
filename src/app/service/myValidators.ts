@@ -1,7 +1,9 @@
 import { ValidatorFn, ValidationErrors, FormControl, AsyncValidatorFn } from '@angular/forms';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { RestapiService } from './restapi.service';
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { QueryUsernameResp } from '../interface/userType';
 function regCheck(c: FormControl, reg: RegExp, name: string, message: string) {
   const match = reg.test(c.value);
@@ -11,9 +13,10 @@ function regCheck(c: FormControl, reg: RegExp, name: string, message: string) {
 }
 @Injectable()
 export class MyValidators {
-
+  nameDuplicationCheck = new BehaviorSubject<String>(null);
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private rest: RestapiService
   ) {
     console.log(this.http);
   }
@@ -80,11 +83,26 @@ export class MyValidators {
   volt(c: FormControl): ValidationErrors {
     return regCheck(c, /^[0-9]{1,3}$/, 'volt', '请输入三位以下数字');
   }
+  dupilicateMarkingFn(): ValidatorFn {
+    return (c: FormControl): ValidationErrors => {
+      if (this.rest.localItemList && this.rest.localItemList.items) {
+        if (this.rest.localItemList.items.some(v => c.value === v.marking)) {
+          return { duplicationMarking: true };
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    }
+  }
+
   duplicateCheckfn(): AsyncValidatorFn {
     return (c: FormControl): Observable<ValidationErrors> => {
       return this.http.get('api/username')
         .retry(3)
         .map((resp: QueryUsernameResp) => {
+          this.nameDuplicationCheck.next('end');
           console.log(121);
           if (resp.code === 'mongo_err') {
             console.log('mongo_err');
@@ -99,6 +117,11 @@ export class MyValidators {
         });
     };
   }
-
+  getDuplicationCheckState() {
+    return this.nameDuplicationCheck.asObservable();
+  }
+  DuplicationCheckStart() {
+    this.nameDuplicationCheck.next('start');
+  }
 }
 

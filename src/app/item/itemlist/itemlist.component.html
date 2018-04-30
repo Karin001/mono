@@ -1,4 +1,5 @@
 <div class="table-container">
+  <mat-progress-bar mode="indeterminate" *ngIf="progressBarSet"></mat-progress-bar>
   <ngx-datatable class="datatable"
     [ngClass]="{'dark':dackMode === true, 'material':dackMode === false}"
     [headerHeight]="50"
@@ -10,13 +11,14 @@
     [selectionType]="'single'"
     [columns]="columns"
     (select)="onSelect($event)">
+
   </ngx-datatable>
   <!-- <div class="find">
     按名称搜索：<input type="text" (keyup)='updateFilter($event)'>
   </div> -->
 
   <!-- <app-function [number]="selectedNumber"></app-function> -->
-  <app-detail></app-detail>    
+  <app-detail></app-detail>
 
   <!-- <router-outlet class="detail"></router-outlet> -->
 </div>

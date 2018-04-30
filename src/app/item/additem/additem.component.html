@@ -1,8 +1,8 @@
 <div class="type-sel">
     <label>请选择物件的种类</label>
     <select placeholder="" [(ngModel)]="selectedBomType" name="item" (change)="changeForm(selectedBomType)">
-        <option class="sel" *ngFor="let item of bomTypes" [value]="item.value">
-            {{item.viewValue}}
+        <option class="sel" *ngFor="let item of bomTypes" [value]="item">
+            {{item}}
         </option>
     </select>
 </div>

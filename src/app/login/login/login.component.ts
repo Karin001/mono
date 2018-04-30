@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild, AfterViewInit,OnDestroy  } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, FormGroupDirective, NgForm, AbstractControl } from '@angular/forms';
-import { RestapiService } from '../../restapi.service';
+import { RestapiService } from '../../service/restapi.service';
 import { MyValidators } from '../../service/myValidators';
 import { logState } from '../../state/state';
 import { Subscription } from 'rxjs/Subscription';
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit,OnDestroy {
+export class LoginComponent implements OnInit, OnDestroy {
 
   disabled = true;
   userLogin: FormGroup;
@@ -44,17 +44,16 @@ export class LoginComponent implements OnInit,OnDestroy {
 
   ngOnInit() {
     this.btnDisable$ = this.userLogin.statusChanges
-      .map(v => v === 'INVALID' ? true : false)
+      .map(v => v === 'VALID' ? false : true)
       .subscribe(v => {
         this.disabled = v;
       });
     this.logState$ = this.restapi.getLogState().subscribe(state => {
-      this.disabled = false;
       console.log(4455);
-      console.log(state);
-      if (state === logState.login) {
+      console.log('state', state);
+      if (state === logState.login || state === logState.logged) {
         this.router.navigateByUrl('/itemlist');
-     }
+      }
     });
 
   }
@@ -85,7 +84,7 @@ export class LoginComponent implements OnInit,OnDestroy {
       this.restapi.logIn({
         username: this.userLogin.value['ID'],
         password: this.userLogin.value['Password']
-      });
+      }, () => { this.disabled = false; });
 
     }
 

@@ -1,41 +1,31 @@
 <mat-toolbar class="header-bar">
   <ul class="nav">
     <li class="logo">
-      <mat-icon mat-list-icon svgIcon="house"></mat-icon>
+      <mat-icon svgIcon="house"></mat-icon>
       <span class="title">{{title}}</span>
     </li>
-    <li >
-        
-        <app-find></app-find>
-      
-     
+    <li class="findItem">
+      <app-find></app-find>
     </li>
     <li class="user">
-      <div class="user-ava">
-        <img [src]="imgSrc" alt="" class="dummy-avatar">
-
-        <div *ngIf="usermenu_able" class="user-menu-box">
-          <mat-icon  mat-list-icon svgIcon="arrow-down" (click)="menuToggle()"></mat-icon>
-          <ul *ngIf="usermenu_open" class="user-menu">
+      <div class="user-zone">
+        <img [src]="userAvatarImgSrc" alt="" class="avatar">
+        <div *ngIf="canShowUsermenu" class="user-menu-box">
+          <mat-icon svgIcon="arrow-down" (click)="userMenuToggle()"></mat-icon>
+          <ul *ngIf="usermenuIsOpened" class="user-menu">
             <li (click)="openDialog_ava()">修改头像</li>
             <li (click)="openDialog_ps()">修改密码</li>
             <li>意见反馈</li>
             <li (click)="logOut()">注销登录</li>
           </ul>
-        </div> 
-
+        </div>
       </div>
-      
-      <div *ngIf="loginBtn">
-        <a routerLink="/login" >登录</a>
+      <div *ngIf="canShowLoginBox">
+        <a routerLink="/login">登录</a>
         <span>|</span>
         <a routerLink="/signup">注册</a>
       </div>
-      <mat-icon mat-list-icon svgIcon="theme-light-dark" class="theme"></mat-icon>
-
-      <div></div>
-      <div></div>
+      <mat-icon svgIcon="theme-light-dark" class="theme"></mat-icon>
     </li>
   </ul>
-
 </mat-toolbar>

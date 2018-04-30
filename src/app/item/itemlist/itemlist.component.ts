@@ -1,6 +1,7 @@
 import { Component, NgZone, OnInit, ViewEncapsulation, Input, ViewChild, TemplateRef, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { RestapiService } from '../../restapi.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { RestapiService } from '../../service/restapi.service';
 import { LocaldataService } from '../../localdata.service';
 import { ItemSelectService } from '../../service/item-select.service';
 import { ItemModifyService } from '../../service/item-modify.service';
@@ -12,7 +13,7 @@ import { ItemModifyService } from '../../service/item-modify.service';
 })
 export class ItemlistComponent implements OnInit {
 
-
+  progressBarSet = true;
   @Input() dackMode = false;
   rows;
   columns = [];
@@ -28,7 +29,7 @@ export class ItemlistComponent implements OnInit {
     private zone: NgZone,
     private itemModify: ItemModifyService
   ) {
-      this.getDatas();
+    this.getDatas();
     // this.restapi.stream_allItem().subscribe((data) => {
     //   if (data['code'] === 'not_logIn') {
     //     this.rows = [];
@@ -44,16 +45,22 @@ export class ItemlistComponent implements OnInit {
 
     // })
   }
-  getDatas(){
-    this.restapi.stream_allItem().subscribe(res => {
-      if(!res.fb){
-        console.log(res);
-      } else {
-        this.rows = res.fb['items'];
-        this.restapi.localItemList = res.fb;
-        console.log(this.restapi.localItemList);
-      }
-    })
+  getDatas() {
+    this.restapi.stream_allItem()
+      .catch((e: HttpErrorResponse) => {
+        this.progressBarSet = false;
+        throw (e);
+      })
+      .subscribe(res => {
+        console.log('123213123');
+        this.progressBarSet = false;
+        if (res['fb']) {
+          this.rows = res['fb']['items'];
+
+          this.restapi.localItemList = res['fb'];
+          console.log(this.restapi.localItemList);
+        }
+      });
   }
   ngOnInit() {
     this.columns = [
@@ -62,7 +69,7 @@ export class ItemlistComponent implements OnInit {
       { prop: 'quantity', name: '数量' },
     ];
     this.itemModify.getItemState().subscribe(state => {
-      if(state === 'modified'){
+      if (state === 'modified') {
         this.getDatas();
       }
     })
@@ -78,7 +85,7 @@ export class ItemlistComponent implements OnInit {
         this.selectedChange = true;
         this.selectedMarking = selected[0]['marking'];
 
-        //this.router.navigateByUrl("/itemlist/" + this.selectedNumber);
+        // this.router.navigateByUrl("/itemlist/" + this.selectedNumber);
       }
     });
   }
@@ -97,7 +104,7 @@ export class ItemlistComponent implements OnInit {
 
   // }
 
-  //只需更改此函数即可更换图片数据来源，数据格式需要与imglist.json一致
+  // 只需更改此函数即可更换图片数据来源，数据格式需要与imglist.json一致
   fetch(cb) {
     const req = new XMLHttpRequest();
     req.open('GET', `assets/data/itemlist.json`);

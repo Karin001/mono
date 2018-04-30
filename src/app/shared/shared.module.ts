@@ -25,7 +25,8 @@ MatRadioModule,
 MatTabsModule,
 MatProgressSpinnerModule,
 MatSnackBarModule,
-MatChipsModule
+MatChipsModule,
+MatProgressBarModule
 
 
 } from '@angular/material';
@@ -54,6 +55,7 @@ MatChipsModule
     MatSnackBarModule,
     MatProgressSpinnerModule,
     BrowserAnimationsModule,
+    MatProgressBarModule,
   ErrorHintModule,
   MatChipsModule
   ],
@@ -82,6 +84,7 @@ MatChipsModule
     MatSnackBarModule,
     MatProgressSpinnerModule,
     BrowserAnimationsModule,
+    MatProgressBarModule,
   ErrorHintModule,
   MatChipsModule
   ]

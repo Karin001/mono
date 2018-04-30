@@ -10,11 +10,13 @@ import { FormRadioComponent } from './components/form-radio/form-radio.component
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormCheckboxComponent } from './components/form-checkbox/form-checkbox.component';
 import { CheckboxValuePosterService } from './service/checkbox-value-poster.service';
+import { MatProgressBarModule } from '@angular/material';
 @NgModule({
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatProgressBarModule
   ],
   declarations: [
     FormInputComponent,

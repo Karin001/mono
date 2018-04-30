@@ -33,30 +33,30 @@ a{
             mat-icon{
                 padding-left: 30px;
                 height:100%;
-                
+
             }
             .title{
-                
+
                 padding-left: 5px;
-                
+
                 color: #e6e6e6;
                 font-family: '微软雅黑';
-            } 
+            }
         }
-       
-        
+
+
         .user{
             height: 100%;
             display: flex;
-          
+
             flex-direction: row;
             align-items: center;
-            .user-ava{
+            .user-zone{
                 position: relative;
-                .dummy-avatar{
+                .avatar{
                     width: 35px;
                     height: 35px;
-                  
+
                     border-radius: 10px;
                     line-height: 50px;
                     text-align: center;
@@ -71,7 +71,7 @@ a{
                         &:hover{
                             cursor: pointer;
                         }
-                    
+
                         line-height: 50px;
                     }
                     .user-menu{
@@ -94,14 +94,13 @@ a{
                         }
                     }
             }
-            
+
             }
-           
-            
+
+
             .theme{
-                padding:0 30px;                
+                padding:0 30px;
             }
-           
         }
-    }   
+    }
 }
