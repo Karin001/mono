@@ -19,10 +19,9 @@ interface ItemSchema {
   name: string;
   marking: string;
   quantity: number;
-  value?: number;
-  unit?: string;
-  footprint?: string;
-  childType?: string;
+  description: string;
+  footprint: string;
+  childType: string;
   property?: string[];
   in?: IteminoutSchema[];
   out?: IteminoutSchema[];

@@ -10,15 +10,19 @@ import { ItemModifyService } from '../../service/item-modify.service';
 import { SnackBarService } from '../../service/snack-bar.service';
 import { ItemFormatFactoryService } from '../../service/item-format-factory.service';
 interface FormsVal {
-  childType?: String;
-  footprint?: String;
+  name?: string;
+  usevalue?: string;
+  usevolt?: string;
+  childType: String;
+  footprint: String;
   marking: String;
+  customtag?: string;
   quantity: Number;
   unit?: String;
   value?: String;
   precise?: String;
   volt?: Number;
-  tag?: String;
+  description?: String;
 }
 interface FormsData {
   checkboxVal: string[];
@@ -45,7 +49,7 @@ export class AdditemComponent implements OnInit, AfterViewInit {
   };
   bomTypes;
   selectedBomType = Ename[0].value;
-   formsPool: { [formType: string]: FieldConfig[] };
+  formsPool: { [formType: string]: FieldConfig[] };
   // = {
   //   RES: [
   //     {
@@ -546,7 +550,7 @@ export class AdditemComponent implements OnInit, AfterViewInit {
     private itemFac: ItemFormatFactoryService,
   ) {
     this.itemFac.creatDynamicFormConfig();
-    this.bomTypes = Object.keys( this.itemFac.itemTypes);
+    this.bomTypes = Object.keys(this.itemFac.itemTypes);
     this.formsPool = this.itemFac.itemDynamicConfigs;
   }
 
@@ -571,9 +575,23 @@ export class AdditemComponent implements OnInit, AfterViewInit {
 
   }
   onSubmit(ev: FormsData) {
+    console.log('valid', this.dynamicForm.valid);
     this.dialogRef.close();
+    if (this.dynamicForm.valid && this.selectedBomType === 'Others') {
+      this.itemFac.baseSets[ev.formVal.name] = [];
+      this.itemFac.baseSets[ev.formVal.name].push('marking', 'childType', 'footprint', 'quantity', 'description', 'customtag');
+      if (ev.formVal.usevalue === '需要') {
+        this.itemFac.baseSets[ev.formVal.name].push('value');
+      }
+      if (ev.formVal.usevolt === '需要') {
+        this.itemFac.baseSets[ev.formVal.name].push('volt');
+      }
+      this.itemFac.baseSets[ev.formVal.name].push('submit');
+      this.itemFac.itemTypes[ev.formVal.name] = ['无', '使用自定义子类'];
+      return;
+    }
     console.log(ev);
-    let _quantity, marking, setUpTime, _property: any;
+    let _quantity, marking, setUpTime, childType, footprint, description, _property: any;
     setUpTime = new Date();
     _property = [];
     for (const key in ev.formVal) {
@@ -582,10 +600,25 @@ export class AdditemComponent implements OnInit, AfterViewInit {
           marking = ev.formVal.marking;
         } else if (key === 'quantity') {
           _quantity = ev.formVal.quantity;
+        } else if (key === 'childType') {
+          if (ev.formVal.childType !== '使用自定义子类') {
+            childType = ev.formVal.childType;
+          }
+        } else if (key === 'customtag') {
+          if (ev.formVal.childType === '使用自定义子类') {
+            childType = ev.formVal.customtag;
+            this.itemFac.itemTypes[this.selectedBomType].pop();
+            this.itemFac.itemTypes[this.selectedBomType].push(childType);
+            this.itemFac.itemTypes[this.selectedBomType].push('使用自定义子类');
+          }
+
+        } else if (key === 'footprint') {
+          footprint = ev.formVal.footprint;
+        } else if (key === 'description') {
+          description = ev.formVal.description || '该器件未添加描述';
         } else {
           _property.push(key + ':' + ev.formVal[key]);
         }
-        console.log(_property);
       }
     }
 
@@ -596,6 +629,9 @@ export class AdditemComponent implements OnInit, AfterViewInit {
         quantity: _quantity,
         marking: marking,
         setUpTime: setUpTime,
+        footprint: footprint,
+        childType: childType,
+        description: description,
         property: _property
       })
         .subscribe(res => {
@@ -610,7 +646,10 @@ export class AdditemComponent implements OnInit, AfterViewInit {
         name: this.selectedBomType,
         quantity: _quantity,
         marking: marking,
+        childType: childType,
         setUpTime: setUpTime,
+        description: description,
+        footprint: footprint,
         property: _property
       })
         .subscribe(res => {

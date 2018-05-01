@@ -7,33 +7,44 @@ import { FieldConfig } from '../dynamic-form/interface/fieldConfig';
 export class ItemFormatFactoryService {
   baseSets: { [types: string]: string[] } = {
     'RES': ['marking', 'childType', 'value', 'unit', 'footprint', 'precise', 'quantity', 'description', 'customtag', 'submit'],
-    'CAP': ['marking', 'childType', 'value', 'unit', 'footprint', 'quantity', 'description', 'customtag', 'submit'],
+    'CAP': ['marking', 'childType', 'value', 'unit', 'volt', 'footprint', 'quantity', 'description', 'customtag', 'submit'],
     'DIODE': ['marking', 'childType', 'value', 'footprint', 'quantity', 'description', 'customtag', 'submit'],
     'INDUCTOR': ['marking', 'childType', 'value', 'unit', 'footprint', 'quantity', 'description', 'customtag', 'submit'],
     'TRIODE': ['marking', 'childType', 'description', 'footprint', 'quantity', 'customtag', 'submit'],
     'MOS': ['marking', 'childType', 'description', 'footprint', 'quantity', 'customtag', 'submit'],
     'IC': ['marking', 'childType', 'description', 'footprint', 'quantity', 'customtag', 'submit'],
-    'Others': ['marking', 'childType', 'description', 'footprint', 'quantity', 'customtag', 'submit']
+    'OSCILLATOR': ['marking', 'childType', 'value', 'unit', 'footprint', 'quantity', 'description', 'customtag', 'submit'],
+    'Others': ['name', 'usevalue', 'usevolt', 'submit']
   };
 
 
   itemTypes: { [types: string]: string[] } = {
-    'RES': ['普通电阻', '可变电阻', '热敏电阻', '压敏电阻', '光敏电阻', '使用自定义子类'],
-    'CAP': ['电解电容', '陶瓷电容', '纸介电容', '云母电容', '薄膜电容', '使用自定义子类'],
-    'DIODE': ['普通二极管', '肖特基二极管', '整流二极管', '稳压二极管', '变容二极管', '发光二极管', '使用自定义子类'],
-    'INDUCTOR': ['使用自定义子类'],
-    'TRIODE': ['NPN', 'PNP', '使用自定义子类'],
-    'MOS': ['使用自定义子类'],
-    'IC': ['MCU', 'DSP', 'FPGA', 'CPLD', '使用自定义子类'],
-    'OSCILLATOR': ['使用自定义子类'],
-    'Others': ['使用自定义子类']
+    'RES': ['无', '普通电阻', '可变电阻', '热敏电阻', '压敏电阻', '光敏电阻', '使用自定义子类'],
+    'CAP': ['无', '电解电容', '陶瓷电容', '纸介电容', '云母电容', '薄膜电容', '使用自定义子类'],
+    'DIODE': ['无', '普通二极管', '肖特基二极管', '整流二极管', '稳压二极管', '变容二极管', '发光二极管', '使用自定义子类'],
+    'INDUCTOR': ['无', '使用自定义子类'],
+    'TRIODE': ['无', 'NPN', 'PNP', '使用自定义子类'],
+    'MOS': ['无', '使用自定义子类'],
+    'IC': ['无', 'MCU', 'DSP', 'FPGA', 'CPLD', '使用自定义子类'],
+    'OSCILLATOR': ['无', '使用自定义子类'],
+    'Others': ['无', '使用自定义子类']
   };
   unitTypes: { [type: string]: string[] } = {
     'RES': ['Ω', 'kΩ', 'MΩ'],
     'CAP': ['pF', 'nF', 'uF', 'mF', 'F'],
+    'OSCILLATOR': ['kHz', 'MHz'],
     'INDUCTOR': ['nH', 'uH', 'mH', 'H']
   };
   baseConfigSets = {
+    'name': {
+      type: 'input',
+      label: '自定义主类',
+      name: 'name',
+      placeholder: '请为这种类别取个名字',
+      disabled: false,
+      validations: [Validators.required, this.myValidators.eng_numChar, Validators.maxLength(30), this.myValidators.dupilicateMarkingFn()],
+      error: { name: 'eng_numChar,maxlength', message: '输入限定为英文和数字,最多30个字符' }
+    },
     'marking': {
       type: 'input',
       label: '型号',
@@ -46,11 +57,29 @@ export class ItemFormatFactoryService {
 
     'childType': {
       type: 'select',
-      label: '类型',
+      label: '子类型',
       name: 'childType',
       disabled: false,
-      placeholder: '',
+      placeholder: '请选择子类',
       options: [],
+      validations: [Validators.required],
+    },
+    'usevalue': {
+      type: 'radio',
+      label: '需要值吗',
+      name: 'usevalue',
+      disabled: false,
+      placeholder: '',
+      options: ['需要', '不需要'],
+      validations: [Validators.required],
+    },
+    'usevolt': {
+      type: 'radio',
+      label: '需要耐压值吗',
+      name: 'usevolt',
+      disabled: false,
+      placeholder: '',
+      options: ['需要', '不需要'],
       validations: [Validators.required],
     },
     'value': {
@@ -70,6 +99,15 @@ export class ItemFormatFactoryService {
       placeholder: '',
       options: [],
       validations: [Validators.required],
+    },
+    'volt': {
+      type: 'input',
+      label: '耐压值（伏特）',
+      name: 'volt',
+      disabled: false,
+      placeholder: '请输入3位以下数字',
+      validations: [Validators.required, this.myValidators.volt],
+      error: { name: 'volt', message: '输入限定为三位以下数字' }
     },
     'footprint': {
       type: 'input',
@@ -101,7 +139,7 @@ export class ItemFormatFactoryService {
     },
     'description': {
       type: 'input',
-      label: '描述',
+      label: '器件描述',
       name: 'description',
       disabled: false,
       placeholder: '',
@@ -110,12 +148,12 @@ export class ItemFormatFactoryService {
     },
     'customtag': {
       type: 'input',
-      label: '自定义子类',
+      label: '自定义子类型',
       name: 'customtag',
-      disabled: false,
+      disabled: true,
       placeholder: '',
       validations: [Validators.maxLength(20)],
-      error: { name: 'maxlength', message: '输入限定为20个以下字符' }
+
     },
     'submit': {
       label: 'Submit',
@@ -138,17 +176,21 @@ export class ItemFormatFactoryService {
     const newItemTypes = {};
     if (this.restapi.localItemList && this.restapi.localItemList.items) {
       this.restapi.localItemList.items.forEach(item => {
-        const typeName = item.name;
-        const childType = item.childType || '';
-        newItemTypes[typeName] = newItemTypes[typeName] || [''];
-        newItemTypes[typeName]['push'](childType);
-      });
-      for (const key in newItemTypes) {
-        if (newItemTypes.hasOwnProperty(key)) {
-          newItemTypes[key].push('使用自定义子类');
+        if (!Object.keys(this.itemTypes).includes(item.name)) {
+          const typeName = item.name;
+          const childType = item.childType || '使用自定义子类';
+          newItemTypes[typeName] = newItemTypes[typeName] || [''];
+          newItemTypes[typeName]['push'](childType);
+
+        } else {
+          if (!this.itemTypes[item.name].includes(item.childType)) {
+            this.itemTypes[item.name].push(item.childType);
+          }
         }
-      }
-      this.itemTypes = newItemTypes;
+
+      });
+
+      this.itemTypes = { ...this.itemTypes, ...newItemTypes };
     }
   }
 
@@ -163,7 +205,7 @@ export class ItemFormatFactoryService {
     }
   }
   creatDynamicFormConfig() {
-    this.getItemTypes();
+    // this.getItemTypes();
     for (const key in this.itemTypes) {
       if (this.itemTypes.hasOwnProperty(key)) {
         this.itemDynamicConfigs[key] = [];
