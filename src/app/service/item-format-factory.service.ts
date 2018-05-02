@@ -3,6 +3,7 @@ import { RestapiService } from './restapi.service';
 import { MyValidators } from './myValidators';
 import { Validators } from '@angular/forms';
 import { FieldConfig } from '../dynamic-form/interface/fieldConfig';
+import { ItemFormatDataService } from './item-format-data.service';
 @Injectable()
 export class ItemFormatFactoryService {
   baseSets: { [types: string]: string[] } = {
@@ -42,7 +43,7 @@ export class ItemFormatFactoryService {
       name: 'name',
       placeholder: '请为这种类别取个名字',
       disabled: false,
-      validations: [Validators.required, this.myValidators.eng_numChar, Validators.maxLength(30), this.myValidators.dupilicateMarkingFn()],
+      validations: [Validators.required, this.myValidators.eng_numChar, Validators.maxLength(30), this.myValidators.dupilicateTypeFn()],
       error: { name: 'eng_numChar,maxlength', message: '输入限定为英文和数字,最多30个字符' }
     },
     'marking': {
@@ -169,7 +170,8 @@ export class ItemFormatFactoryService {
   itemDynamicConfigs: { [formType: string]: FieldConfig[] } = {};
   constructor(
     public restapi: RestapiService,
-    public myValidators: MyValidators
+    public myValidators: MyValidators,
+    public itemFormatData: ItemFormatDataService
   ) {
   }
   getItemTypes() {
@@ -206,39 +208,39 @@ export class ItemFormatFactoryService {
   }
   creatDynamicFormConfig() {
     // this.getItemTypes();
-    for (const key in this.itemTypes) {
-      if (this.itemTypes.hasOwnProperty(key)) {
+    for (const key in this.itemFormatData.itemTypes) {
+      if (this.itemFormatData.itemTypes.hasOwnProperty(key)) {
         this.itemDynamicConfigs[key] = [];
-        if (this.baseSets.hasOwnProperty(key)) {
-          this.baseSets[key].forEach(element => {
+        if (this.itemFormatData.baseSets.hasOwnProperty(key)) {
+          this.itemFormatData.baseSets[key].forEach(element => {
             const tempConfig = { ...this.baseConfigSets[element] } as FieldConfig;
 
 
             if (element === 'childType') {
               tempConfig['options'] = []; //  必须这么做，因为之前无法深拷贝对象中的数组，此处为同一个数组引用
-              tempConfig['options'] = this.itemTypes[key];
+              tempConfig['options'] = this.itemFormatData.itemTypes[key];
 
             }
             if (element === 'unit') {
               tempConfig['options'] = [];
-              tempConfig['options'] = this.unitTypes[key];
+              tempConfig['options'] = this.itemFormatData.unitTypes[key];
             }
             this.itemDynamicConfigs[key]['push'](tempConfig);
 
           });
         } else {
-          this.baseSets['Others'].forEach(element => {
+          this.itemFormatData.baseSets['Others'].forEach(element => {
             const tempConfig = { ...this.baseConfigSets[element] } as FieldConfig;
 
 
             if (element === 'childType') {
               tempConfig['options'] = [];
-              tempConfig['options'] = this.itemTypes['Others'];
+              tempConfig['options'] = this.itemFormatData.itemTypes['Others'];
 
             }
             if (element === 'unit') {
               tempConfig['options'] = [];
-              tempConfig['options'] = this.unitTypes['Others'];
+              tempConfig['options'] = this.itemFormatData.unitTypes['Others'];
             }
             this.itemDynamicConfigs[key]['push'](tempConfig);
 

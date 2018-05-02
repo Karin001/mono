@@ -2,6 +2,7 @@ import { ValidatorFn, ValidationErrors, FormControl, AsyncValidatorFn } from '@a
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { RestapiService } from './restapi.service';
+import { ItemFormatDataService } from './item-format-data.service';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { QueryUsernameResp } from '../interface/userType';
@@ -16,7 +17,9 @@ export class MyValidators {
   nameDuplicationCheck = new BehaviorSubject<String>(null);
   constructor(
     private http: HttpClient,
-    private rest: RestapiService
+    private rest: RestapiService,
+    private itemFormatData: ItemFormatDataService
+  
   ) {
     console.log(this.http);
   }
@@ -97,6 +100,19 @@ export class MyValidators {
     }
   }
 
+  dupilicateTypeFn(): ValidatorFn {
+    return (c: FormControl): ValidationErrors => {
+      if (this.itemFormatData.itemTypes ) {
+        if (Object.keys(this.itemFormatData.itemTypes).includes(c.value)) {
+          return { duplicationType: true };
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    }
+  }
   duplicateCheckfn(): AsyncValidatorFn {
     return (c: FormControl): Observable<ValidationErrors> => {
       return this.http.get('api/username')

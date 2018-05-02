@@ -9,7 +9,7 @@ import 'rxjs/add/operator/mergeMap';
 })
 export class DetailComponent implements OnInit {
   number;
-  detailInfo:any = {};
+  detailInfo: any = {};
   @Input() disable;
   constructor(
     private restapi: RestapiService,
@@ -18,13 +18,39 @@ export class DetailComponent implements OnInit {
 
   ngOnInit() {
     this.itemSelect.listenSelected().subscribe(marking => {
-      if(this.restapi.localItemList){
-        this.restapi.localItemList.items.forEach(item=>{
-          if(item.marking === marking){
-            this.detailInfo.setUpTime = item.setUpTime;
-            this.detailInfo.property = item.property || [];
-            this.detailInfo.quantity = item.quantity;
-            this.detailInfo.project = item.project || [];
+      if (this.restapi.localItemList) {
+        this.restapi.localItemList.items.forEach(item => {
+          if (item.marking === marking) {
+            this.detailInfo['property'] = [];
+            this.detailInfo['setUpTime'] = item.setUpTime;
+            // if (item.property && item.property['unit'] && item.property['value']) {
+            //   this.detailInfo['property'].push({'value': item.property['value'] + '' + item.property['unit']});
+            // }
+            if(item.property) {
+            this.detailInfo.property = [];
+              const elseProperty  = item.property;
+              const val = [];
+              for (const key in item.property) {
+                if (item.property.hasOwnProperty(key)) {
+                  const element = item.property[key];
+                  if(key === 'value'){
+                    val[0] = element;
+                  } else if(key === 'unit'){
+                    val[1] = element;
+                  } else if(key === 'precise'){
+                    this.detailInfo.property.push('精度:'+item.property['precise'])
+                    
+                  } else if(key === 'volt'){
+                    this.detailInfo.property.push('耐压值:'+item.property['volt'])
+                  }
+                }
+              }
+              this.detailInfo.property.push('值:'+ val.join(''));
+            }
+            this.detailInfo.property.push('封装:'+ item.footprint);
+
+            this.detailInfo['quantity'] = item.quantity;
+            this.detailInfo['project'] = item.project || [];
 
             console.log(this.detailInfo);
             return;
@@ -44,7 +70,7 @@ export class DetailComponent implements OnInit {
     //   this.detailInfo = details[this.number];
 
     // })
-    }
+  }
 
 
 

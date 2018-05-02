@@ -2,7 +2,7 @@
   <label>{{config.label}}</label>
   <div class="input-box">
     <input type="text" [formControlName]="config.name" [placeholder]="config.placeholder">
-    <p *ngIf="group.controls[config.name].hasError('duplicationMarking')"> 重名</p>
+    <p *ngIf="group.controls[config.name].hasError('duplicationMarking') || group.controls[config.name].hasError('duplicationType')"> 重名</p>
     <p *ngIf="config['error']
     && (
       group.controls[config.name].hasError(config['error']['name'].split(',')[0])

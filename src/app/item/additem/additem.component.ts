@@ -4,6 +4,7 @@ import { FieldConfig } from '../../dynamic-form/interface/fieldConfig';
 import { DynamicFormComponent } from '../../dynamic-form/container/dynamic-form/dynamic-form.component';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MyValidators } from '../../service/myValidators';
+import { ItemFormatDataService } from '../../service/item-format-data.service';
 import { Ename } from '../../ecomponent-form/eTypeDef/eTypeDef';
 import { RestapiService } from '../../service/restapi.service';
 import { ItemModifyService } from '../../service/item-modify.service';
@@ -548,9 +549,10 @@ export class AdditemComponent implements OnInit, AfterViewInit {
     private itemModify: ItemModifyService,
     private snackBar: SnackBarService,
     private itemFac: ItemFormatFactoryService,
+    private itemFormatData: ItemFormatDataService
   ) {
     this.itemFac.creatDynamicFormConfig();
-    this.bomTypes = Object.keys(this.itemFac.itemTypes);
+    this.bomTypes = Object.keys(this.itemFormatData.itemTypes);
     this.formsPool = this.itemFac.itemDynamicConfigs;
   }
 
@@ -578,22 +580,22 @@ export class AdditemComponent implements OnInit, AfterViewInit {
     console.log('valid', this.dynamicForm.valid);
     this.dialogRef.close();
     if (this.dynamicForm.valid && this.selectedBomType === 'Others') {
-      this.itemFac.baseSets[ev.formVal.name] = [];
-      this.itemFac.baseSets[ev.formVal.name].push('marking', 'childType', 'footprint', 'quantity', 'description', 'customtag');
+      this.itemFormatData.baseSets[ev.formVal.name] = [];
+      this.itemFormatData.baseSets[ev.formVal.name].push('marking', 'childType', 'footprint', 'quantity', 'description', 'customtag');
       if (ev.formVal.usevalue === '需要') {
-        this.itemFac.baseSets[ev.formVal.name].push('value');
+        this.itemFormatData.baseSets[ev.formVal.name].push('value');
       }
       if (ev.formVal.usevolt === '需要') {
-        this.itemFac.baseSets[ev.formVal.name].push('volt');
+        this.itemFormatData.baseSets[ev.formVal.name].push('volt');
       }
-      this.itemFac.baseSets[ev.formVal.name].push('submit');
-      this.itemFac.itemTypes[ev.formVal.name] = ['无', '使用自定义子类'];
+      this.itemFormatData.baseSets[ev.formVal.name].push('submit');
+      this.itemFormatData.itemTypes[ev.formVal.name] = ['无', '使用自定义子类'];
       return;
     }
     console.log(ev);
     let _quantity, marking, setUpTime, childType, footprint, description, _property: any;
     setUpTime = new Date();
-    _property = [];
+    _property = {};
     for (const key in ev.formVal) {
       if (ev.formVal.hasOwnProperty(key)) {
         if (key === 'marking') {
@@ -607,17 +609,18 @@ export class AdditemComponent implements OnInit, AfterViewInit {
         } else if (key === 'customtag') {
           if (ev.formVal.childType === '使用自定义子类') {
             childType = ev.formVal.customtag;
-            this.itemFac.itemTypes[this.selectedBomType].pop();
-            this.itemFac.itemTypes[this.selectedBomType].push(childType);
-            this.itemFac.itemTypes[this.selectedBomType].push('使用自定义子类');
+            this.itemFormatData.itemTypes[this.selectedBomType].pop();
+            this.itemFormatData.itemTypes[this.selectedBomType].push(childType);
+            this.itemFormatData.itemTypes[this.selectedBomType].push('使用自定义子类');
           }
 
         } else if (key === 'footprint') {
           footprint = ev.formVal.footprint;
         } else if (key === 'description') {
           description = ev.formVal.description || '该器件未添加描述';
+          console.log('description', description);
         } else {
-          _property.push(key + ':' + ev.formVal[key]);
+          _property[key] =  ev.formVal[key];
         }
       }
     }

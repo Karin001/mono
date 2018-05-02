@@ -1,8 +1,8 @@
 <div class="container">
   <div class="property">
     <h3>参数</h3>
-    <mat-chip-list *ngIf="detailInfo.property">
-      <mat-chip *ngFor="let item of detailInfo.property">{{item}}</mat-chip>
+    <mat-chip-list  [selectable]="false" [multiple]="false" *ngIf="detailInfo.property">
+      <mat-chip [selectable]="false" *ngFor="let item of detailInfo.property">{{item}}</mat-chip>
 
       
     </mat-chip-list>
