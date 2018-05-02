@@ -15,7 +15,15 @@ export class DetailComponent implements OnInit {
     private restapi: RestapiService,
     private itemSelect: ItemSelectService
   ) { }
+  onChange(item) {
 
+  }
+  selectToggle(item) {
+    setTimeout(() => {
+      item.state = item.state === true ? false : true;
+    }, 1);
+
+  }
   ngOnInit() {
     this.itemSelect.listenSelected().subscribe(marking => {
       if (this.restapi.localItemList) {
@@ -26,28 +34,28 @@ export class DetailComponent implements OnInit {
             // if (item.property && item.property['unit'] && item.property['value']) {
             //   this.detailInfo['property'].push({'value': item.property['value'] + '' + item.property['unit']});
             // }
-            if(item.property) {
-            this.detailInfo.property = [];
-              const elseProperty  = item.property;
+            if (item.property) {
+              this.detailInfo.property = [];
+              const elseProperty = item.property;
               const val = [];
               for (const key in item.property) {
                 if (item.property.hasOwnProperty(key)) {
                   const element = item.property[key];
-                  if(key === 'value'){
+                  if (key === 'value') {
                     val[0] = element;
-                  } else if(key === 'unit'){
+                  } else if (key === 'unit') {
                     val[1] = element;
-                  } else if(key === 'precise'){
-                    this.detailInfo.property.push('精度:'+item.property['precise'])
-                    
-                  } else if(key === 'volt'){
-                    this.detailInfo.property.push('耐压值:'+item.property['volt'])
+                  } else if (key === 'precise') {
+                    this.detailInfo.property.push({ pro: '精度:' + item.property['precise'] });
+
+                  } else if (key === 'volt') {
+                    this.detailInfo.property.push({ pro: '耐压值:' + item.property['volt'] });
                   }
                 }
               }
-              this.detailInfo.property.push('值:'+ val.join(''));
+              this.detailInfo.property.push({ pro: '值:' + val.join('') });
             }
-            this.detailInfo.property.push('封装:'+ item.footprint);
+            this.detailInfo.property.push({ pro: '封装:' + item.footprint });
 
             this.detailInfo['quantity'] = item.quantity;
             this.detailInfo['project'] = item.project || [];

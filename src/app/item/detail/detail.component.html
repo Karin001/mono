@@ -1,40 +1,40 @@
 <div class="container">
   <div class="property">
     <h3>参数</h3>
-    <mat-chip-list  [selectable]="false" [multiple]="false" *ngIf="detailInfo.property">
-      <mat-chip [selectable]="false" *ngFor="let item of detailInfo.property">{{item}}</mat-chip>
+    <mat-chip-list   [multiple]="true" *ngIf="detailInfo.property">
+      <mat-chip  (selectionChange)="onChange(item)" (click)="selectToggle(item)" *ngFor="let item of detailInfo.property">{{item.pro}}</mat-chip>
 
-      
+
     </mat-chip-list>
-    
-   
+
+
   </div>
   <div class="inOut">
    <div class="childbox">
       <h3>收入</h3>
       <ul *ngIf="detailInfo.setUpTime">
         <li>
-          <p class="in">{{detailInfo.quantity}}pic</p> 
-          <p class="time">{{detailInfo.setUpTime |  date: 'medium'}}</p> 
-       
+          <p class="in">{{detailInfo.quantity}}pic</p>
+          <p class="time">{{detailInfo.setUpTime |  date: 'medium'}}</p>
+
          </li>
-       
-     
+
+
       </ul>
    </div>
    <div class="childbox">
       <h3>支出</h3>
       <ul *ngIf="detailInfo.setUpTime">
         <li>
-          <p class="in">{{detailInfo.quantity}}pic</p> 
-          <p class="time">{{detailInfo.setUpTime |  date: 'medium'}}</p> 
-       
+          <p class="in">{{detailInfo.quantity}}pic</p>
+          <p class="time">{{detailInfo.setUpTime |  date: 'medium'}}</p>
+
          </li>
-       
-     
+
+
       </ul>
    </div>
-    
+
   </div>
   <div class="program">
     <h3>项目</h3>
@@ -57,6 +57,6 @@
       <li>program1</li>
     </ul>
   </div>
-  
-  
+
+
 </div>
