@@ -15,14 +15,12 @@ export class DetailComponent implements OnInit {
     private restapi: RestapiService,
     private itemSelect: ItemSelectService
   ) { }
-  onChange(item) {
-
+  sel(e) {
+    console.log('1', e);
   }
-  selectToggle(item) {
-    setTimeout(() => {
-      item.state = item.state === true ? false : true;
-    }, 1);
-
+  onclick(item) {
+    item['stat'] = true ? false : true;
+    console.log('itemStat', item['stat']);
   }
   ngOnInit() {
     this.itemSelect.listenSelected().subscribe(marking => {
@@ -45,17 +43,19 @@ export class DetailComponent implements OnInit {
                     val[0] = element;
                   } else if (key === 'unit') {
                     val[1] = element;
-                  } else if (key === 'precise') {
-                    this.detailInfo.property.push({ pro: '精度:' + item.property['precise'] });
+                  } else if(key === 'precise'){
+                    this.detailInfo.property.push({pro:'精度:'+item.property['precise']})
 
-                  } else if (key === 'volt') {
-                    this.detailInfo.property.push({ pro: '耐压值:' + item.property['volt'] });
+                  } else if(key === 'volt'){
+                    this.detailInfo.property.push({pro:'耐压值:'+item.property['volt']+'v'})
                   }
                 }
               }
-              this.detailInfo.property.push({ pro: '值:' + val.join('') });
+              if(val.join('') !== ''){
+                this.detailInfo.property.push({pro:'值:'+ val.join('')});
+              }
             }
-            this.detailInfo.property.push({ pro: '封装:' + item.footprint });
+            this.detailInfo.property.push({pro:'封装:'+ item.footprint});
 
             this.detailInfo['quantity'] = item.quantity;
             this.detailInfo['project'] = item.project || [];

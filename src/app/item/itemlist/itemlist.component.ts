@@ -5,6 +5,7 @@ import { RestapiService } from '../../service/restapi.service';
 import { LocaldataService } from '../../localdata.service';
 import { ItemSelectService } from '../../service/item-select.service';
 import { ItemModifyService } from '../../service/item-modify.service';
+import { ItemFormatDataService } from '../../service/item-format-data.service';
 @Component({
   selector: 'app-itemlist',
   templateUrl: './itemlist.component.html',
@@ -27,7 +28,8 @@ export class ItemlistComponent implements OnInit {
     private localdata: LocaldataService,
     private itemSelect: ItemSelectService,
     private zone: NgZone,
-    private itemModify: ItemModifyService
+    private itemModify: ItemModifyService,
+    private itemFormat: ItemFormatDataService
   ) {
     this.getDatas();
     // this.restapi.stream_allItem().subscribe((data) => {
@@ -58,6 +60,8 @@ export class ItemlistComponent implements OnInit {
           this.rows = res['fb']['items'];
 
           this.restapi.localItemList = res['fb'];
+          this.itemFormat.loadTypes();
+          console.log('base', this.itemFormat.baseSets);
           console.log(this.restapi.localItemList);
         }
       });

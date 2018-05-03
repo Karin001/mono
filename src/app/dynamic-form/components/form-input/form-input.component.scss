@@ -1,33 +1,33 @@
 label {
   display: block;
-  font:400 16px "微软雅黑";
+  font:400 14px "微软雅黑";
 
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 .input-box {
 position: relative;
 input {
   box-sizing:border-box;
-  margin-bottom: 12px;
+  margin-bottom: 5px;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 12px;
   width: 100%;
   border: 1px solid rgba(0, 0, 0, 0.1);
   outline: none;
-  padding: 10px 15px;
+  padding: 3px 5px;
   color: rgba(0, 0, 0, 0.7);
   &:focus {
     border: 1px solid rgba(0, 0, 0, 0.4);
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
   }
- 
+
 }
 p {
   position: absolute;
   top:-27px;
   right: 0;
   font-family: inherit;
-  font-size: 12px;
+  font-size: 10px;
   color: rgba(27, 20, 20,.3);
 }
 }

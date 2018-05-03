@@ -10,6 +10,8 @@ import { RestapiService } from '../../service/restapi.service';
 import { ItemModifyService } from '../../service/item-modify.service';
 import { SnackBarService } from '../../service/snack-bar.service';
 import { ItemFormatFactoryService } from '../../service/item-format-factory.service';
+import {concat} from 'rxjs/operator/concat';
+import 'rxjs/add/operator/concat';
 interface FormsVal {
   name?: string;
   usevalue?: string;
@@ -551,8 +553,11 @@ export class AdditemComponent implements OnInit, AfterViewInit {
     private itemFac: ItemFormatFactoryService,
     private itemFormatData: ItemFormatDataService
   ) {
+
     this.itemFac.creatDynamicFormConfig();
     this.bomTypes = Object.keys(this.itemFormatData.itemTypes);
+    console.log('base2',this.itemFormatData.baseSets);
+    console.log('bomtypes',this.itemFormatData.itemTypes);
     this.formsPool = this.itemFac.itemDynamicConfigs;
   }
 
@@ -637,11 +642,16 @@ export class AdditemComponent implements OnInit, AfterViewInit {
         description: description,
         property: _property
       })
+        .concat(this.restApi.updateTypes({baseSets:this.itemFormatData.baseSets
+        ,itemTypes:this.itemFormatData.itemTypes,
+        unitTypes:this.itemFormatData.unitTypes
+        }))
         .subscribe(res => {
           console.log(res);
           if (res.code === 'success') {
             this.snackBar.openSnackBar('sucess');
             this.itemModify.doModify();
+
           }
         });
     } else {
@@ -655,6 +665,10 @@ export class AdditemComponent implements OnInit, AfterViewInit {
         footprint: footprint,
         property: _property
       })
+      .concat(this.restApi.updateTypes({baseSets:this.itemFormatData.baseSets
+        ,itemTypes:this.itemFormatData.itemTypes,
+        unitTypes:this.itemFormatData.unitTypes
+        }))
         .subscribe(res => {
           console.log(res);
           if (res.code === 'success') {
