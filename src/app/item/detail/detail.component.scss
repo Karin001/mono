@@ -9,16 +9,27 @@
             font:16px '微软雅黑';
             margin:10px;
         }
-        mat-chip-list{
-            display: flex;
-            justify-content: flex-start;
-            flex-wrap: wrap;
-            mat-chip{
-            margin:5px 10px;
+    .chip{
+        span{
             
+            margin: 5px 10px;
+            padding:5px 10px;
+            font: 12px "微软雅黑";
+            &:hover{
+                cursor: pointer;
             }
- 
         }
+        .unselected{
+            background: rgb(216, 216, 216);
+            transition: all .1s;
+        }
+        .selected{
+            background: rgb(104, 115, 212);
+            color:white;
+            box-shadow: rgba(0, 0, 0,.6) 1px 3px 6px;
+            transition: all .1s;
+        }
+    }
     
     }
     .inOut{

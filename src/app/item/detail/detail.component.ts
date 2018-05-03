@@ -15,7 +15,13 @@ export class DetailComponent implements OnInit {
     private restapi: RestapiService,
     private itemSelect: ItemSelectService
   ) { }
-
+  sel(e){
+    console.log('1',e);
+  }
+  onclick(item){
+    item['stat'] = true?false:true;
+    console.log('itemStat',item['stat']);
+  }
   ngOnInit() {
     this.itemSelect.listenSelected().subscribe(marking => {
       if (this.restapi.localItemList) {
@@ -38,16 +44,18 @@ export class DetailComponent implements OnInit {
                   } else if(key === 'unit'){
                     val[1] = element;
                   } else if(key === 'precise'){
-                    this.detailInfo.property.push('精度:'+item.property['precise'])
+                    this.detailInfo.property.push({pro:'精度:'+item.property['precise']})
                     
                   } else if(key === 'volt'){
-                    this.detailInfo.property.push('耐压值:'+item.property['volt'])
+                    this.detailInfo.property.push({pro:'耐压值:'+item.property['volt']+'v'})
                   }
                 }
               }
-              this.detailInfo.property.push('值:'+ val.join(''));
+              if(val.join('') !== ''){
+                this.detailInfo.property.push({pro:'值:'+ val.join('')});
+              }
             }
-            this.detailInfo.property.push('封装:'+ item.footprint);
+            this.detailInfo.property.push({pro:'封装:'+ item.footprint});
 
             this.detailInfo['quantity'] = item.quantity;
             this.detailInfo['project'] = item.project || [];

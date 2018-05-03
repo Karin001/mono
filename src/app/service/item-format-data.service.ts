@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-
+import { RestapiService } from './restapi.service';
 @Injectable()
 export class ItemFormatDataService {
   baseSets: { [types: string]: string[] } = {
@@ -32,6 +32,19 @@ export class ItemFormatDataService {
     'OSCILLATOR': ['kHz', 'MHz'],
     'INDUCTOR': ['nH', 'uH', 'mH', 'H']
   };
-  constructor() { }
+  constructor(
+    private restapi: RestapiService
+  ) {
+   
+   }
+   loadTypes() {
+    console.log('数据',this.restapi.localItemList);
+    if(this.restapi.localItemList && this.restapi.localItemList.itemTypes){
+      this.baseSets = this.restapi.localItemList.itemTypes['baseSets'];
+      this.itemTypes = this.restapi.localItemList.itemTypes['itemTypes'];
+      this.unitTypes = this.restapi.localItemList.itemTypes['unitTypes'];
+      console.log('baseSets',this.baseSets);
+    }
+   }
 
 }

@@ -34,6 +34,7 @@ interface ItemSchema {
 interface ItemListSchema {
   username: string;
   items: ItemSchema[];
+  itemTypes?:any;
   _id: string;
 }
 interface ResponseType {
@@ -59,6 +60,9 @@ export class RestapiService {
   }
   addFirstItem(item: ItemSchema): Observable<ResponseType> {
     return this.hc.post('/api/itemlist/addFirst', item) as Observable<ResponseType>;
+  }
+  updateTypes(item:any) {
+    return this.hc.post('/api/itemlist/updateTypes',item) as Observable<ResponseType>;
   }
   streamMock_allItem() {
     return this.hc.get(`assets/data/itemlist.json`);

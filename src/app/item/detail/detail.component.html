@@ -1,11 +1,11 @@
 <div class="container">
   <div class="property">
     <h3>参数</h3>
-    <mat-chip-list  [selectable]="false" [multiple]="false" *ngIf="detailInfo.property">
-      <mat-chip [selectable]="false" *ngFor="let item of detailInfo.property">{{item}}</mat-chip>
+    <div class="chip" *ngIf="detailInfo.property">
+      <span  (click)="item.state = !item.state" [ngClass]="{'unselected': !item.state, 'selected':item.state}" *ngFor="let item of detailInfo.property">{{item.pro}}</span>
 
       
-    </mat-chip-list>
+  </div>
     
    
   </div>
