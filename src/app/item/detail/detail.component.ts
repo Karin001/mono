@@ -56,7 +56,7 @@ export class DetailComponent implements OnInit {
               }
             }
             this.detailInfo.property.push({pro:'封装:'+ item.footprint});
-
+            this.detailInfo.property.push({pro:'子类:' + item.childType});
             this.detailInfo['quantity'] = item.quantity;
             this.detailInfo['project'] = item.project || [];
 

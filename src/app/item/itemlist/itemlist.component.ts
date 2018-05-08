@@ -19,7 +19,7 @@ export class ItemlistComponent implements OnInit {
   rows;
   columns = [];
   selected;
-  rowHeight = 40;
+  rowHeight = 25;
   selectedMarking;
   selectedChange;
   constructor(
@@ -71,7 +71,7 @@ export class ItemlistComponent implements OnInit {
   }
   ngOnInit() {
     this.columns = [
-      { prop: 'name', name: '名称' },
+      { prop: 'name', name: '主类' },
       { prop: 'marking', name: '型号' },
       { prop: 'quantity', name: '数量' },
     ];

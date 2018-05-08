@@ -168,7 +168,7 @@ export class RestapiService {
         } else if (resp.code === 'success') {
           this.localItemList = null;
           this.logged.next(logState.logout);
-          console.log(this.localItemList);
+          console.log(this.localItemList) ;
           this.router.navigateByUrl('/login');
         } else {
           console.log('没考虑到的状态');
