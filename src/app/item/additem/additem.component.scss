@@ -1,10 +1,15 @@
+
+
 .type-sel{
+ 
     label {
         display: block;
         font:400 16px "微软雅黑";
         margin-bottom: 10px;
     }
+    
     select {
+        
         -webkit-appearance: none;
         -moz-appearance: none;
         margin-bottom: 12px;
@@ -31,4 +36,8 @@
           box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
         }
       }
+}
+.sel-first {
+  background-color:rgb(41, 230, 119);
+  color:white;
 }

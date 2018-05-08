@@ -1,9 +1,14 @@
 <div class="type-sel">
     <label>请选择物件的种类</label>
     <select placeholder="" [(ngModel)]="selectedBomType" name="item" (change)="changeForm(selectedBomType)">
-        <option class="sel" *ngFor="let item of bomTypes" [value]="item">
-            {{item}}
-        </option>
+        <option class="sel-first" value="ADD NEW TYPE">增加一个新主类</option>
+        <ng-container *ngFor="let item of bomTypes" > 
+            <option class="sel"  *ngIf="item !== 'ADD NEW TYPE'"[value]="item">
+                {{item}}
+            </option>
+        </ng-container>
+      
+       
     </select>
 </div>
 
