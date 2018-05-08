@@ -51,19 +51,22 @@ export class ItemlistComponent implements OnInit {
     this.restapi.stream_allItem()
       .catch((e: HttpErrorResponse) => {
         this.progressBarSet = false;
+        this.itemFormat.loadTypes();
         throw (e);
       })
       .subscribe(res => {
         console.log('123213123');
         this.progressBarSet = false;
+        
         if (res['fb']) {
           this.rows = res['fb']['items'];
 
           this.restapi.localItemList = res['fb'];
-          this.itemFormat.loadTypes();
+          
           console.log('base', this.itemFormat.baseSets);
           console.log(this.restapi.localItemList);
         }
+        this.itemFormat.loadTypes();
       });
   }
   ngOnInit() {

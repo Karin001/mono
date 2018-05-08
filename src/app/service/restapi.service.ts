@@ -166,7 +166,9 @@ export class RestapiService {
         if (resp.code === 'session_err') {
           this.logged.next(logState.session_err);
         } else if (resp.code === 'success') {
+          this.localItemList = null;
           this.logged.next(logState.logout);
+          console.log(this.localItemList);
           this.router.navigateByUrl('/login');
         } else {
           console.log('没考虑到的状态');

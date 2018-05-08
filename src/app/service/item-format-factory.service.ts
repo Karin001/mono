@@ -15,7 +15,7 @@ export class ItemFormatFactoryService {
     'MOS': ['marking', 'childType', 'description', 'footprint', 'quantity', 'customtag', 'submit'],
     'IC': ['marking', 'childType', 'description', 'footprint', 'quantity', 'customtag', 'submit'],
     'OSCILLATOR': ['marking', 'childType', 'value', 'unit', 'footprint', 'quantity', 'description', 'customtag', 'submit'],
-    'Others': ['name', 'usevalue', 'usevolt', 'submit']
+    'ADD NEW TYPE': ['name', 'usevalue', 'usevolt', 'submit']
   };
 
 
@@ -28,7 +28,7 @@ export class ItemFormatFactoryService {
     'MOS': ['无', '使用自定义子类'],
     'IC': ['无', 'MCU', 'DSP', 'FPGA', 'CPLD', '使用自定义子类'],
     'OSCILLATOR': ['无', '使用自定义子类'],
-    'Others': ['无', '使用自定义子类']
+    'ADD NEW TYPE': ['无', '使用自定义子类']
   };
   unitTypes: { [type: string]: string[] } = {
     'RES': ['Ω', 'kΩ', 'MΩ'],
@@ -229,18 +229,18 @@ export class ItemFormatFactoryService {
 
           });
         } else {
-          this.itemFormatData.baseSets['Others'].forEach(element => {
+          this.itemFormatData.baseSets['ADD NEW TYPE'].forEach(element => {
             const tempConfig = { ...this.baseConfigSets[element] } as FieldConfig;
 
 
             if (element === 'childType') {
               tempConfig['options'] = [];
-              tempConfig['options'] = this.itemFormatData.itemTypes['Others'];
+              tempConfig['options'] = this.itemFormatData.itemTypes['ADD NEW TYPE'];
 
             }
             if (element === 'unit') {
               tempConfig['options'] = [];
-              tempConfig['options'] = this.itemFormatData.unitTypes['Others'];
+              tempConfig['options'] = this.itemFormatData.unitTypes['ADD NEW TYPE'];
             }
             this.itemDynamicConfigs[key]['push'](tempConfig);
 
