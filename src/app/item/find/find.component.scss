@@ -1,8 +1,8 @@
 .search{
-    widows: 180px;
+    width: 180px;
     position: relative;
     .searchInput{
-  
+        
         font-size: 14px;
         
        
@@ -15,4 +15,7 @@
         top: 11px;
         left:-27px;
     }
+}
+.gaoji {
+    position: absolute;
 }

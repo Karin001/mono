@@ -22,7 +22,7 @@ interface ItemSchema {
   description: string;
   footprint: string;
   childType: string;
-  property?: string[];
+  property?: any;
   in?: IteminoutSchema[];
   out?: IteminoutSchema[];
   project?: string[];
@@ -34,7 +34,7 @@ interface ItemSchema {
 interface ItemListSchema {
   username: string;
   items: ItemSchema[];
-  itemTypes?:any;
+  itemTypes?: any;
   _id: string;
 }
 interface ResponseType {
@@ -42,6 +42,15 @@ interface ResponseType {
   fb: any | ItemListSchema;
   err: Object;
   code: string;
+}
+interface FindOption {
+  selected: string[];
+  bigname?:string;
+  childType?: string;
+  footprint?: string;
+  value?: string;
+  volt?: string;
+  precise?: string;
 }
 @Injectable()
 export class RestapiService {
@@ -55,14 +64,42 @@ export class RestapiService {
   ) {
 
   }
+  localFind(options: FindOption) {
+    console.log('000');
+    if (this.localItemList && this.localItemList.items) {
+      console.log('111');
+      return this.localItemList.items.filter(items => {
+        let sumBoolean = true;
+        if(items.name !== options['name']){
+          console.log('222',items.name,options['name']);
+          return false;
+        }
+        options.selected.forEach(element => {
+          if(element === 'value'){
+            const itemValue = (items.property['value']||'') + '' + (items.property['unit']||'');
+            sumBoolean = sumBoolean && itemValue === options[element];
+          } else if(element === 'precise' || element === 'volt') {
+            sumBoolean = sumBoolean && items.property[element] && items.property[element] === options[element];
+          } else{
+            sumBoolean = sumBoolean && items[element] && (items[element] === options[element]);
+            console.log(element,options[element],items[element]);
+          }
+         
+        });
+        return sumBoolean;
+      }
+      )
+    }
+
+  }
   addItem(item: ItemSchema): Observable<ResponseType> {
     return this.hc.post('/api/itemlist/add', item) as Observable<ResponseType>;
   }
   addFirstItem(item: ItemSchema): Observable<ResponseType> {
     return this.hc.post('/api/itemlist/addFirst', item) as Observable<ResponseType>;
   }
-  updateTypes(item:any) {
-    return this.hc.post('/api/itemlist/updateTypes',item) as Observable<ResponseType>;
+  updateTypes(item: any) {
+    return this.hc.post('/api/itemlist/updateTypes', item) as Observable<ResponseType>;
   }
   streamMock_allItem() {
     return this.hc.get(`assets/data/itemlist.json`);
@@ -100,18 +137,18 @@ export class RestapiService {
         throw (e);
       })
       .subscribe(
-      (resp: LoginRespInfo) => {
-        if (resp.code === 'logged') {
-          this.logged.next(logState.logged);
-          this.router.navigateByUrl('/itemlist');
-        } else if (resp.code === 'success') {
-          this.logged.next(logState.login);
-          this.router.navigateByUrl('/itemlist');
-        } else {
-          console.log('没考虑到的状态');
+        (resp: LoginRespInfo) => {
+          if (resp.code === 'logged') {
+            this.logged.next(logState.logged);
+            this.router.navigateByUrl('/itemlist');
+          } else if (resp.code === 'success') {
+            this.logged.next(logState.login);
+            this.router.navigateByUrl('/itemlist');
+          } else {
+            console.log('没考虑到的状态');
+          }
+          callback();
         }
-        callback();
-      }
 
       );
   }
@@ -127,14 +164,14 @@ export class RestapiService {
         throw (e);
       })
       .map(
-      (resp: LoginRespInfo) => {
-        if (resp.code === 'success') {
-          return resp.message as string;
-        } else {
-          return null;
-        }
-      },
-      err => { console.log('getAvatar subscribe err'); }
+        (resp: LoginRespInfo) => {
+          if (resp.code === 'success') {
+            return resp.message as string;
+          } else {
+            return null;
+          }
+        },
+        err => { console.log('getAvatar subscribe err'); }
       );
 
   }
@@ -150,30 +187,30 @@ export class RestapiService {
         throw (e);
       })
       .subscribe(
-      (resp: LoginRespInfo) => {
-        if (resp.code === 'success') {
-          callback(resp.message);
-        }
-      },
-      err => { console.log('getAvatar subscribe err'); }
+        (resp: LoginRespInfo) => {
+          if (resp.code === 'success') {
+            callback(resp.message);
+          }
+        },
+        err => { console.log('getAvatar subscribe err'); }
       );
 
   }
   logOut() {
     return this.hc.post('api/logOut', {})
       .subscribe(
-      (resp: LogOutRespInfo) => {
-        if (resp.code === 'session_err') {
-          this.logged.next(logState.session_err);
-        } else if (resp.code === 'success') {
-          this.localItemList = null;
-          this.logged.next(logState.logout);
-          console.log(this.localItemList) ;
-          this.router.navigateByUrl('/login');
-        } else {
-          console.log('没考虑到的状态');
+        (resp: LogOutRespInfo) => {
+          if (resp.code === 'session_err') {
+            this.logged.next(logState.session_err);
+          } else if (resp.code === 'success') {
+            this.localItemList = null;
+            this.logged.next(logState.logout);
+            console.log(this.localItemList);
+            this.router.navigateByUrl('/login');
+          } else {
+            console.log('没考虑到的状态');
+          }
         }
-      }
       );
   }
   signUp(userinfo: SignUpInfo, callback = () => { }) {
@@ -219,15 +256,15 @@ export class RestapiService {
         throw (e);
       })
       .subscribe(
-      (resp: GeneralResp) => {
-        if (resp.code === 'success') {
-          console.log(resp);
-          successCall();
-        } else {
-          console.log(resp);
-          console.log('没考虑到的状态');
+        (resp: GeneralResp) => {
+          if (resp.code === 'success') {
+            console.log(resp);
+            successCall();
+          } else {
+            console.log(resp);
+            console.log('没考虑到的状态');
+          }
         }
-      }
       );
   }
 

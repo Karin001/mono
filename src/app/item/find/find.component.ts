@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
-
+import { RestapiService } from '../../service/restapi.service';
+import { ItemModifyService } from '../../service/item-modify.service';
 import { AutoComplateService } from '../../service/auto-complate.service';
 @Component({
   selector: 'app-find',
@@ -13,20 +14,31 @@ export class FindComponent implements OnInit, AfterViewInit, OnDestroy {
   name;
 
   options = [
-    '112',
-    '112',
-    '112',
-    '112',
-    '112',
-    '2213',
-    '321321'
+   
   ]
   filteredOptions: Subscription;
   showOptions;
   search = new FormControl();
-  constructor(private auto: AutoComplateService) {
-    this.filteredOptions = this.auto.autoComlate(this.search, this.options)
+  constructor(
+    private auto: AutoComplateService,
+    private restapi: RestapiService,
+    private itemModify: ItemModifyService
+  ) {
+  
+    this.itemModify.getItemUpdate().filter(v=>v==='complate').subscribe(v=>{
+     
+        this.options = this.restapi.localItemList.items.map(item => item.marking);
+        console.log('options',this.options);
+        if(this.filteredOptions){
+          this.filteredOptions.unsubscribe();
+        }
+        
+        this.filteredOptions = this.auto.autoComlate(this.search, this.options)
       .subscribe(val => this.showOptions = val);
+      })
+      
+    
+    
 
   }
 

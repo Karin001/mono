@@ -2,7 +2,7 @@
   <div class="property">
     <h3>参数</h3>
     <div class="chip" *ngIf="detailInfo.property">
-      <span  (click)="item.state = !item.state" [ngClass]="{'unselected': !item.state, 'selected':item.state}" *ngFor="let item of detailInfo.property">{{item.pro}}</span>
+      <span  (click)="onclick(item)" [ngClass]="{'unselected': !item.state, 'selected':item.state}" *ngFor="let item of detailInfo.property">{{item.pro}}</span>
 
 
   </div>

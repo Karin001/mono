@@ -10,6 +10,9 @@ import 'rxjs/add/operator/mergeMap';
 export class DetailComponent implements OnInit {
   number;
   detailInfo: any = {};
+  findOptions = {
+    selected:[]
+  };
   @Input() disable;
   constructor(
     private restapi: RestapiService,
@@ -19,8 +22,12 @@ export class DetailComponent implements OnInit {
     console.log('1', e);
   }
   onclick(item) {
-    item['stat'] = true ? false : true;
-    console.log('itemStat', item['stat']);
+    item['state'] = item['state'] === true ? false : true;
+    console.log('itemStat', item['state']);
+    this.findOptions['name'] = item['bigname'];
+    this.findOptions[item['name']] = item['value'];
+    this.findOptions.selected.push(item['name']);
+    console.log('find',this.restapi.localFind(this.findOptions));
   }
   ngOnInit() {
     this.itemSelect.listenSelected().subscribe(marking => {
@@ -44,19 +51,19 @@ export class DetailComponent implements OnInit {
                   } else if (key === 'unit') {
                     val[1] = element;
                   } else if(key === 'precise'){
-                    this.detailInfo.property.push({pro:'精度:'+item.property['precise']})
+                    this.detailInfo.property.push({bigname:item.name,name:'precise',value:item.property['precise'],pro:'精度:'+item.property['precise']})
 
                   } else if(key === 'volt'){
-                    this.detailInfo.property.push({pro:'耐压值:'+item.property['volt']+'v'})
+                    this.detailInfo.property.push({bigname:item.name,name:'volt',value:item.property['volt'],pro:'耐压值:'+item.property['volt']+'v'})
                   }
                 }
               }
               if(val.join('') !== ''){
-                this.detailInfo.property.push({pro:'值:'+ val.join('')});
+                this.detailInfo.property.push({bigname:item.name,name:'value',value:val.join(''),pro:'值:'+ val.join('')});
               }
             }
-            this.detailInfo.property.push({pro:'封装:'+ item.footprint});
-            this.detailInfo.property.push({pro:'子类:' + item.childType});
+            this.detailInfo.property.push({bigname:item.name,name:'footprint',value:item.footprint, pro:'封装:'+ item.footprint});
+            this.detailInfo.property.push({bigname:item.name,name:'childType',value:item.childType, pro:'子类:' + item.childType});
             this.detailInfo['quantity'] = item.quantity;
             this.detailInfo['project'] = item.project || [];
 
