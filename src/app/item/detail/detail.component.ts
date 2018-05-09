@@ -24,13 +24,27 @@ export class DetailComponent implements OnInit {
   onclick(item) {
     item['state'] = item['state'] === true ? false : true;
     console.log('itemStat', item['state']);
-    this.findOptions['name'] = item['bigname'];
-    this.findOptions[item['name']] = item['value'];
-    this.findOptions.selected.push(item['name']);
-    console.log('find',this.restapi.localFind(this.findOptions));
+    if(item['state']){
+     
+      this.findOptions['marking'] = 
+      this.findOptions['name'] = item['bigname'];
+      this.findOptions[item['name']] = item['value'];
+      this.findOptions.selected.push(item['name']);
+      
+    } else {
+      this.findOptions[item['name']] = undefined;
+      this.findOptions.selected.splice(this.findOptions.selected.indexOf(item['name']),1);
+    }
+    if(this.findOptions.selected.length > 0){
+      console.log('find',this.findOptions,this.restapi.localFind(this.findOptions));
+    }
+ 
   }
   ngOnInit() {
     this.itemSelect.listenSelected().subscribe(marking => {
+      this.findOptions = {
+        selected:[]
+      };
       if (this.restapi.localItemList) {
         this.restapi.localItemList.items.forEach(item => {
           if (item.marking === marking) {
