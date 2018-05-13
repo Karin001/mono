@@ -1,0 +1,23 @@
+<div [formGroup]="group">
+  <label>{{config.label}}</label>
+  <div class="input-box">
+    <mat-form-field floatPlaceholder="never">
+      <input matInput [formControlName]="config.name" [matAutocomplete]="auto" >
+    </mat-form-field>
+    <mat-autocomplete  #auto="matAutocomplete"  [displayWith]="displayFn">
+      <mat-option *ngFor="let option of showOptions" [value]="option">
+        {{ option}}
+      </mat-option>
+    </mat-autocomplete>
+
+    <p *ngIf="config['error']
+    && (
+      group.controls[config.name].hasError(config['error']['name'].split(',')[0])
+      ||(config['error']['name'].split(',')[1] && group.controls[config.name].hasError(config['error']['name'].split(',')[1])  )
+      )
+    && group.controls[config.name].dirty">
+    {{config['error']['message']}}
+  </p>
+  </div>
+
+</div>

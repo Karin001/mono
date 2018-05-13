@@ -111,7 +111,7 @@ export class ItemFormatFactoryService {
       error: { name: 'volt', message: '输入限定为三位以下数字' }
     },
     'footprint': {
-      type: 'input',
+      type: 'autoInput',
       label: '封装',
       name: 'footprint',
       disabled: false,

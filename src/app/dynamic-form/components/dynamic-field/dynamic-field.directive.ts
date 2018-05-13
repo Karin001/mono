@@ -4,12 +4,14 @@ import { FieldConfig } from '../../interface/fieldConfig';
 import { Field } from '../../interface/field';
 import { FormButtonComponent } from '../form-button/form-button.component';
 import { FormInputComponent } from '../form-input/form-input.component';
+import { FormAutoInputComponent } from '../form-auto-input/form-auto-input.component';
 import { FormSelectComponent } from '../form-select/form-select.component';
 import { FormRadioComponent } from '../form-radio/form-radio.component';
 import { FormCheckboxComponent } from '../form-checkbox/form-checkbox.component';
 import {CheckboxValuePosterService} from '../../service/checkbox-value-poster.service';
 const components: { [type: string]: Type<Field> } = {
   input: FormInputComponent,
+  autoInput: FormAutoInputComponent,
   button: FormButtonComponent,
   select: FormSelectComponent,
   radio: FormRadioComponent,
