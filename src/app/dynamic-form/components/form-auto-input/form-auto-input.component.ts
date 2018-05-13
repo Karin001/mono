@@ -37,6 +37,7 @@ export class FormAutoInputComponent implements OnInit, AfterViewInit{
     this.itemModify.getItemUpdate().filter(v => v === 'complate').subscribe(v => {
 
                   this.options = this.restapi.localItemList.items.map(item => item.footprint);
+                  this.options = Array.from(new Set(this.options));
                   console.log('options', this.options);
                   if (this.filteredOptions) {
                     this.filteredOptions.unsubscribe();
