@@ -1,13 +1,15 @@
 
 
 <mat-form-field class="search">
-    <input matInput type="text" class="searchInput" [matAutocomplete]="auto" [formControl]="search">
-    <mat-icon svgIcon="search" class="searchIcon"></mat-icon>
-    <mat-autocomplete #auto="matAutocomplete"  [displayWith]="displayFn">
-      <mat-option *ngFor="let option of showOptions" [value]="option">
-        {{ option}}
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
+  <input matInput type="text" class="searchInput" [matAutocomplete]="auto" [formControl]="search">
+  <mat-autocomplete #auto="matAutocomplete"  [displayWith]="displayFn">
+    <mat-option *ngFor="let option of showOptions" [value]="option">
+      {{ option}}
+    </mat-option>
+  </mat-autocomplete>
+
+</mat-form-field>
+<button mat-icon-button (click)="onSearch()"><mat-icon svgIcon="search" ></mat-icon></button>
+<button mat-icon-button (click)="onOver()"><mat-icon svgIcon="search"></mat-icon></button>
 
 

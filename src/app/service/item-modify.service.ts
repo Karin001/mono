@@ -5,18 +5,27 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 export class ItemModifyService {
   itemModify = new BehaviorSubject<String>(null);
   complate = new BehaviorSubject<string>(null);
+  search = new BehaviorSubject<any>(null);
   constructor() { }
-  doModify(){
-    this.itemModify.next('modified')
+  doModify() {
+    this.itemModify.next('modified');
   }
-  updateComplate(){
-    this.complate.next('complate')
+  updateComplate() {
+    this.complate.next('complate');
   }
-
-  getItemState():Observable<String>{
-    return this.itemModify.asObservable()
+  doSearch(data) {
+    this.search.next({ 'state': 'search', 'data': data });
   }
-  getItemUpdate():Observable<string>{
-    return this.complate.asObservable()
+  searchOver() {
+    this.search.next({ 'state': 'search-over', 'data': []});
+  }
+  getSearchState(): Observable<any> {
+    return this.search.asObservable();
+  }
+  getItemState(): Observable<String> {
+    return this.itemModify.asObservable();
+  }
+  getItemUpdate(): Observable<string> {
+    return this.complate.asObservable();
   }
 }

@@ -17,6 +17,7 @@ export class ItemlistComponent implements OnInit {
   progressBarSet = true;
   @Input() dackMode = false;
   rows;
+  tempRows;
   columns = [];
   selected;
   rowHeight = 25;
@@ -57,7 +58,7 @@ export class ItemlistComponent implements OnInit {
       .subscribe(res => {
         console.log('123213123');
         this.progressBarSet = false;
-        
+
         if (res['fb']) {
           this.rows = res['fb']['items'];
 
@@ -79,6 +80,16 @@ export class ItemlistComponent implements OnInit {
       if (state === 'modified') {
         this.getDatas();
       }
+    });
+    this.itemModify.getSearchState().subscribe(state => {
+     if(state) {
+      const serachState = state['state'];
+      if (serachState === 'search') {
+        this.rows = state['data'];
+      } else if (serachState === 'search-over') {
+        this.rows = this.restapi.localItemList.items;
+      }
+     }
     })
 
   }

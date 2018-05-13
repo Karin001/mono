@@ -19,7 +19,7 @@ export class MyValidators {
     private http: HttpClient,
     private rest: RestapiService,
     private itemFormatData: ItemFormatDataService
-  
+
   ) {
     console.log(this.http);
   }

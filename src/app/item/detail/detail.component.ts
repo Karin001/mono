@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ItemSelectService } from '../../service/item-select.service';
 import { RestapiService } from '../../service/restapi.service';
+import { ItemModifyService } from '../../service/item-modify.service';
 import 'rxjs/add/operator/mergeMap';
 @Component({
   selector: 'app-detail',
@@ -11,12 +12,13 @@ export class DetailComponent implements OnInit {
   number;
   detailInfo: any = {};
   findOptions = {
-    selected:[]
+    selected: []
   };
   @Input() disable;
   constructor(
     private restapi: RestapiService,
-    private itemSelect: ItemSelectService
+    private itemSelect: ItemSelectService,
+    private itemModify: ItemModifyService
   ) { }
   sel(e) {
     console.log('1', e);
@@ -24,26 +26,27 @@ export class DetailComponent implements OnInit {
   onclick(item) {
     item['state'] = item['state'] === true ? false : true;
     console.log('itemStat', item['state']);
-    if(item['state']){
-     
-      this.findOptions['marking'] = 
-      this.findOptions['name'] = item['bigname'];
+    if (item['state']) {
+
+      this.findOptions['marking'] =
+        this.findOptions['name'] = item['bigname'];
       this.findOptions[item['name']] = item['value'];
       this.findOptions.selected.push(item['name']);
-      
+
     } else {
       this.findOptions[item['name']] = undefined;
-      this.findOptions.selected.splice(this.findOptions.selected.indexOf(item['name']),1);
+      this.findOptions.selected.splice(this.findOptions.selected.indexOf(item['name']), 1);
+      this.itemModify.searchOver();
     }
-    if(this.findOptions.selected.length > 0){
-      console.log('find',this.findOptions,this.restapi.localFind(this.findOptions));
+    if (this.findOptions.selected.length > 0) {
+      this.itemModify.doSearch(this.restapi.localFind(this.findOptions));
     }
- 
+
   }
   ngOnInit() {
     this.itemSelect.listenSelected().subscribe(marking => {
       this.findOptions = {
-        selected:[]
+        selected: []
       };
       if (this.restapi.localItemList) {
         this.restapi.localItemList.items.forEach(item => {
@@ -64,20 +67,20 @@ export class DetailComponent implements OnInit {
                     val[0] = element;
                   } else if (key === 'unit') {
                     val[1] = element;
-                  } else if(key === 'precise'){
-                    this.detailInfo.property.push({bigname:item.name,name:'precise',value:item.property['precise'],pro:'精度:'+item.property['precise']})
+                  } else if (key === 'precise') {
+                    this.detailInfo.property.push({ bigname: item.name, name: 'precise', value: item.property['precise'], pro: '精度:' + item.property['precise'] })
 
-                  } else if(key === 'volt'){
-                    this.detailInfo.property.push({bigname:item.name,name:'volt',value:item.property['volt'],pro:'耐压值:'+item.property['volt']+'v'})
+                  } else if (key === 'volt') {
+                    this.detailInfo.property.push({ bigname: item.name, name: 'volt', value: item.property['volt'], pro: '耐压值:' + item.property['volt'] + 'v' })
                   }
                 }
               }
-              if(val.join('') !== ''){
-                this.detailInfo.property.push({bigname:item.name,name:'value',value:val.join(''),pro:'值:'+ val.join('')});
+              if (val.join('') !== '') {
+                this.detailInfo.property.push({ bigname: item.name, name: 'value', value: val.join(''), pro: '值:' + val.join('') });
               }
             }
-            this.detailInfo.property.push({bigname:item.name,name:'footprint',value:item.footprint, pro:'封装:'+ item.footprint});
-            this.detailInfo.property.push({bigname:item.name,name:'childType',value:item.childType, pro:'子类:' + item.childType});
+            this.detailInfo.property.push({ bigname: item.name, name: 'footprint', value: item.footprint, pro: '封装:' + item.footprint });
+            this.detailInfo.property.push({ bigname: item.name, name: 'childType', value: item.childType, pro: '子类:' + item.childType });
             this.detailInfo['quantity'] = item.quantity;
             this.detailInfo['project'] = item.project || [];
 

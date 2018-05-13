@@ -1,21 +1,11 @@
-.search{
-    width: 180px;
-    position: relative;
-    .searchInput{
-        
-        font-size: 14px;
-        
-       
-       
-       
-       
-    }
-    .searchIcon{
-        position: absolute;
-        top: 11px;
-        left:-27px;
-    }
+:host /deep/{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  .search{
+    font: 14px "微软雅黑";
+    color:#C0C0C0;
+    width: 300px;
+  }
 }
-.gaoji {
-    position: absolute;
-}
+

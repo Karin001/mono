@@ -1,0 +1,16 @@
+:host /deep/ {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+.file-drop-area{
+  margin: 10px;
+  width: 300px;
+  height: 200px;
+  border: 2px dashed #141;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

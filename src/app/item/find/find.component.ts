@@ -14,7 +14,7 @@ export class FindComponent implements OnInit, AfterViewInit, OnDestroy {
   name;
 
   options = [
-   
+
   ]
   filteredOptions: Subscription;
   showOptions;
@@ -24,21 +24,22 @@ export class FindComponent implements OnInit, AfterViewInit, OnDestroy {
     private restapi: RestapiService,
     private itemModify: ItemModifyService
   ) {
-  
-    this.itemModify.getItemUpdate().filter(v=>v==='complate').subscribe(v=>{
-     
-        this.options = this.restapi.localItemList.items.map(item => item.marking);
-        console.log('options',this.options);
-        if(this.filteredOptions){
-          this.filteredOptions.unsubscribe();
-        }
-        
-        this.filteredOptions = this.auto.autoComlate(this.search, this.options)
-      .subscribe(val => this.showOptions = val);
-      })
-      
-    
-    
+
+    this.itemModify.getItemUpdate().filter(v => v === 'complate').subscribe(v => {
+
+      this.options = this.restapi.localItemList.items.map(item => item.marking);
+      console.log('options', this.options);
+      if (this.filteredOptions) {
+        this.filteredOptions.unsubscribe();
+      }
+
+      this.filteredOptions = this.auto.autoComlate(this.search, this.options)
+        .subscribe(val => this.showOptions = val);
+    });
+
+
+
+
 
   }
 
@@ -46,6 +47,22 @@ export class FindComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   ngOnDestroy() {
     this.filteredOptions.unsubscribe();
+  }
+  onSearch(){
+
+    let result = [];
+    if(!this.restapi.localItemList || !this.restapi.localItemList.items){
+      result = [];
+    } else {
+      result = this.restapi.localItemList.items
+      .filter(item => item.marking === this.search.value);
+      console.log(result);
+    }
+    console.log('result',result);
+    this.itemModify.doSearch(result);
+  }
+  onOver(){
+    this.itemModify.searchOver();
   }
   ngAfterViewInit() {
 
