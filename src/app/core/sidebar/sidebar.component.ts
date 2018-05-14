@@ -29,10 +29,7 @@ export class SidebarComponent implements OnInit {
   openDialog() {
     const dialogRef = this.dialog.open(AdditemComponent, {
       width: '850px',
-
-
     });
-    console.log("111111111");
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });

@@ -14,6 +14,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MatDialogModule } from '@angular/material';
 import { find } from 'rxjs/operators/find';
 import { ImpItemsComponent } from './imp-items/imp-items.component';
+import { UpdateComponent } from './update/update.component';
 const routes: Routes = [{
   path: 'itemlist', component: ItemlistComponent,
   children: [{
@@ -36,8 +37,19 @@ const routes: Routes = [{
     NgxDatatableModule,
     RouterModule.forChild(routes),
   ],
-  declarations: [ItemlistComponent, AdditemComponent, FunctionComponent, DetailComponent, FindComponent, ImpItemsComponent],
-  entryComponents: [AdditemComponent],
+  declarations: [
+    ItemlistComponent,
+    AdditemComponent,
+    FunctionComponent,
+    DetailComponent,
+    FindComponent,
+    ImpItemsComponent,
+    UpdateComponent
+  ],
+  entryComponents: [
+    AdditemComponent,
+    UpdateComponent
+  ],
   exports: [FindComponent]
 
 })

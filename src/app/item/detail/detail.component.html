@@ -1,7 +1,17 @@
 <div class="container">
   <div class="property">
     <span>参数</span>
-    <button mat-icon-button><mat-icon svgIcon="modify"></mat-icon></button>
+    <button mat-button [matMenuTriggerFor]="menu"><mat-icon svgIcon="modify"></mat-icon></button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="update('marking')">marking</button>
+      <button mat-menu-item (click)="update('quantity')">quantity</button>
+      <ng-container>
+        <button mat-menu-item (click)="update(item.name)"
+        *ngFor="let item of detailInfo.property">
+        {{item.name}}
+      </button>
+      </ng-container>
+    </mat-menu>
     <div class="chip" *ngIf="detailInfo.property">
       <span  (click)="onclick(item)" [ngClass]="{'unselected': !item.state, 'selected':item.state}" *ngFor="let item of detailInfo.property">{{item.pro}}</span>
 

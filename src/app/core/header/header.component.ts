@@ -47,7 +47,7 @@ export class HeaderComponent implements OnInit {
 
       })
       .do(state => {
-        this.title = `${this.restApi.localItemList.username}的元件小屋`
+        this.title = `${this.restApi.username}的元件小屋`;
         this.canShowLoginBox = false;
         this.canShowUsermenu = true;
       })

@@ -58,6 +58,7 @@ export class RestapiService {
   logged = new BehaviorSubject<number>(null);
   avatarFreshed = new BehaviorSubject<boolean>(null);
   psFreshed = new BehaviorSubject<boolean>(null);
+  username;
   localItemList: ItemListSchema;
   constructor(
     private hc: HttpClient,
@@ -86,7 +87,7 @@ export class RestapiService {
             sumBoolean = sumBoolean && items[element] && (items[element] === options[element]);
             console.log(element,options[element],items[element]);
           }
-         
+
         });
         return sumBoolean;
       }
@@ -144,9 +145,11 @@ export class RestapiService {
       .subscribe(
         (resp: LoginRespInfo) => {
           if (resp.code === 'logged') {
+            this.username = userinfo.username;
             this.logged.next(logState.logged);
             this.router.navigateByUrl('/itemlist');
           } else if (resp.code === 'success') {
+            this.username = userinfo.username;
             this.logged.next(logState.login);
             this.snackBarService.openSnackBar('登录成功');
             this.router.navigateByUrl('/itemlist');
