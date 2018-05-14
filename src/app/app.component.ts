@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild, Renderer2 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RestapiService } from './service/restapi.service';
+import { logState } from './state/state';
 import { ItemFormatFactoryService } from './service/item-format-factory.service';
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ export class AppComponent {
     x: true,
     y: false
   };
+  sidebarDisable = false;
   draggable = true;
   dragging = false;
   drawerStartWidth = 170;
@@ -24,6 +26,15 @@ export class AppComponent {
     public restapi: RestapiService,
 
   ) {
+    this.restapi.getLogState()
+    .filter(state => state !== null)
+    .subscribe(state => {
+      if([logState.logged, logState.login].includes(state)) {
+        this.sidebarDisable = false;
+      } else {
+        this.sidebarDisable = true;
+      }
+    })
     this.tryLogin();
   }
   tryLogin() {

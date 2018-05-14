@@ -13,6 +13,11 @@ export class ImpItemsComponent implements OnInit {
 
   ngOnInit() {
   }
+ 
+  onOver(e){
+    e.stopPropagation();
+    e.preventDefault();
+  }
   onDrop(e) {
     console.log('e', e);
     e.stopPropagation();

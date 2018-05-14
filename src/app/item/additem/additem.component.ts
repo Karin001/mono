@@ -40,23 +40,13 @@ interface FormsData {
 export class AdditemComponent implements OnInit, AfterViewInit {
   @ViewChild('dynamicForm')
   dynamicForm: DynamicFormComponent;
-  newItem;
-  FOOTPRINT = {
-    type: 'input',
-    label: '封装',
-    name: 'footprint',
-    disabled: false,
-    placeholder: '',
-    validations: [Validators.required, this.myValidators.footprint, Validators.maxLength(30)],
-    error: { name: 'footprint', message: '输入限定为英文和数字，或特殊符号横杠-,最多30个字符 ' }
-  };
   bomTypes;
   selectedBomType = 'RES';
   formsPool: { [formType: string]: FieldConfig[] };
   
 
   formFieldConfigs;
-  select;
+
   constructor(
     public dialogRef: MatDialogRef<AdditemComponent>,
     private myValidators: MyValidators,

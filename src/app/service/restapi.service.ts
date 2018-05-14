@@ -11,6 +11,7 @@ import { IfObservable } from 'rxjs/observable/IfObservable';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/take';
+import { SnackBarService } from './snack-bar.service';
 interface IteminoutSchema {
   quantity: number;
   time: Date;
@@ -60,7 +61,8 @@ export class RestapiService {
   localItemList: ItemListSchema;
   constructor(
     private hc: HttpClient,
-    private router: Router
+    private router: Router,
+    private snackBarService: SnackBarService
   ) {
 
   }
@@ -125,12 +127,15 @@ export class RestapiService {
         const resp = e.error as LoginRespInfo;
         if (resp.code === 'mongo_err') {
           this.logged.next(logState.mongo_err);
+          this.snackBarService.openSnackBar('数据库错误');
         } else if (resp.code === 'invalid_user') {
           this.logged.next(logState.invalid_user_ps);
+          this.snackBarService.openSnackBar('用户名或密码错误');
         } else if (resp.code === 'type_err') {
           this.logged.next(logState.invalid_pstype);
         } else if (resp.code === 'invalid_password') {
           this.logged.next(logState.invalid_user_ps);
+          this.snackBarService.openSnackBar('用户名或密码错误');
         }
         this.router.navigateByUrl('/login');
         callback();
@@ -143,6 +148,7 @@ export class RestapiService {
             this.router.navigateByUrl('/itemlist');
           } else if (resp.code === 'success') {
             this.logged.next(logState.login);
+            this.snackBarService.openSnackBar('登录成功');
             this.router.navigateByUrl('/itemlist');
           } else {
             console.log('没考虑到的状态');

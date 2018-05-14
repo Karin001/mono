@@ -36,6 +36,7 @@ export class HeaderComponent implements OnInit {
       .do(state => {
         if (state === logState.logout) {
           this.userAvatarImgSrc = 'assets/sys/dummy_user.jpg';
+          this.title = '某某人的元件小屋';
           this.canShowLoginBox = true;
           this.canShowUsermenu = false;
         }
@@ -46,6 +47,7 @@ export class HeaderComponent implements OnInit {
 
       })
       .do(state => {
+        this.title = `${this.restApi.localItemList.username}的元件小屋`
         this.canShowLoginBox = false;
         this.canShowUsermenu = true;
       })

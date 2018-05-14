@@ -2,10 +2,10 @@
   <mat-list-item  (click)="openDialog()" [ngClass]="{'slimMenu': slimMode, 'menu': !slimMode}">
     <mat-icon  mat-list-icon svgIcon="add"></mat-icon>
     <span mat-line *ngIf="!slimMode">Add</span>
-    <span mat-line *ngIf="!slimMode">增加一个新原件</span>
+    <span mat-line *ngIf="!slimMode">增加一个新元件</span>
   </mat-list-item>
   <mat-list-item *ngIf="_selected"  [ngClass]="{'slimMenu': slimMode, 'menu': !slimMode}">
-    <mat-icon  mat-list-icon svgIcon="fileset"></mat-icon>
+    <mat-icon  mat-list-icon svgIcon="delete"></mat-icon>
     <span mat-line *ngIf="!slimMode">Delete</span>
     <span mat-line *ngIf="!slimMode">删除该元件</span>
   </mat-list-item>
@@ -20,17 +20,17 @@
     <span mat-line *ngIf="!slimMode">减少该元件数量</span>
   </mat-list-item>
   <mat-list-item  [routerLink]="['/itemlist']" [ngClass]="{'slimMenu': slimMode, 'menu': !slimMode}">
-    <mat-icon  mat-list-icon svgIcon="fileset"></mat-icon>
+    <mat-icon  mat-list-icon svgIcon="detail"></mat-icon>
     <span mat-line *ngIf="!slimMode">detail</span>
     <span mat-line *ngIf="!slimMode">展示元件细节</span>
   </mat-list-item>
   <mat-list-item  [routerLink]="['/itemlist/import']" [ngClass]="{'slimMenu': slimMode, 'menu': !slimMode}">
-    <mat-icon  mat-list-icon svgIcon="fileset"></mat-icon>
+    <mat-icon  mat-list-icon svgIcon="import"></mat-icon>
     <span mat-line *ngIf="!slimMode">import</span>
     <span mat-line *ngIf="!slimMode">批量导入元件</span>
   </mat-list-item>
   <mat-list-item [ngClass]="{'slimMenu': slimMode, 'menu': !slimMode}">
-    <mat-icon  mat-list-icon svgIcon="fileset"></mat-icon>
+    <mat-icon  mat-list-icon svgIcon="pro"></mat-icon>
     <span mat-line *ngIf="!slimMode">Pro</span>
     <span mat-line *ngIf="!slimMode">浏览所有项目</span>
   </mat-list-item>

@@ -1,6 +1,7 @@
 <div class="container">
   <div class="property">
-    <h3>参数</h3>
+    <span>参数</span>
+    <button mat-icon-button><mat-icon svgIcon="modify"></mat-icon></button>
     <div class="chip" *ngIf="detailInfo.property">
       <span  (click)="onclick(item)" [ngClass]="{'unselected': !item.state, 'selected':item.state}" *ngFor="let item of detailInfo.property">{{item.pro}}</span>
 
