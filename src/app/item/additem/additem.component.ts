@@ -145,8 +145,9 @@ export class AdditemComponent implements OnInit, AfterViewInit {
         description: description,
         property: _property
       })
-        .concat(this.restApi.updateTypes({baseSets:this.itemFormatData.baseSets
-        ,itemTypes:this.itemFormatData.itemTypes,
+        .concat(this.restApi.updateTypes({
+        baseSets:this.itemFormatData.baseSets,
+        itemTypes:this.itemFormatData.itemTypes,
         unitTypes:this.itemFormatData.unitTypes
         }))
         .subscribe(res => {
@@ -168,8 +169,9 @@ export class AdditemComponent implements OnInit, AfterViewInit {
         footprint: footprint,
         property: _property
       })
-      .concat(this.restApi.updateTypes({baseSets:this.itemFormatData.baseSets
-        ,itemTypes:this.itemFormatData.itemTypes,
+      .concat(this.restApi.updateTypes({
+        baseSets:this.itemFormatData.baseSets,
+        itemTypes:this.itemFormatData.itemTypes,
         unitTypes:this.itemFormatData.unitTypes
         }))
         .subscribe(res => {

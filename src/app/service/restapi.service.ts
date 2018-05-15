@@ -28,7 +28,7 @@ interface ItemSchema {
   out?: IteminoutSchema[];
   project?: string[];
   setUpTime: Date;
-  id?: string;
+  _id?: string;
 }
 
 
@@ -104,6 +104,9 @@ export class RestapiService {
   updateTypes(item: any) {
     return this.hc.post('/api/itemlist/updateTypes', item) as Observable<ResponseType>;
   }
+  updateProperty(property:any) {
+    return this.hc.post('/api/itemlist/updateProperty',property) as Observable<ResponseType>;
+  }
   streamMock_allItem() {
     return this.hc.get(`assets/data/itemlist.json`);
   }
@@ -145,7 +148,9 @@ export class RestapiService {
       .subscribe(
         (resp: LoginRespInfo) => {
           if (resp.code === 'logged') {
-            this.username = userinfo.username;
+
+            this.username = resp.message;
+            console.log('username',this.username);
             this.logged.next(logState.logged);
             this.router.navigateByUrl('/itemlist');
           } else if (resp.code === 'success') {

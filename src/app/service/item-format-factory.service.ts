@@ -52,7 +52,7 @@ export class ItemFormatFactoryService {
       name: 'marking',
       placeholder: '',
       disabled: false,
-      validations: [this.myValidators.eng_numChar, Validators.maxLength(30), this.myValidators.dupilicateMarkingFn()],
+      validations: [this.myValidators.eng_numChar,Validators.required, Validators.maxLength(30), this.myValidators.dupilicateMarkingFn()],
       error: { name: 'eng_numChar,maxlength', message: '输入限定为英文和数字,最多30个字符' }
     },
 
