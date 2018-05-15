@@ -1,3 +1,16 @@
+.menu {
+  height:27px;
+  line-height: 27px;
+}
+mat-icon{
+  height: 20px;
+}
+.unComplate{
+  background: red;
+  &:hover {
+    background: #881E1E;
+  }
+}
 .container{
    height: 100%;
     width: 500px;
@@ -11,7 +24,7 @@
         }
     .chip{
         span{
-            
+
             margin: 5px 10px;
             padding:5px 10px;
             font: 12px "微软雅黑";
@@ -30,14 +43,14 @@
             transition: all .1s;
         }
     }
-    
+
     }
     .inOut{
-      
+
         border-bottom: 1px solid rgb(188, 188, 250);
         display: flex;
-        
-       
+
+
         .childbox{
             display: flex;
             flex:1;
@@ -58,10 +71,10 @@
                         color: rgb(207, 207, 207);
                     }
                 }
-             
+
             }
-        } 
-       
+        }
+
     }
     .program{
 

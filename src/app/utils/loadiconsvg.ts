@@ -45,16 +45,37 @@ export const loadIconSvg = (iconRegistry, sanitizer) => {
   iconRegistry.addSvgIcon(
     'search-disable',
     sanitizer.bypassSecurityTrustResourceUrl(`${iconDir}/search-disable.svg`));
-    iconRegistry.addSvgIcon(
-      'pro',
-      sanitizer.bypassSecurityTrustResourceUrl(`${iconDir}/pro.svg`));
-    iconRegistry.addSvgIcon(
-      'detail',
-      sanitizer.bypassSecurityTrustResourceUrl(`${iconDir}/detail.svg`));
-    iconRegistry.addSvgIcon(
-      'import',
-      sanitizer.bypassSecurityTrustResourceUrl(`${iconDir}/import.svg`));
-      iconRegistry.addSvgIcon(
-        'modify',
-        sanitizer.bypassSecurityTrustResourceUrl(`${iconDir}/modify.svg`));
+  iconRegistry.addSvgIcon(
+    'pro',
+    sanitizer.bypassSecurityTrustResourceUrl(`${iconDir}/pro.svg`));
+  iconRegistry.addSvgIcon(
+    'detail',
+    sanitizer.bypassSecurityTrustResourceUrl(`${iconDir}/detail.svg`));
+  iconRegistry.addSvgIcon(
+    'import',
+    sanitizer.bypassSecurityTrustResourceUrl(`${iconDir}/import.svg`));
+  iconRegistry.addSvgIcon(
+    'modify',
+    sanitizer.bypassSecurityTrustResourceUrl(`${iconDir}/modify.svg`));
+  iconRegistry.addSvgIcon(
+    'delete',
+    sanitizer.bypassSecurityTrustResourceUrl(`${iconDir}/delete.svg`));
+  iconRegistry.addSvgIcon(
+    'precise',
+    sanitizer.bypassSecurityTrustResourceUrl(`${iconDir}/precise.svg`));
+  iconRegistry.addSvgIcon(
+    'volt',
+    sanitizer.bypassSecurityTrustResourceUrl(`${iconDir}/volt.svg`));
+  iconRegistry.addSvgIcon(
+    'footprint',
+    sanitizer.bypassSecurityTrustResourceUrl(`${iconDir}/footprint.svg`));
+  iconRegistry.addSvgIcon(
+    'value',
+    sanitizer.bypassSecurityTrustResourceUrl(`${iconDir}/value.svg`));
+  iconRegistry.addSvgIcon(
+    'childType',
+    sanitizer.bypassSecurityTrustResourceUrl(`${iconDir}/childType.svg`));
+  iconRegistry.addSvgIcon(
+    'marking',
+    sanitizer.bypassSecurityTrustResourceUrl(`${iconDir}/marking.svg`));
 };

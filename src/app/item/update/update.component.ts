@@ -8,6 +8,8 @@ import { ItemModifyService } from '../../service/item-modify.service';
 import { SnackBarService } from '../../service/snack-bar.service';
 import { ItemFormatFactoryService } from '../../service/item-format-factory.service';
 import { ItemFormatDataService } from '../../service/item-format-data.service';
+import { concat } from 'rxjs/operator/concat';
+import 'rxjs/add/operator/concat';
 interface FormsVal {
 
   childType?: String;
@@ -51,7 +53,7 @@ export class UpdateComponent implements OnInit, AfterViewInit {
     this.bomTypes = Object.keys(this.itemFormatData.itemTypes);
     this.formsPool = this.itemFac.itemDynamicConfigs;
     if (this.data['option'] === 'value') {
-      if(this.itemFormatData.unitTypes[this.data['name']]) {
+      if (this.itemFormatData.unitTypes[this.data['name']]) {
         this.itemFac.baseConfigSets.unit.options = this.itemFormatData.unitTypes[this.data['name']] || [];
         this.formFieldConfigs = [
           this.itemFac.baseConfigSets['value'],
@@ -64,8 +66,8 @@ export class UpdateComponent implements OnInit, AfterViewInit {
           this.itemFac.baseConfigSets['submit']
         ]
       }
-      
-     
+
+
     } else if (this.data['option'] === 'childType') {
       this.itemFac.baseConfigSets.childType.options = this.itemFormatData.itemTypes[this.data['name']] || [];
       this.formFieldConfigs = [
@@ -100,7 +102,7 @@ export class UpdateComponent implements OnInit, AfterViewInit {
 
   }
   onSubmit(ev: FormsData) {
-    let updateOptions = {};
+    const updateOptions = {};
 
     for (const key in ev.formVal) {
       if (ev.formVal.hasOwnProperty(key)) {
@@ -110,17 +112,28 @@ export class UpdateComponent implements OnInit, AfterViewInit {
     }
     updateOptions['item_id'] = this.restApi.localItemList.items
       .find(item => item.marking === this.data.marking)._id;
-    if(updateOptions['item_customtag']) updateOptions['item_childType'] = updateOptions['item_customtag'];
-    console.log('updateOptions',updateOptions);
+    if (updateOptions['item_customtag']) {
+      this.itemFormatData.itemTypes[this.data['name']].pop();
+      this.itemFormatData.itemTypes[this.data['name']].push(updateOptions['item_customtag']);
+      this.itemFormatData.itemTypes[this.data['name']].push('使用自定义子类');
+      updateOptions['item_childType'] = updateOptions['item_customtag'];
+    }
+    console.log('updateOptions', updateOptions);
     this.restApi.updateProperty(updateOptions)
-    .subscribe(res => {
-      console.log(res);
-      if (res.code === 'success') {
-        this.snackBar.openSnackBar('sucess');
-        this.itemModify.doModify();
+      .concat(this.restApi.updateTypes({
+        baseSets: this.itemFormatData.baseSets,
+        itemTypes: this.itemFormatData.itemTypes,
+        unitTypes: this.itemFormatData.unitTypes
+      }))
+      .subscribe(res => {
+        console.log(res);
+        if (res.code === 'success') {
+          this.snackBar.openSnackBar('sucess');
+          this.itemModify.doModify();
 
-      }
-    });
+        }
+      });
+    this.dialogRef.close();
   }
 
 }

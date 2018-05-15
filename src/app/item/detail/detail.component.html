@@ -3,12 +3,12 @@
     <span>参数</span>
     <button *ngIf="selectedMarking" mat-button [matMenuTriggerFor]="menu"><mat-icon svgIcon="modify"></mat-icon></button>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="update('marking')">marking</button>
-      <button mat-menu-item (click)="update('quantity')">quantity</button>
+      <button class="menu" mat-menu-item (click)="update('marking')"><mat-icon svgIcon="marking"></mat-icon> <span>marking</span></button>
       <ng-container>
-        <button mat-menu-item (click)="update(item.name)"
+        <button [ngClass]="{'menu': true, unComplate: checkPro[item.name]}" mat-menu-item (click)="update(item.name)"
         *ngFor="let item of detailInfo.property">
-        {{item.name}}
+        <mat-icon [svgIcon]="item.name"></mat-icon>
+        <span>{{item.name}}</span>
       </button>
       </ng-container>
     </mat-menu>
