@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input,ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { UpdateComponent } from '../update/update.component';
 import { ItemSelectService } from '../../service/item-select.service';
@@ -9,7 +9,8 @@ import 'rxjs/add/operator/mergeMap';
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
-  styleUrls: ['./detail.component.scss']
+  styleUrls: ['./detail.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DetailComponent implements OnInit {
   selectedMarking;
@@ -159,7 +160,7 @@ export class DetailComponent implements OnInit {
   }
   openDialog(option, value) {
     const dialogRef = this.dialog.open(UpdateComponent, {
-      width: '550px',
+      width: '500px',
       data: {
         marking: this.selectedMarking,
         name: this.selectedName,

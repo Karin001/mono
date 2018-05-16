@@ -1,7 +1,10 @@
 <div class="container">
   <div class="property">
-    <span>参数</span>
-    <button *ngIf="selectedMarking" mat-button [matMenuTriggerFor]="menu"><mat-icon svgIcon="modify"></mat-icon></button>
+    <div class="title">
+      <span>参数</span>
+      <button class="triger-button" *ngIf="selectedMarking" mat-button [matMenuTriggerFor]="menu"><mat-icon svgIcon="modify"></mat-icon>edit</button>
+    </div>
+    
     <mat-menu #menu="matMenu">
       <button class="menu" mat-menu-item (click)="update('marking')"><mat-icon svgIcon="marking"></mat-icon> <span>marking</span></button>
       <ng-container>
