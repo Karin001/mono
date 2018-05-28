@@ -15,6 +15,8 @@ import { MatDialogModule } from '@angular/material';
 import { find } from 'rxjs/operators/find';
 import { ImpItemsComponent } from './imp-items/imp-items.component';
 import { UpdateComponent } from './update/update.component';
+import { InOutComponent } from './in-out/in-out.component';
+import { DeleteComponent } from './delete/delete.component';
 const routes: Routes = [{
   path: 'itemlist', component: ItemlistComponent,
   children: [{
@@ -44,11 +46,15 @@ const routes: Routes = [{
     DetailComponent,
     FindComponent,
     ImpItemsComponent,
-    UpdateComponent
+    UpdateComponent,
+    InOutComponent,
+    DeleteComponent
   ],
   entryComponents: [
     AdditemComponent,
-    UpdateComponent
+    UpdateComponent,
+    InOutComponent,
+    DeleteComponent
   ],
   exports: [FindComponent]
 

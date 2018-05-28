@@ -1,0 +1,33 @@
+.in-out-box{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .fun-up{
+        font-size: 25px;
+        background-color:rgb(255, 0, 0)
+    }
+    .fun-down{
+        font-size: 25px;
+        background-color:rgb(0, 0, 0) 
+    }
+    .fun-box{
+
+    }
+    .warning {
+        color: red;
+      
+    }
+    &>*{
+        margin:5px;
+    }
+    .submit-btn:hover:not([disabled]){
+        &:after{
+            content:'之后就不能反悔了哦！';
+            padding-right:20px;
+            background-image:url('../../../assets/zixin.png');
+            background-repeat:no-repeat;
+            background-position: bottom right;
+        }
+    }
+  
+}

@@ -1,0 +1,12 @@
+<div class="deleteBox">
+
+  
+  <p>该元件关联项目如下</p>
+  <ul>
+    <li></li>
+  </ul>
+  <mat-form-field>
+    <input matInput placeholder="敏感操作，请输入密码" type="password" #ps>
+  </mat-form-field>
+  <button mat-button (click)=onSubmit(ps.value) [disabled]="!ps.value">确定删除</button>
+</div>

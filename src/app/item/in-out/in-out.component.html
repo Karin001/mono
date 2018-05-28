@@ -1,0 +1,13 @@
+<form [formGroup]="form"  class="in-out-box">
+  <p class="showBox">当前数量：{{localQuantity}}</p>
+  <p [ngClass]="{'showBox':true, 'warning': warning==='over range!' }"> 操作后的数量：{{form.valid?warning==='over range!'?'入不敷出了哦':quantityAfterChange:'请检查您输入的格式'}}</p>
+  <mat-form-field>
+    <input matInput [placeholder]="dir==='in'?'进货：':'出货：'" formControlName="quantity">
+  </mat-form-field>
+  <div class="fun-box">
+    <button mat-mini-fab class="fun-up" (click)="quantityChn('up')">+</button>
+    <button mat-mini-fab class="fun-down" (click)="quantityChn('down')">-</button>
+  </div>
+ 
+  <button mat-button class="submit-btn" (click)="onSubmit()" [disabled]="submitDis">确定</button>
+</form>

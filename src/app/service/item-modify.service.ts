@@ -4,12 +4,14 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 @Injectable()
 export class ItemModifyService {
   itemModify = new BehaviorSubject<String>(null);
+ 
   complate = new BehaviorSubject<string>(null);
   search = new BehaviorSubject<any>(null);
   constructor() { }
-  doModify() {
-    this.itemModify.next('modified');
+  doModify(souce='modified') {
+    this.itemModify.next(souce);
   }
+
   updateComplate() {
     this.complate.next('complate');
   }

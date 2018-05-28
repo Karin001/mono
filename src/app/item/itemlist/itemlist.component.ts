@@ -79,6 +79,11 @@ export class ItemlistComponent implements OnInit {
     this.itemModify.getItemState().subscribe(state => {
       if (state === 'modified') {
         this.getDatas();
+      } else if(state === 'localModified') {
+        console.log(1);
+        this.rows = [...this.restapi.localItemList.items];
+      } else if(state === 'loading') {
+        this.progressBarSet = true;
       }
     });
     this.itemModify.getSearchState().subscribe(state => {

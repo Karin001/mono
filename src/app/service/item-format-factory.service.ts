@@ -125,7 +125,7 @@ export class ItemFormatFactoryService {
       name: 'precise',
       disabled: false,
       placeholder: '',
-      options: ['1%', '5%', '10%', '15%'],
+      options: ['1%', '5%', '10%', '15%','20%'],
       validations: [Validators.required]
     },
     'quantity': {

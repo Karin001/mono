@@ -11,10 +11,18 @@ import { IfObservable } from 'rxjs/observable/IfObservable';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/concat';
 import { SnackBarService } from './snack-bar.service';
+import { ItemModifyService } from './item-modify.service';
 interface IteminoutSchema {
   quantity: number;
   time: Date;
+}
+interface InOutSchema {
+  in?:IteminoutSchema;
+  out?:IteminoutSchema;
+  itemid:string;
+  quantity:number;
 }
 interface ItemSchema {
   name: string;
@@ -63,7 +71,8 @@ export class RestapiService {
   constructor(
     private hc: HttpClient,
     private router: Router,
-    private snackBarService: SnackBarService
+    private snackBarService: SnackBarService,
+    private itemModify: ItemModifyService
   ) {
 
   }
@@ -96,16 +105,31 @@ export class RestapiService {
 
   }
   addItem(item: ItemSchema): Observable<ResponseType> {
+    this.localItemList.items.push(item);
+    console.log(this.localItemList.items.map(item=>item.marking));
+    this.itemModify.doModify('localModified');
     return this.hc.post('/api/itemlist/add', item) as Observable<ResponseType>;
   }
   addFirstItem(item: ItemSchema): Observable<ResponseType> {
+    
     return this.hc.post('/api/itemlist/addFirst', item) as Observable<ResponseType>;
+  }
+  in_outQantity(inOrOut:InOutSchema){
+    this.itemModify.doModify('loading');
+    return this.hc.post('api/itemlist/quantity',inOrOut) as Observable<ResponseType>;
   }
   updateTypes(item: any) {
     return this.hc.post('/api/itemlist/updateTypes', item) as Observable<ResponseType>;
   }
+
   updateProperty(property:any) {
     return this.hc.post('/api/itemlist/updateProperty',property) as Observable<ResponseType>;
+  }
+  deleteItem(itemid,password) {
+    this.itemModify.doModify('loading');
+   return this.hc.post('/api/psCheck',{password})
+   .filter((res:ResponseType)=>res.code ==='success')
+   .concat(this.hc.post('/api/itemlist/delete',{itemid})) as Observable<ResponseType>;
   }
   streamMock_allItem() {
     return this.hc.get(`assets/data/itemlist.json`);

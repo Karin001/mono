@@ -1,24 +1,23 @@
 <mat-nav-list class="sidebar">
-  <mat-list-item  (click)="openDialog()" [ngClass]="{'slimMenu': slimMode, 'menu': !slimMode}">
+  <mat-list-item  (click)="openDialog_add()" [ngClass]="{'slimMenu': slimMode, 'menu': !slimMode}">
     <mat-icon  mat-list-icon svgIcon="add"></mat-icon>
     <span mat-line *ngIf="!slimMode">Add</span>
     <span mat-line *ngIf="!slimMode">增加一个新元件</span>
   </mat-list-item>
-  <mat-list-item *ngIf="_selected"  [ngClass]="{'slimMenu': slimMode, 'menu': !slimMode}">
+  <mat-list-item *ngIf="_selected" (click)="openDialog_delete()" [ngClass]="{'slimMenu': slimMode, 'menu': !slimMode}">
     <mat-icon  mat-list-icon svgIcon="delete"></mat-icon>
     <span mat-line *ngIf="!slimMode">Delete</span>
     <span mat-line *ngIf="!slimMode">删除该元件</span>
   </mat-list-item>
-  <mat-list-item *ngIf="_selected"  [ngClass]="{'slimMenu': slimMode, 'menu': !slimMode}">
+  <mat-list-item *ngIf="true" [matMenuTriggerFor]="menu" [ngClass]="{'slimMenu': slimMode, 'menu': !slimMode}">
     <mat-icon  mat-list-icon svgIcon="fileset"></mat-icon>
-    <span mat-line *ngIf="!slimMode">In</span>
-    <span mat-line *ngIf="!slimMode">增加该元件数量</span>
+    <span mat-line *ngIf="!slimMode">In-Out</span>
+    <span mat-line *ngIf="!slimMode">调整该元件数量</span>
   </mat-list-item>
-  <mat-list-item *ngIf="_selected"   [ngClass]="{'slimMenu': slimMode, 'menu': !slimMode}">
-    <mat-icon  mat-list-icon svgIcon="fileset"></mat-icon>
-    <span mat-line *ngIf="!slimMode">Out</span>
-    <span mat-line *ngIf="!slimMode">减少该元件数量</span>
-  </mat-list-item>
+  <mat-menu #menu="matMenu" xPosition='before'>
+    <button mat-menu-item (click)="openDialog_in_out('out')">出库</button>
+    <button mat-menu-item (click)="openDialog_in_out('in')">入库</button>
+  </mat-menu>
   <mat-list-item  [routerLink]="['/itemlist']" [ngClass]="{'slimMenu': slimMode, 'menu': !slimMode}">
     <mat-icon  mat-list-icon svgIcon="detail"></mat-icon>
     <span mat-line *ngIf="!slimMode">detail</span>

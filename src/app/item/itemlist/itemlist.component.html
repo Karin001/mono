@@ -1,5 +1,5 @@
 <div class="table-container">
-  <mat-progress-bar mode="indeterminate" *ngIf="progressBarSet"></mat-progress-bar>
+  <mat-progress-bar mode="indeterminate" *ngIf="progressBarSet" style="height: 3px"></mat-progress-bar>
   <ngx-datatable class="datatable"
     [ngClass]="{'dark':dackMode === true, 'material':dackMode === false}"
     [headerHeight]="50"

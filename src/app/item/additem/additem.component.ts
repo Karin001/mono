@@ -135,7 +135,7 @@ export class AdditemComponent implements OnInit, AfterViewInit {
 
 
     if (this.restApi.localItemList && this.restApi.localItemList['items']) {
-      this.restApi.addItem({
+      const item= {
         name: this.selectedBomType,
         quantity: _quantity,
         marking: marking,
@@ -144,7 +144,9 @@ export class AdditemComponent implements OnInit, AfterViewInit {
         childType: childType,
         description: description,
         property: _property
-      })
+      };
+     
+      this.restApi.addItem( item )
         .concat(this.restApi.updateTypes({
         baseSets:this.itemFormatData.baseSets,
         itemTypes:this.itemFormatData.itemTypes,
@@ -153,9 +155,11 @@ export class AdditemComponent implements OnInit, AfterViewInit {
         .subscribe(res => {
           console.log(res);
           if (res.code === 'success') {
-            this.snackBar.openSnackBar('sucess');
+           
+            this.snackBar.openSnackBar('数据已同步');
+          } else {
+            this.snackBar.openSnackBar('数据同步失败');
             this.itemModify.doModify();
-
           }
         });
     } else {
@@ -177,9 +181,11 @@ export class AdditemComponent implements OnInit, AfterViewInit {
         .subscribe(res => {
           console.log(res);
           if (res.code === 'success') {
-            this.snackBar.openSnackBar('sucess');
+            this.snackBar.openSnackBar('数据已更新');
             this.itemModify.doModify();
 
+          } else {
+            this.snackBar.openSnackBar('数据同步失败');
           }
         });
     }
