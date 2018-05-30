@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as XLSX from 'xlsx';
-
+const colCode = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+  'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 interface ValidatorFns {
   marking: Function;
   value?: Function;
@@ -12,22 +13,82 @@ interface ValidatorFns {
   description: Function;
 }
 class IMPdataObj {
+  _souce: XLSX.Sheet;
   _range: string[] = [];
+  _startCol = '';
+  _startColIndex = 0;
+  _startRow = '';
   _itemsNum: number = 0;
-  _valid: boolean = false;
-  _errorMessage: { code: string; message: string };
-  _rowCode = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-  markingAddr: string = '';
-  validatorFns: ValidatorFns;
-  footprintAddr: string = '';
-  nameAddr: string = '';
-  quantityAddr: string = '';
-  valueAddr: string = '';
-  preciseAddr: string = '';
-  manufacturerAddr: string = '';
-  childTypeAddr: string = '';
-  descriptionAddr: string = '';
-  constructor() {
+  _valid: boolean = true;
+  _errorMessage = [];
+  _requiredPro = ['marking', 'quantity', 'footprint', 'name'];
+  _optionPro = ['value', 'precise', 'childType', 'describe'];
+  impProperties = {};
+  distItems = [];
+  constructor(souce) {
+    this._souce = souce;
+    this._range = this._souce['!ref'].split(':');
+    this.getStartPoint();
+    this.chargePro();
+  }
+  getStartPoint() {
+    this._startCol = this._range[0][0];
+    this._startColIndex = colCode.indexOf(this._startCol);
+    this._startRow = this._range[0][1];
+  }
+  getCol(index) {
+    return colCode[index];
+  }
+  chargePro() {
+    let i = this._startColIndex;
+    while (this._souce[this.getCol(i) + (this._startRow + '')] && this._souce[this.getCol(i) + (this._startRow + '')]['v']) {
+      const col_addr = this.getCol(i);
+      const ele = this._souce[col_addr + (this._startRow + '')];
+      console.log('ele', ele);
+      ele['v'] = ele['v'].toLowerCase();
+      if(this.impProperties.hasOwnProperty(ele['v'])) {
+        this._valid = false;
+        this._errorMessage.push(`${ele['v']} duplicate`);
+        throw new Error(this._errorMessage.join(';'));
+      }
+      this.impProperties[ele['v']] = {};
+      this.impProperties[ele['v']]['col_addr'] = col_addr;
+      i++;
+    }
+  }
+  chargeItem() {
+    let i = 0;
+    const firstDataRow = Number(this._startRow) + 1;
+    console.log('markingCode', this.impProperties['marking']['col_addr'] + (i + firstDataRow));
+    console.log('marking', this._souce[this.impProperties['marking']['col_addr'] + (i + firstDataRow)]);
+    while (
+      this._souce[this.impProperties['marking']['col_addr'] + (i + firstDataRow)] &&
+      this._souce[this.impProperties['marking']['col_addr'] + (i + firstDataRow)]['v']
+    ) {
+      this.distItems[i] = {};
+      for (const key in this.impProperties) {
+
+        if (this.impProperties.hasOwnProperty(key)) {
+
+          if (this._souce[this.impProperties[key]['col_addr'] + (i + firstDataRow)] &&
+            this._souce[this.impProperties[key]['col_addr'] + (i + firstDataRow)]['v']) {
+              this.distItems[i][key] = this._souce[this.impProperties[key]['col_addr'] + (i + firstDataRow)]['v'];
+          }
+          //
+
+        }
+      }
+      i++;
+    }
+  }
+  propertyRequireVd() {
+
+    this._requiredPro.forEach(property => {
+      if (!Object.keys(this.impProperties).includes(property)) {
+        this._valid = false;
+        this._errorMessage.push(`require ${property}`);
+      }
+    });
 
   }
 }
@@ -37,7 +98,7 @@ class IMPdataObj {
   styleUrls: ['./imp-items.component.scss']
 })
 export class ImpItemsComponent implements OnInit {
-  dataObj: IMPdataObj = new IMPdataObj();
+  dataObj: IMPdataObj;
   workbook: XLSX.WorkBook;
   name: string;
   sheet: XLSX.Sheet;
@@ -48,28 +109,7 @@ export class ImpItemsComponent implements OnInit {
   }
 
   charge() {
-    const firstIndex = this.dataObj._rowCode.indexOf(this.dataObj._range[0][0]);
-    if (firstIndex === -1) {
-      throw new Error('range outside!');
 
-    }
-
-    for (let i = firstIndex; this.sheet[i] !== ''; i++) {
-      const ele = this.sheet[this.dataObj._rowCode[i]] as string;
-      if (Object.keys(this.dataObj).includes(ele['v'] + 'Addr')) {
-        this.dataObj[ele['v'] + 'Addr'] = this.dataObj._rowCode[i];
-      }
-    }
-    if (this.dataObj.markingAddr === '' ||
-      this.dataObj.quantityAddr === '' ||
-      this.dataObj.nameAddr === '' ||
-      this.dataObj.footprintAddr === ''
-    ) {
-      this.dataObj._valid = false;
-      throw new Error('you must follw the format');
-    } else {
-      this.dataObj._valid = true;
-    }
   }
   onOver(e) {
     e.stopPropagation();
@@ -88,9 +128,16 @@ export class ImpItemsComponent implements OnInit {
       this.name = this.workbook.SheetNames[0];
       console.log('sheet1', this.workbook.Sheets[this.name]);
       this.sheet = this.workbook.Sheets[this.name];
-      this.dataObj._range = this.sheet['!ref'].split(':');
-      this.charge();
+      this.dataObj = new IMPdataObj(this.sheet);
+      console.log(this.dataObj.impProperties);
+      this.dataObj.propertyRequireVd();
+      console.log(this.dataObj._valid, this.dataObj._errorMessage);
+      if (!this.dataObj._valid) {
+        throw new Error(this.dataObj._errorMessage.join(';'));
+      }
+      this.dataObj.chargeItem();
       console.log(this.dataObj);
+
 
 
       /* DO SOMETHING WITH workbook HERE */
