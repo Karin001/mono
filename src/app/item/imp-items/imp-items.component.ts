@@ -48,7 +48,7 @@ export class ImpItemsComponent implements OnInit {
   }
 
   charge() {
-    const firstIndex = this.dataObj._rowCode.indexOf(this.dataObj._range[0]);
+    const firstIndex = this.dataObj._rowCode.indexOf(this.dataObj._range[0][0]);
     if (firstIndex === -1) {
       throw new Error('range outside!');
 
