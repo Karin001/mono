@@ -1,7 +1,7 @@
 const BASESETS = {
   'RES': ['marking', 'childType', 'value', 'unit', 'footprint', 'precise', 'quantity', 'description', 'customtag', 'submit'],
   'CAP': ['marking', 'childType', 'value', 'unit', 'volt', 'footprint', 'quantity', 'description', 'customtag', 'submit'],
-  'DIODE': ['marking', 'childType', 'value', 'footprint', 'quantity', 'description', 'customtag', 'submit'],
+  'DIODE': ['marking', 'childType',  'footprint', 'quantity', 'description', 'customtag', 'submit'],
   'INDUCTOR': ['marking', 'childType', 'value', 'unit', 'footprint', 'quantity', 'description', 'customtag', 'submit'],
   'TRIODE': ['marking', 'childType', 'description', 'footprint', 'quantity', 'customtag', 'submit'],
   'MOS': ['marking', 'childType', 'description', 'footprint', 'quantity', 'customtag', 'submit'],

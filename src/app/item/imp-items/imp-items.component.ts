@@ -27,7 +27,7 @@ class IMPdataObj {
   _errorMessage = [];
   _hintMessage = [];
   _requiredPro = ['marking', 'quantity', 'footprint', 'name'];
-  _optionPro = ['value', 'precise', 'childType', 'description', 'volt', 'brand'];
+  _optionPro = ['value', 'precise', 'volt', 'brand','description'];
   impProperties = {};
   usedMarking = [];
   useditemTypes = {}
@@ -93,50 +93,50 @@ class IMPdataObj {
   }
   dupOrMissVd() {
     const Kulaberu = this.distItems
-    .filter(item => {
-      if(!item['marking']) {
-        this._valid = false;
-        this._errorMessage.push('缺少marking');
-        return false;
-      } else {
-        return true;
-      }
-    })
-    .map(item=>item['marking']);
+      .filter(item => {
+        if (!item['marking']) {
+          this._valid = false;
+          this._errorMessage.push('缺少marking');
+          return false;
+        } else {
+          return true;
+        }
+      })
+      .map(item => item['marking']);
     const impName = this.distItems
-    .filter(item=>{
-      if(!item['name']) {
-        this._valid = false;
-        this._errorMessage.push('缺少name');
-        return false;
-      } else {
-        return true;
-      }
-    })
-    .map(item=> item['name']);
+      .filter(item => {
+        if (!item['name']) {
+          this._valid = false;
+          this._errorMessage.push('缺少name');
+          return false;
+        } else {
+          return true;
+        }
+      })
+      .map(item => item['name']);
 
-   if(Array.from(new Set(Kulaberu)).length === Kulaberu.length  ) {
-    this._valid =false;
-    this._errorMessage.push('你提交的marking有重复！')
-    throw new Error(this._errorMessage.join(';'));
-   } 
-   Kulaberu.forEach(marking => {
-     if(this.usedMarking.includes(marking)){
-       this._valid = false;
-       this._errorMessage.push(`${marking}与数据库中的重复了`)
-     }
-   });
-   impName.forEach(name => {
-    if(!Object.keys(this.useditemTypes).includes(name)){
-      console.log('useditemTypes',this.useditemTypes);
-      this._hintMessage.push(`新增主类：${name}`);
+    if (Array.from(new Set(Kulaberu)).length === Kulaberu.length) {
+      this._valid = false;
+      this._errorMessage.push('你提交的marking有重复！')
+      throw new Error(this._errorMessage.join(';'));
     }
-  });
- 
-   
+    Kulaberu.forEach(marking => {
+      if (this.usedMarking.map(item=>item.toUpperCase()).includes(marking.toUpperCase())) {
+        this._valid = false;
+        this._errorMessage.push(`${marking.toUpperCase()}与数据库中的重复了`)
+      }
+    });
+    Array.from(new Set(impName)).forEach(name => {
+      if (!Object.keys(this.useditemTypes).map(item=> item.toUpperCase()).includes(name.toUpperCase())) {
+        console.log('useditemTypes', this.useditemTypes);
+        this._hintMessage.push(`新增主类：${name.toUpperCase()}`);
+      }
+    });
+
+
   }
   itemVd(pro, item) {
-    
+
     const tempValue = {};
     if (['marking', 'footprint', 'name'].includes(pro)) {
 
@@ -144,6 +144,9 @@ class IMPdataObj {
         this._valid = false;
         this._errorMessage.push(`${item['marking']}的${pro}校验失败:${item[pro]}`);
       }
+      item[pro] = item[pro].toUpperCase();
+      
+
 
     } else if (pro === 'quantity') {
       if (!MyValidators.quantityForImp(item[pro])) {
@@ -151,9 +154,8 @@ class IMPdataObj {
         this._errorMessage.push(`${item['marking']}的${pro}校验失败:${item[pro]}`);
       }
     } else if (pro === 'value') {
-      console.log('typeIn2',item['name']);
       if (['RES', 'INDUCTOR', 'CAP', 'OSCILLATOR'].includes(item['name'])) {
-          console.log('typeIn',item['name']);
+        console.log('typeIn', item['name']);
 
         if (MyValidators.valAndReSetForImp(item[pro], item['name'], tempValue)) {
           console.log('tempvalue$$$', tempValue);
@@ -169,26 +171,29 @@ class IMPdataObj {
           this._valid = false;
           this._errorMessage.push(`${item['marking']}的${pro}校验失败:${item[pro]}`);
         }
+        if(!item['description']){
+          item['description'] = item[pro];
+        }
       }
 
     } else if (pro === 'volt') {
-      if ( !MyValidators.voltForImp(item[pro])) {
+      if (!MyValidators.voltForImp(item[pro])) {
         this._valid = false;
         this._errorMessage.push(`${item['marking']}的${pro}校验失败:${item[pro]}`);
       }
     } else if (pro === 'precise') {
-      if(!MyValidators.preciseForImp(item[pro])) {
+      if (!MyValidators.preciseForImp(item[pro])) {
         this._valid = false;
         this._errorMessage.push(`${item['marking']}的${pro}校验失败:${item[pro]}`);
       }
     }
-    // else if(['childType','brand']){
-    //   if(item[pro]['length']>=20){
-    //     this._valid = false;
-    //     this._errorMessage.push(`${pro}校验失败:${item[pro]}`);
+    else if (['brand'].includes(pro)) {
+      if (item[pro]['length'] >= 30) {
+        this._valid = false;
+        this._errorMessage.push(`${pro}校验失败:${item[pro]}`);
 
-    //   }
-    // }
+      }
+    }
 
   }
   propertyRequireVd() {
@@ -205,7 +210,7 @@ class IMPdataObj {
       }
     })
     Object.keys(this.impProperties).forEach(pro => {
-      if(![...this._optionPro, ...this._requiredPro].includes(pro)){
+      if (![...this._optionPro, ...this._requiredPro].includes(pro)) {
         this._hintMessage.push(`unuseful ${pro}`)
       }
     })
@@ -254,8 +259,8 @@ export class ImpItemsComponent implements OnInit {
       this.sheet = this.workbook.Sheets[this.name];
       const localItem =
         this.restApi.localItemList && this.restApi.localItemList.items ?
-         this.restApi.localItemList.items:
-         [];
+          this.restApi.localItemList.items :
+          [];
       this.dataObj = new IMPdataObj(this.sheet, localItem, this.itemFormatData.itemTypes);
       console.log(this.dataObj.impProperties);
       this.dataObj.propertyRequireVd();
@@ -266,7 +271,7 @@ export class ImpItemsComponent implements OnInit {
       this.dataObj.chargeItem();
       console.log(this.dataObj);
       this.dataObj.dupOrMissVd();
-      if(!this.dataObj._valid) {
+      if (!this.dataObj._valid) {
         throw new Error(this.dataObj._errorMessage.join(';'));
       } else {
         console.log(this.dataObj._hintMessage);
@@ -276,7 +281,15 @@ export class ImpItemsComponent implements OnInit {
         for (const pro in item) {
           if (item.hasOwnProperty(pro)) {
             this.dataObj.itemVd(pro, item);
-
+            if(pro === 'name'){
+              if(!Object.keys(this.itemFormatData.baseSets).includes(item[pro])){
+                this.itemFormatData.baseSets[item[pro]].push('marking', 'childType', 'footprint', 'quantity', 'description', 'customtag');
+                if(item['volt']){
+                  this.itemFormatData.baseSets[item[pro]].push('volt');
+                }
+                this.itemFormatData.baseSets[item[pro]].push('submit')
+              }
+            }
           }
         }
       });

@@ -34,6 +34,13 @@ export class FormAutoInputComponent implements OnInit, AfterViewInit{
   }
 
   ngOnInit() {
+    this.group.controls[this.config.name].valueChanges.subscribe(v => {
+      console.log(v);
+      if (v !== v.toUpperCase()) {
+        this.group.controls[this.config.name].setValue(v.toUpperCase());
+      }
+
+    })
     this.itemModify.getItemUpdate().filter(v => v === 'complate').subscribe(v => {
 
                   this.options = this.restapi.localItemList.items.map(item => item.footprint);

@@ -15,7 +15,7 @@ function regCheck(c: FormControl, reg: RegExp, name: string, message: string) {
 function norPointForImp(value:string) {
   if(value.length>=10){
     return false;
-  } else if(!/^[0-9]+(\.[0-9]{1,2})?$/.test(value)) {
+  } else if(!/^[0-9]+(\.[0-9]{1,5})?$/.test(value)) {
     return false;
   } else {
     return true;
@@ -59,7 +59,7 @@ export class MyValidators {
   static norPointForImp(value:string) {
     if(value.length>=10){
       return false;
-    } else if(!/^[0-9]+(.[0-9]{1,2})?$/.test(value)) {
+    } else if(!/^[0-9]+(.[0-9]{1,5})?$/.test(value)) {
       return false;
     } else {
       return true;
@@ -161,10 +161,10 @@ export class MyValidators {
     return regCheck(c, /^(0|[1-9][0-9]*)$/, 'quantity', '请输入正确数量');
   }
   footprint(c: FormControl): ValidationErrors {
-    return regCheck(c, /^[A-Za-z0-9\-\.()\/\\_:]+$/, 'footprint', '请输入正确格式封装');
+    return regCheck(c, /^[A-Za-z0-9\-\.()\/\\_:]+$/, 'footprint', '字符范围[Aa-Zz 0-9 - . () / \ _ :]');
   }
   num_point(c: FormControl): ValidationErrors {
-    return regCheck(c, /^[0-9]+(\.[0-9]{1,2})?$/, 'num_point', '请输入数字，最多两位小数');
+    return regCheck(c, /^[0-9]+(\.[0-9]{1,5})?$/, 'num_point', '请输入数字，最多五位小数');
   }
   volt(c: FormControl): ValidationErrors {
     return regCheck(c, /^[0-9]{1,3}$/, 'volt', '请输入三位以下数字');

@@ -46,14 +46,22 @@ export class ItemFormatFactoryService {
       validations: [Validators.required, this.myValidators.eng_numChar, Validators.maxLength(30), this.myValidators.dupilicateTypeFn()],
       error: { name: 'eng_numChar,maxlength', message: '输入限定为英文和数字,最多30个字符' }
     },
+    'brand':{
+      type: 'input',
+      label: '品牌',
+      name: 'brand',
+      placeholder: '',
+      disabled: false,
+      validations: [Validators.maxLength(20)],
+    },
     'marking': {
       type: 'input',
       label: '型号',
       name: 'marking',
       placeholder: '',
       disabled: false,
-      validations: [this.myValidators.eng_numChar,Validators.required, Validators.maxLength(30), this.myValidators.dupilicateMarkingFn()],
-      error: { name: 'eng_numChar,maxlength', message: '输入限定为英文和数字,最多30个字符' }
+      validations: [this.myValidators.footprint,Validators.required, Validators.maxLength(30), this.myValidators.dupilicateMarkingFn()],
+      error: { name: 'footprint,maxlength', message: '含非法字符,或者您超过了30个字符' }
     },
 
     'childType': {
@@ -90,7 +98,7 @@ export class ItemFormatFactoryService {
       disabled: false,
       placeholder: '',
       validations: [Validators.required, this.myValidators.num_point, Validators.maxLength(10)],
-      error: { name: 'num_point,maxlength', message: '输入限定为10位以下数字，最多两位小数' }
+      error: { name: 'num_point,maxlength', message: '输入限定为10位以下数字，最多五位小数' }
     },
     'unit': {
       type: 'radio',
