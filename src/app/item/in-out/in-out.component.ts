@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { MyValidators } from '../../service/myValidators';
-import { RestapiService } from '../../service/restapi.service';
+import { RestapiService,InOutItemsSchema } from '../../service/restapi.service';
 import { ItemModifyService } from '../../service/item-modify.service';
 import { SnackBarService } from '../../service/snack-bar.service';
 import { ItemSelectService } from '../../service/item-select.service';
@@ -14,15 +14,15 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['./in-out.component.scss']
 })
 export class InOutComponent implements OnInit, OnDestroy {
-  selectedItem;
+  selectedItems;
   form: FormGroup;
   monitor_value$: Subscription;
   monitor_valid$: Subscription;
   dir: string;
-  submitDis = false;
-  localQuantity = 1000;
-  quantityAfterChange;
-  warning: string;
+  submitDis = true;
+  localQuantities;
+  quantitiesAfterChange;
+  warnings: string[];
   get quantity() {
     return this.form.controls['quantity'];
   };
@@ -39,35 +39,40 @@ export class InOutComponent implements OnInit, OnDestroy {
     private itemSel: ItemSelectService,
     private fb: FormBuilder
   ) {
-    this.dir = this.data;
+    this.dir = this.data.dir;
     this.creatForm();
   }
 
   ngOnInit() {
-    this.itemSel.listenSelected().filter(marking => !!marking).subscribe(marking => {
-      this.selectedItem = this.restApi.localItemList.items.find(item => item.marking===marking);
-      this.localQuantity = this.selectedItem.quantity;
-         
-    })
+    this.selectedItems = this.restApi.localItemList.items.filter(item => this.data.selectedMarkings.includes(item.marking));
+    this.selectedItems.forEach(item => {
+      item['quantityAfterChange'] = item['qantity'];
+      item['warning'] = '';
+    });
     this.monitor_value$ = this.quantity.valueChanges
       .subscribe(v => {
 
         if (this.dir === 'in') {
-          this.quantityAfterChange = this.localQuantity  + (this.form.controls['quantity'].value-0);
+          this.selectedItems.forEach(item => { item['quantityAfterChange'] = item.quantity + (this.form.controls['quantity'].value - 0); });
         } else {
-          this.quantityAfterChange = this.localQuantity - this.form.controls['quantity'].value;
-         
-          this.warning = this.quantityAfterChange<0? "over range!":'';
-        }  
-        
-      })
+          this.selectedItems.forEach(item => {
+            item['quantityAfterChange'] = item.quantity - this.form.controls['quantity'].value;
+            item['warning'] = item['quantityAfterChange'] < 0 ? 'over range' : '';
+          });
+        }
+
+      });
 
     this.monitor_valid$ = this.form.statusChanges
       .subscribe(status => {
         console.log(status);
-        this.submitDis = status === 'VALID'  && this.warning!=='over range!' ? false : true;
-        console.log(this.submitDis);
-      })
+        this.submitDis = status === 'INVALID' ||
+          this.selectedItems.find(item =>
+            item['warning'] && item['warning'] === 'over range') ? true : false ||
+          this.quantity.value - 0 === 0;
+        console.log(this.submitDis, this.selectedItems.find(item =>
+          item['warning'] && item['warning'] === 'over range') ? true : false, this.selectedItems);
+      });
   }
   ngOnDestroy() {
     this.monitor_value$.unsubscribe();
@@ -75,8 +80,9 @@ export class InOutComponent implements OnInit, OnDestroy {
   }
   creatForm() {
     this.form = this.fb.group({
-      quantity: [0, this.myValidators.quantity]
-    })
+      quantity: [0, this.myValidators.quantity],
+      memo: ['', this.myValidators.maxLength(50)]
+    });
   }
   quantityChn(mode) {
     if (mode === 'up') {
@@ -86,23 +92,45 @@ export class InOutComponent implements OnInit, OnDestroy {
     }
   }
   onSubmit() {
-    if(this.valid) {
-      const inOutdataForApi = {
-        [this.dir]: {
-          quantity:this.form.controls['quantity'].value,
-          time:new Date(),
-        },
-        quantity:this.quantityAfterChange,
-        itemid:this.selectedItem._id
+    if (this.valid) {
+      if (this.selectedItems.length === 1) {
+        const inOutdataForApi = {
+          [this.dir]: {
+            quantity: this.form.controls['quantity'].value,
+            time: new Date(),
+          },
+          quantity: this.selectedItems[0]['quantityAfterChange'],
+          itemid: this.selectedItems[0]._id
+        };
+
+        this.restApi.in_outQantity(inOutdataForApi).subscribe(res => {
+          if (res.code !== 'success') {
+            this.snackBar.openSnackBar(res.code);
+          } else {
+            this.itemModify.doModify();
+          }
+        });
+      } else if (this.selectedItems.length > 1) {
+        const inOutdatasForApi:InOutItemsSchema = {
+          [this.dir]: {
+            quantity: this.form.controls['quantity'].value,
+            time: new Date(),
+            memo: this.form.controls['memo'].value
+          },
+          items: this.selectedItems.map( item  => {
+            console.log(1);
+            return { itemid: item._id, quantity: item['quantityAfterChange'] };
+          })
+        };
+        this.restApi.in_outQantities(inOutdatasForApi).subscribe(res => {
+          if (res.code !== 'success') {
+            this.snackBar.openSnackBar(res.code);
+          } else {
+            this.itemModify.doModify();
+          }
+        });
       }
       this.dialogRef.close();
-      this.restApi.in_outQantity(inOutdataForApi).subscribe(res => {
-        if(res.code !== 'success') {
-          this.snackBar.openSnackBar(res.code);
-        } else {
-          this.itemModify.doModify();
-        }
-      })
     }
   }
 

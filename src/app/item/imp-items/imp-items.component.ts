@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MyValidators } from '../../service/myValidators';
-import { RestapiService } from '../../service/restapi.service';
+import { RestapiService, ItemSchema } from '../../service/restapi.service';
+import { SnackBarService } from '../../service/snack-bar.service';
+import { ItemModifyService } from '../../service/item-modify.service';
 import { ItemFormatDataService, ITEMTYPES } from '../../service/item-format-data.service';
 import * as XLSX from 'xlsx';
 const colCode = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
@@ -27,7 +29,7 @@ class IMPdataObj {
   _errorMessage = [];
   _hintMessage = [];
   _requiredPro = ['marking', 'quantity', 'footprint', 'name'];
-  _optionPro = ['value', 'precise', 'volt', 'brand','description'];
+  _optionPro = ['value', 'precise', 'volt', 'brand', 'description'];
   impProperties = {};
   usedMarking = [];
   useditemTypes = {}
@@ -114,20 +116,19 @@ class IMPdataObj {
         }
       })
       .map(item => item['name']);
-
     if (Array.from(new Set(Kulaberu)).length === Kulaberu.length) {
       this._valid = false;
-      this._errorMessage.push('你提交的marking有重复！')
+      this._errorMessage.push('你提交的marking有重复！');
       throw new Error(this._errorMessage.join(';'));
     }
     Kulaberu.forEach(marking => {
-      if (this.usedMarking.map(item=>item.toUpperCase()).includes(marking.toUpperCase())) {
+      if (this.usedMarking.map(item => item.toUpperCase()).includes(marking.toUpperCase())) {
         this._valid = false;
         this._errorMessage.push(`${marking.toUpperCase()}与数据库中的重复了`)
       }
     });
     Array.from(new Set(impName)).forEach(name => {
-      if (!Object.keys(this.useditemTypes).map(item=> item.toUpperCase()).includes(name.toUpperCase())) {
+      if (!Object.keys(this.useditemTypes).map(item => item.toUpperCase()).includes(name.toUpperCase())) {
         console.log('useditemTypes', this.useditemTypes);
         this._hintMessage.push(`新增主类：${name.toUpperCase()}`);
       }
@@ -145,7 +146,7 @@ class IMPdataObj {
         this._errorMessage.push(`${item['marking']}的${pro}校验失败:${item[pro]}`);
       }
       item[pro] = item[pro].toUpperCase();
-      
+
 
 
     } else if (pro === 'quantity') {
@@ -171,7 +172,7 @@ class IMPdataObj {
           this._valid = false;
           this._errorMessage.push(`${item['marking']}的${pro}校验失败:${item[pro]}`);
         }
-        if(!item['description']){
+        if (!item['description']) {
           item['description'] = item[pro];
         }
       }
@@ -186,8 +187,7 @@ class IMPdataObj {
         this._valid = false;
         this._errorMessage.push(`${item['marking']}的${pro}校验失败:${item[pro]}`);
       }
-    }
-    else if (['brand'].includes(pro)) {
+    } else if (['brand'].includes(pro)) {
       if (item[pro]['length'] >= 30) {
         this._valid = false;
         this._errorMessage.push(`${pro}校验失败:${item[pro]}`);
@@ -208,12 +208,12 @@ class IMPdataObj {
       if (!Object.keys(this.impProperties).includes(property)) {
         this._hintMessage.push(`missing ${property}`);
       }
-    })
+    });
     Object.keys(this.impProperties).forEach(pro => {
       if (![...this._optionPro, ...this._requiredPro].includes(pro)) {
         this._hintMessage.push(`unuseful ${pro}`)
       }
-    })
+    });
 
   }
 }
@@ -228,9 +228,12 @@ export class ImpItemsComponent implements OnInit {
   name: string;
   sheet: XLSX.Sheet;
   items = [];
+
   constructor(
     private restApi: RestapiService,
-    private itemFormatData: ItemFormatDataService
+    private itemFormatData: ItemFormatDataService,
+    private itemModify: ItemModifyService,
+    private snackBar: SnackBarService,
   ) {
   }
 
@@ -277,18 +280,29 @@ export class ImpItemsComponent implements OnInit {
         console.log(this.dataObj._hintMessage);
       }
       this.dataObj.distItems.forEach(item => {
-
+        if (!item['quantity']) {
+          item['quantity'] = 0;
+        }
         for (const pro in item) {
           if (item.hasOwnProperty(pro)) {
             this.dataObj.itemVd(pro, item);
-            if(pro === 'name'){
-              if(!Object.keys(this.itemFormatData.baseSets).includes(item[pro])){
+            if (pro === 'name') {
+              if (!Object.keys(this.itemFormatData.baseSets).includes(item[pro])) {
+                this.itemFormatData.baseSets[item[pro]] = [];
+                this.itemFormatData.itemTypes[item[pro]] = ['无', '使用自定义子类'];
                 this.itemFormatData.baseSets[item[pro]].push('marking', 'childType', 'footprint', 'quantity', 'description', 'customtag');
-                if(item['volt']){
+                if (item['value']) {
+                  this.itemFormatData.baseSets[item[pro]].push('value');
+                }
+                if (item['volt']) {
                   this.itemFormatData.baseSets[item[pro]].push('volt');
                 }
-                this.itemFormatData.baseSets[item[pro]].push('submit')
+                if (item['precise']) {
+                  this.itemFormatData.baseSets[item[pro]].push('precise');
+                }
+                this.itemFormatData.baseSets[item[pro]].push('submit');
               }
+              console.log('zhulei',this.itemFormatData.baseSets);
             }
           }
         }
@@ -299,5 +313,50 @@ export class ImpItemsComponent implements OnInit {
       /* DO SOMETHING WITH workbook HERE */
     };
     reader.readAsBinaryString(file);
+  }
+  onSubmit() {
+    const items = this.dataObj.distItems.map(item => {
+      const obj = {};
+      obj['property'] = {};
+      obj['setUpTime'] = new Date();
+      obj['childType'] = '无';
+      this.dataObj._requiredPro.forEach(pro => {
+        obj[pro] = item[pro];
+      });
+      if (item['volt']) {
+        obj['property']['volt'] = item['volt'];
+      }
+      if (item['description']) {
+        obj['description'] = item['description'];
+      }
+      if (item['brand']) {
+        obj['brand'] = item['brand'];
+      }
+      if (item['value']) {
+        obj['property']['value'] = item['value'];
+      }
+      if (item['precise']) {
+        obj['property']['precise'] = item['precise'];
+      }
+
+      return obj;
+    });
+    this.restApi.addItems(items as ItemSchema[])
+      .concat(this.restApi.updateTypes({
+        baseSets: this.itemFormatData.baseSets,
+        itemTypes: this.itemFormatData.itemTypes,
+        unitTypes: this.itemFormatData.unitTypes
+      }))
+      .subscribe(res => {
+        console.log(res);
+        if (res.code === 'success') {
+
+          this.snackBar.openSnackBar('数据已同步');
+        } else {
+          this.snackBar.openSnackBar('数据同步失败');
+
+        }
+        this.itemModify.doModify();
+      });
   }
 }

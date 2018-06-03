@@ -15,6 +15,7 @@ import 'rxjs/add/operator/concat';
 interface FormsVal {
   name?: string;
   usevalue?: string;
+  useprecise?: string;
   usevolt?: string;
   childType: String;
   footprint: String;
@@ -43,7 +44,7 @@ export class AdditemComponent implements OnInit, AfterViewInit {
   bomTypes;
   selectedBomType = 'RES';
   formsPool: { [formType: string]: FieldConfig[] };
-  
+
 
   formFieldConfigs;
 
@@ -58,7 +59,7 @@ export class AdditemComponent implements OnInit, AfterViewInit {
   ) {
 
     this.itemFac.creatDynamicFormConfig();
-    this.bomTypes = Object.keys(this.itemFormatData.itemTypes);
+    this.bomTypes = Object.keys(this.itemFormatData.baseSets);
     console.log('base2',this.itemFormatData.baseSets);
     console.log('bomtypes',this.itemFormatData.itemTypes);
     this.formsPool = this.itemFac.itemDynamicConfigs;
@@ -95,6 +96,9 @@ export class AdditemComponent implements OnInit, AfterViewInit {
       }
       if (ev.formVal.usevolt === '需要') {
         this.itemFormatData.baseSets[ev.formVal.name].push('volt');
+      }
+      if (ev.formVal.useprecise === '需要') {
+        this.itemFormatData.baseSets[ev.formVal.name].push('precise');
       }
       this.itemFormatData.baseSets[ev.formVal.name].push('submit');
       this.itemFormatData.itemTypes[ev.formVal.name] = ['无', '使用自定义子类'];
@@ -135,7 +139,7 @@ export class AdditemComponent implements OnInit, AfterViewInit {
 
 
     if (this.restApi.localItemList && this.restApi.localItemList['items']) {
-      const item= {
+      const item = {
         name: this.selectedBomType,
         quantity: _quantity,
         marking: marking,
@@ -145,7 +149,7 @@ export class AdditemComponent implements OnInit, AfterViewInit {
         description: description,
         property: _property
       };
-     
+
       this.restApi.addItem( item )
         .concat(this.restApi.updateTypes({
         baseSets:this.itemFormatData.baseSets,
@@ -155,8 +159,9 @@ export class AdditemComponent implements OnInit, AfterViewInit {
         .subscribe(res => {
           console.log(res);
           if (res.code === 'success') {
-           
+
             this.snackBar.openSnackBar('数据已同步');
+            this.itemModify.doModify();
           } else {
             this.snackBar.openSnackBar('数据同步失败');
             this.itemModify.doModify();

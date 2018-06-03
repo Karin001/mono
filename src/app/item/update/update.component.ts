@@ -119,6 +119,7 @@ export class UpdateComponent implements OnInit, AfterViewInit {
       updateOptions['item_childType'] = updateOptions['item_customtag'];
     }
     console.log('updateOptions', updateOptions);
+    this.itemModify.doModify('loading');
     this.restApi.updateProperty(updateOptions)
       .concat(this.restApi.updateTypes({
         baseSets: this.itemFormatData.baseSets,

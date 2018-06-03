@@ -12,8 +12,8 @@ import { markParentViewsForCheck } from '@angular/core/src/view/util';
   styleUrls: ['./delete.component.scss']
 })
 export class DeleteComponent implements OnInit, OnDestroy {
-  selectedItem;
-  listen$:Subscription;
+  selectedItems;
+  listen$: Subscription;
   constructor(
     private itemSel: ItemSelectService,
     private snackbar: SnackBarService,
@@ -23,20 +23,39 @@ export class DeleteComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.listen$ = this.itemSel.listenSelected().filter(marking => !!marking).subscribe(marking => {
-      this.selectedItem = this.restApi.localItemList.items.find(item=> item.marking === marking);
-    })
+    this.listen$ = this.itemSel.listenSelected().filter(markings => !!markings).subscribe(markings => {
+      this.selectedItems = this.restApi.localItemList.items.filter(item => markings.includes(item.marking));
+    });
   }
   onSubmit(ps) {
     this.dialogRef.close();
     console.log(ps);
-    this.restApi.deleteItem(this.selectedItem._id, ps)
-    .subscribe(res=> {
-      this.snackbar.openSnackBar(res.message);
-      if(res.code === 'success') {
-        this.itemModify.doModify();
-      }
-    })
+    if (this.selectedItems.length === 1) {
+      this.restApi.deleteItem(this.selectedItems[0]._id, ps)
+        .subscribe(res => {
+          this.snackbar.openSnackBar(res.message);
+          if (res.code === 'success') {
+            this.itemModify.doModify();
+          }
+        }, err => {
+          this.snackbar.openSnackBar('抱歉，操作失败：' + err.error.message);
+          console.log(err);
+          this.itemModify.doModify('err');
+        });
+    } else if (this.selectedItems.length > 1) {
+      this.restApi.deleteItems(this.selectedItems.map(item => item._id), ps)
+      .subscribe(res => {
+        this.snackbar.openSnackBar(res.message);
+        if (res.code === 'success') {
+          this.itemModify.doModify();
+        }
+      }, err => {
+        this.snackbar.openSnackBar('抱歉，操作失败：' + err.error.message);
+        console.log(err);
+        this.itemModify.doModify('err');
+      });
+    }
+
   }
   ngOnDestroy() {
     this.listen$.unsubscribe();

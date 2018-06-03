@@ -1,9 +1,12 @@
 <div class="file-drop-area" (drop)="onDrop($event)"  (dragover)="onOver($event)">
   <p>将表格文件拖动至此</p>
 </div>
-<div>
-  <p>新增的元器件</p>
+<div *ngIf="dataObj && dataObj['_errorMessage'].length !== 0">
+  错误信息：
+  <p *ngFor="let item of dataObj._errorMessage">{{item}}</p>
 </div>
-<div>
-  <p>修改的数量</p>
+<div *ngIf="dataObj && dataObj['_hintMessage'].length !== 0">
+  提示:
+  <p *ngFor="let item of dataObj._hintMessage">{{item}}</p>
 </div>
+<button mat-raised-button [disabled]="!dataObj || !dataObj._valid" (click)="onSubmit()">同意并提交</button>

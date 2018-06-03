@@ -7,14 +7,14 @@ import { ItemFormatDataService } from './item-format-data.service';
 @Injectable()
 export class ItemFormatFactoryService {
   baseSets: { [types: string]: string[] } = {
-    'RES': ['marking', 'childType', 'value', 'unit', 'footprint', 'precise', 'quantity', 'description', 'customtag', 'submit'],
-    'CAP': ['marking', 'childType', 'value', 'unit', 'volt', 'footprint', 'quantity', 'description', 'customtag', 'submit'],
-    'DIODE': ['marking', 'childType', 'value', 'footprint', 'quantity', 'description', 'customtag', 'submit'],
-    'INDUCTOR': ['marking', 'childType', 'value', 'unit', 'footprint', 'quantity', 'description', 'customtag', 'submit'],
-    'TRIODE': ['marking', 'childType', 'description', 'footprint', 'quantity', 'customtag', 'submit'],
-    'MOS': ['marking', 'childType', 'description', 'footprint', 'quantity', 'customtag', 'submit'],
-    'IC': ['marking', 'childType', 'description', 'footprint', 'quantity', 'customtag', 'submit'],
-    'OSCILLATOR': ['marking', 'childType', 'value', 'unit', 'footprint', 'quantity', 'description', 'customtag', 'submit'],
+    'RES': ['marking', 'childType', 'value', 'unit', 'footprint', 'precise', 'quantity', 'description', 'customtag', 'brand', 'submit'],
+    'CAP': ['marking', 'childType', 'value', 'unit', 'volt', 'footprint', 'quantity', 'description', 'customtag', 'brand', 'submit'],
+    'DIODE': ['marking', 'childType', 'value', 'footprint', 'quantity', 'description', 'customtag', 'brand', 'submit'],
+    'INDUCTOR': ['marking', 'childType', 'value', 'unit', 'footprint', 'quantity', 'description', 'customtag', 'brand', 'submit'],
+    'TRIODE': ['marking', 'childType', 'description', 'footprint', 'quantity', 'customtag', 'brand', 'submit'],
+    'MOS': ['marking', 'childType', 'description', 'footprint', 'quantity', 'customtag', 'brand', 'submit'],
+    'IC': ['marking', 'childType', 'description', 'footprint', 'quantity', 'customtag', 'brand', 'submit'],
+    'OSCILLATOR': ['marking', 'childType', 'value', 'unit', 'footprint', 'quantity', 'description', 'customtag', 'brand', 'submit'],
     'ADD NEW TYPE': ['name', 'usevalue', 'usevolt', 'submit']
   };
 
@@ -46,7 +46,7 @@ export class ItemFormatFactoryService {
       validations: [Validators.required, this.myValidators.eng_numChar, Validators.maxLength(30), this.myValidators.dupilicateTypeFn()],
       error: { name: 'eng_numChar,maxlength', message: '输入限定为英文和数字,最多30个字符' }
     },
-    'brand':{
+    'brand': {
       type: 'input',
       label: '品牌',
       name: 'brand',
@@ -60,7 +60,7 @@ export class ItemFormatFactoryService {
       name: 'marking',
       placeholder: '',
       disabled: false,
-      validations: [this.myValidators.footprint,Validators.required, Validators.maxLength(30), this.myValidators.dupilicateMarkingFn()],
+      validations: [this.myValidators.footprint, Validators.required, Validators.maxLength(30), this.myValidators.dupilicateMarkingFn()],
       error: { name: 'footprint,maxlength', message: '含非法字符,或者您超过了30个字符' }
     },
 
@@ -86,6 +86,15 @@ export class ItemFormatFactoryService {
       type: 'radio',
       label: '需要耐压值吗',
       name: 'usevolt',
+      disabled: false,
+      placeholder: '',
+      options: ['需要', '不需要'],
+      validations: [Validators.required],
+    },
+    'useprecise': {
+      type: 'radio',
+      label: '需要精度吗',
+      name: 'useprecise',
       disabled: false,
       placeholder: '',
       options: ['需要', '不需要'],
@@ -133,8 +142,7 @@ export class ItemFormatFactoryService {
       name: 'precise',
       disabled: false,
       placeholder: '',
-      options: ['1%', '5%', '10%', '15%','20%'],
-      validations: [Validators.required]
+      options: ['1%', '5%', '10%', '15%', '20%'],
     },
     'quantity': {
       type: 'input',

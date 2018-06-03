@@ -2,7 +2,7 @@ import { ValidatorFn, ValidationErrors, FormControl, AsyncValidatorFn } from '@a
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { RestapiService } from './restapi.service';
-import { ItemFormatDataService,UNITTYPES } from './item-format-data.service';
+import { ItemFormatDataService, UNITTYPES } from './item-format-data.service';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { QueryUsernameResp } from '../interface/userType';
@@ -11,11 +11,11 @@ function regCheck(c: FormControl, reg: RegExp, name: string, message: string) {
   return !match ? {
     [name]: message
   } : null;
-} 
-function norPointForImp(value:string) {
-  if(value.length>=10){
+}
+function norPointForImp(value: string) {
+  if (value.length >= 10) {
     return false;
-  } else if(!/^[0-9]+(\.[0-9]{1,5})?$/.test(value)) {
+  } else if (!/^[0-9]+(\.[0-9]{1,5})?$/.test(value)) {
     return false;
   } else {
     return true;
@@ -33,78 +33,78 @@ export class MyValidators {
   ) {
     console.log(this.http);
   }
-  static futsuuVdForImp(value:string) :boolean{
-    if(value.length>=30) {
+  static futsuuVdForImp(value: string): boolean {
+    if (value.length >= 30) {
       return false;
-    } else if(!/^[A-Za-z0-9\-\.()\/\\_:]+$/.test(value)){
+    } else if (!/^[A-Za-z0-9\-\.()\/\\_:]+$/.test(value)) {
       return false;
     } else {
       return true;
     }
   }
-  static quantityForImp(value:string) :boolean {
-    if(!/^(0|[1-9][0-9]*)$/.test(value)) {
+  static quantityForImp(value: string): boolean {
+    if (!/^(0|[1-9][0-9]*)$/.test(value)) {
       return false;
     } else {
       return true
     }
   }
-  static preciseForImp(value:string) :boolean{
-    if(!['1%', '5%', '10%', '15%','20%'].includes(value)) {
+  static preciseForImp(value: string): boolean {
+    if (!['1%', '5%', '10%', '15%', '20%'].includes(value)) {
       return false;
     } else {
       return true;
     }
   }
-  static norPointForImp(value:string) {
-    if(value.length>=10){
+  static norPointForImp(value: string) {
+    if (value.length >= 10) {
       return false;
-    } else if(!/^[0-9]+(.[0-9]{1,5})?$/.test(value)) {
+    } else if (!/^[0-9]+(.[0-9]{1,5})?$/.test(value)) {
       return false;
     } else {
       return true;
     }
   }
-  static valAndReSetForImp(value:string,type,temp):boolean  {
-    console.log('type',type);
-   UNITTYPES[type].forEach(unit=>{
-     const index = value.toUpperCase().search(unit.toUpperCase());
-    
-    if(index !== -1) {
-      console.log('serch',value.slice(0,index));
-      if(value.slice(0,index) && norPointForImp(value.slice(0,index))) {
-        if(temp['value']) {
-          if(unit.length === '2') {
-            temp['value'] = value.slice(0,index);
+  static valAndReSetForImp(value: string, type, temp): boolean {
+    console.log('type', type);
+    UNITTYPES[type].forEach(unit => {
+      const index = value.toUpperCase().search(unit.toUpperCase());
+
+      if (index !== -1) {
+        console.log('serch', value.slice(0, index));
+        if (value.slice(0, index) && norPointForImp(value.slice(0, index))) {
+          if (temp['value']) {
+            if (unit.length === '2') {
+              temp['value'] = value.slice(0, index);
+              temp['unit'] = unit;
+            }
+          } else {
+            temp['value'] = value.slice(0, index);
             temp['unit'] = unit;
           }
-        } else{
-          temp['value'] = value.slice(0,index);
-          temp['unit'] = unit;
+
+
+
+          console.log('$$$$$$$$$$4', temp);
         }
-        
-       
-        
-        console.log('$$$$$$$$$$4',temp);
       }
+    })
+    if (JSON.stringify(temp) === '{}') {
+      console.log('false?', temp)
+      return false;
+    } else {
+      console.log('true?', temp)
+      return true;
     }
-   } )
-   if(JSON.stringify(temp) === '{}') {
-     console.log('false?',temp)
-    return false;
-   } else {
-     console.log('true?',temp)
-     return true;
-   }
   }
-  
-   static voltForImp(value:string) :boolean{
-    if(!/^[0-9]{1,3}$/.test(value)){
-       return false;
-     } else{
-       return true;
-     }
-   }
+
+  static voltForImp(value: string): boolean {
+    if (!/^[0-9]{1,3}$/.test(value)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   minLength(num: number): ValidatorFn {
     return (c: FormControl): ValidationErrors => {
@@ -185,7 +185,7 @@ export class MyValidators {
 
   dupilicateTypeFn(): ValidatorFn {
     return (c: FormControl): ValidationErrors => {
-      if (this.itemFormatData.itemTypes ) {
+      if (this.itemFormatData.itemTypes) {
         if (Object.keys(this.itemFormatData.itemTypes).includes(c.value)) {
           return { duplicationType: true };
         } else {

@@ -53,8 +53,8 @@ export class DetailComponent implements OnInit {
 
   }
   ngOnInit() {
-    this.itemSelect.listenSelected().subscribe(marking => {
-      this.selectedMarking = marking;
+    this.itemSelect.listenSelected().filter(markings => !!markings && markings.length > 0).subscribe(markings => {
+      this.selectedMarking = markings[0];
 
       this.findOptions = {
         selected: []

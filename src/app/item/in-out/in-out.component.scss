@@ -1,21 +1,32 @@
 .in-out-box{
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
     .fun-up{
         font-size: 25px;
         background-color:rgb(255, 0, 0)
     }
+    .list {
+      height:200px;
+      width:600px;
+      overflow-y: scroll;
+      p{
+        font: 20px "微软雅黑";
+        padding: 5px;
+      }
+      li{
+        background: #ECECEC;
+        padding:3px;
+      }
+    }
     .fun-down{
         font-size: 25px;
-        background-color:rgb(0, 0, 0) 
+        background-color:rgb(0, 0, 0)
     }
     .fun-box{
 
     }
     .warning {
         color: red;
-      
+
     }
     &>*{
         margin:5px;
@@ -29,5 +40,5 @@
             background-position: bottom right;
         }
     }
-  
+
 }

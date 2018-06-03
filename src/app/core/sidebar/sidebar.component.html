@@ -9,12 +9,12 @@
     <span mat-line *ngIf="!slimMode">Delete</span>
     <span mat-line *ngIf="!slimMode">删除该元件</span>
   </mat-list-item>
-  <mat-list-item *ngIf="true" [matMenuTriggerFor]="menu" [ngClass]="{'slimMenu': slimMode, 'menu': !slimMode}">
+  <mat-list-item *ngIf="_selected" [matMenuTriggerFor]="menu"  [ngClass]="{'slimMenu': slimMode, 'menu': !slimMode}">
     <mat-icon  mat-list-icon svgIcon="fileset"></mat-icon>
     <span mat-line *ngIf="!slimMode">In-Out</span>
     <span mat-line *ngIf="!slimMode">调整该元件数量</span>
   </mat-list-item>
-  <mat-menu #menu="matMenu" xPosition='before'>
+  <mat-menu #menu="matMenu" xPosition='before' >
     <button mat-menu-item (click)="openDialog_in_out('out')">出库</button>
     <button mat-menu-item (click)="openDialog_in_out('in')">入库</button>
   </mat-menu>

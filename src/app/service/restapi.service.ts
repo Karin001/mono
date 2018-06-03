@@ -12,25 +12,37 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/concat';
+import 'rxjs/add/operator/retry';
 import { SnackBarService } from './snack-bar.service';
 import { ItemModifyService } from './item-modify.service';
 interface IteminoutSchema {
   quantity: number;
   time: Date;
+  memo: string;
 }
 interface InOutSchema {
-  in?:IteminoutSchema;
-  out?:IteminoutSchema;
-  itemid:string;
-  quantity:number;
+  in?: IteminoutSchema;
+  out?: IteminoutSchema;
+  itemid: string;
+  quantity: number;
 }
-interface ItemSchema {
+interface InOutItemSchema {
+  itemid: string;
+  quantity: number;
+}
+export interface InOutItemsSchema {
+  in?: IteminoutSchema;
+  out?: IteminoutSchema;
+  items: InOutItemSchema[];
+}
+export interface ItemSchema {
   name: string;
   marking: string;
   quantity: number;
-  description: string;
+  description?: string;
   footprint: string;
-  childType: string;
+  brand?: string;
+  childType?: string;
   property?: any;
   in?: IteminoutSchema[];
   out?: IteminoutSchema[];
@@ -54,7 +66,7 @@ interface ResponseType {
 }
 interface FindOption {
   selected: string[];
-  bigname?:string;
+  bigname?: string;
   childType?: string;
   footprint?: string;
   value?: string;
@@ -82,19 +94,19 @@ export class RestapiService {
       console.log('111');
       return this.localItemList.items.filter(items => {
         let sumBoolean = true;
-        if(items.name !== options['name']){
-          console.log('222',items.name,options['name']);
+        if (items.name !== options['name']) {
+          console.log('222', items.name, options['name']);
           return false;
         }
         options.selected.forEach(element => {
-          if(element === 'value'){
-            const itemValue = (items.property['value']||'') + '' + (items.property['unit']||'');
+          if (element === 'value') {
+            const itemValue = (items.property['value'] || '') + '' + (items.property['unit'] || '');
             sumBoolean = sumBoolean && itemValue === options[element];
-          } else if(element === 'precise' || element === 'volt') {
+          } else if (element === 'precise' || element === 'volt') {
             sumBoolean = sumBoolean && items.property[element] && items.property[element] === options[element];
-          } else{
+          } else {
             sumBoolean = sumBoolean && items[element] && (items[element] === options[element]);
-            console.log(element,options[element],items[element]);
+            console.log(element, options[element], items[element]);
           }
 
         });
@@ -106,30 +118,41 @@ export class RestapiService {
   }
   addItem(item: ItemSchema): Observable<ResponseType> {
     this.localItemList.items.push(item);
-    console.log(this.localItemList.items.map(item=>item.marking));
+    console.log(this.localItemList.items.map(item => item.marking));
     this.itemModify.doModify('localModified');
     return this.hc.post('/api/itemlist/add', item) as Observable<ResponseType>;
   }
+  addItems(items: ItemSchema[]): Observable<ResponseType> {
+    return this.hc.post('/api/itemlist/addItems', items) as Observable<ResponseType>;
+  }
   addFirstItem(item: ItemSchema): Observable<ResponseType> {
-    
+
     return this.hc.post('/api/itemlist/addFirst', item) as Observable<ResponseType>;
   }
-  in_outQantity(inOrOut:InOutSchema){
+  in_outQantity(inOrOut: InOutSchema) {
     this.itemModify.doModify('loading');
-    return this.hc.post('api/itemlist/quantity',inOrOut) as Observable<ResponseType>;
+    return this.hc.post('api/itemlist/quantity', inOrOut) as Observable<ResponseType>;
+  }
+  in_outQantities(inOrOut: InOutItemsSchema) {
+    this.itemModify.doModify('loading');
+    return this.hc.post('api/itemlist/quantities', inOrOut) as Observable<ResponseType>;
   }
   updateTypes(item: any) {
     return this.hc.post('/api/itemlist/updateTypes', item) as Observable<ResponseType>;
   }
 
-  updateProperty(property:any) {
-    return this.hc.post('/api/itemlist/updateProperty',property) as Observable<ResponseType>;
+  updateProperty(property: any) {
+    return this.hc.post('/api/itemlist/updateProperty', property) as Observable<ResponseType>;
   }
-  deleteItem(itemid,password) {
-    this.itemModify.doModify('loading');
-   return this.hc.post('/api/psCheck',{password})
-   .filter((res:ResponseType)=>res.code ==='success')
-   .concat(this.hc.post('/api/itemlist/delete',{itemid})) as Observable<ResponseType>;
+  deleteItem(itemid, password) {
+    return this.hc.post('/api/psCheck', { password })
+      //   .do(x => { this.itemModify.doModify('loading'); })
+      .concat(this.hc.post('/api/itemlist/delete', { itemid })) as Observable<ResponseType>;
+  }
+  deleteItems(itemids, password) {
+    return this.hc.post('/api/psCheck', { password })
+      //   .do(x => { this.itemModify.doModify('loading'); })
+      .concat(this.hc.post('/api/itemlist/deleteItems', { itemids })) as Observable<ResponseType>;
   }
   streamMock_allItem() {
     return this.hc.get(`assets/data/itemlist.json`);
@@ -170,23 +193,23 @@ export class RestapiService {
         throw (e);
       })
       .subscribe(
-        (resp: LoginRespInfo) => {
-          if (resp.code === 'logged') {
+      (resp: LoginRespInfo) => {
+        if (resp.code === 'logged') {
 
-            this.username = resp.message;
-            console.log('username',this.username);
-            this.logged.next(logState.logged);
-            this.router.navigateByUrl('/itemlist');
-          } else if (resp.code === 'success') {
-            this.username = userinfo.username;
-            this.logged.next(logState.login);
-            this.snackBarService.openSnackBar('登录成功');
-            this.router.navigateByUrl('/itemlist');
-          } else {
-            console.log('没考虑到的状态');
-          }
-          callback();
+          this.username = resp.message;
+          console.log('username', this.username);
+          this.logged.next(logState.logged);
+          this.router.navigateByUrl('/itemlist');
+        } else if (resp.code === 'success') {
+          this.username = userinfo.username;
+          this.logged.next(logState.login);
+          this.snackBarService.openSnackBar('登录成功');
+          this.router.navigateByUrl('/itemlist');
+        } else {
+          console.log('没考虑到的状态');
         }
+        callback();
+      }
 
       );
   }
@@ -202,14 +225,14 @@ export class RestapiService {
         throw (e);
       })
       .map(
-        (resp: LoginRespInfo) => {
-          if (resp.code === 'success') {
-            return resp.message as string;
-          } else {
-            return null;
-          }
-        },
-        err => { console.log('getAvatar subscribe err'); }
+      (resp: LoginRespInfo) => {
+        if (resp.code === 'success') {
+          return resp.message as string;
+        } else {
+          return null;
+        }
+      },
+      err => { console.log('getAvatar subscribe err'); }
       );
 
   }
@@ -225,30 +248,30 @@ export class RestapiService {
         throw (e);
       })
       .subscribe(
-        (resp: LoginRespInfo) => {
-          if (resp.code === 'success') {
-            callback(resp.message);
-          }
-        },
-        err => { console.log('getAvatar subscribe err'); }
+      (resp: LoginRespInfo) => {
+        if (resp.code === 'success') {
+          callback(resp.message);
+        }
+      },
+      err => { console.log('getAvatar subscribe err'); }
       );
 
   }
   logOut() {
     return this.hc.post('api/logOut', {})
       .subscribe(
-        (resp: LogOutRespInfo) => {
-          if (resp.code === 'session_err') {
-            this.logged.next(logState.session_err);
-          } else if (resp.code === 'success') {
-            this.localItemList = null;
-            this.logged.next(logState.logout);
-            console.log(this.localItemList);
-            this.router.navigateByUrl('/login');
-          } else {
-            console.log('没考虑到的状态');
-          }
+      (resp: LogOutRespInfo) => {
+        if (resp.code === 'session_err') {
+          this.logged.next(logState.session_err);
+        } else if (resp.code === 'success') {
+          this.localItemList = null;
+          this.logged.next(logState.logout);
+          console.log(this.localItemList);
+          this.router.navigateByUrl('/login');
+        } else {
+          console.log('没考虑到的状态');
         }
+      }
       );
   }
   signUp(userinfo: SignUpInfo, callback = () => { }) {
@@ -294,15 +317,15 @@ export class RestapiService {
         throw (e);
       })
       .subscribe(
-        (resp: GeneralResp) => {
-          if (resp.code === 'success') {
-            console.log(resp);
-            successCall();
-          } else {
-            console.log(resp);
-            console.log('没考虑到的状态');
-          }
+      (resp: GeneralResp) => {
+        if (resp.code === 'success') {
+          console.log(resp);
+          successCall();
+        } else {
+          console.log(resp);
+          console.log('没考虑到的状态');
         }
+      }
       );
   }
 

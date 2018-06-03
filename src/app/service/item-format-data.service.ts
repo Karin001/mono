@@ -7,7 +7,7 @@ const BASESETS = {
   'MOS': ['marking', 'childType', 'description', 'footprint', 'quantity', 'customtag', 'submit'],
   'IC': ['marking', 'childType', 'description', 'footprint', 'quantity', 'customtag', 'submit'],
   'OSCILLATOR': ['marking', 'childType', 'value', 'unit', 'footprint', 'quantity', 'description', 'customtag', 'submit'],
-  'ADD NEW TYPE': ['name', 'usevalue', 'usevolt', 'submit']
+  'ADD NEW TYPE': ['name', 'usevalue', 'usevolt', 'useprecise', 'submit']
 };
 export const ITEMTYPES = {
   'RES': ['无', '普通电阻', '可变电阻', '热敏电阻', '压敏电阻', '光敏电阻', '使用自定义子类'],
@@ -21,7 +21,7 @@ export const ITEMTYPES = {
   'ADD NEW TYPE': ['无', '使用自定义子类']
 };
 export const UNITTYPES = {
-  'RES': ['R', 'kR', 'MR'],
+  'RES': ['R', 'K', 'M'],
   'CAP': ['pF', 'nF', 'uF', 'mF', 'F'],
   'OSCILLATOR': ['kHz', 'MHz'],
   'INDUCTOR': ['nH', 'uH', 'mH', 'H']
@@ -38,7 +38,7 @@ export class ItemFormatDataService {
   constructor(
     private restapi: RestapiService
   ) {
-   
+
    }
    loadTypes() {
     console.log('数据',this.restapi.localItemList);

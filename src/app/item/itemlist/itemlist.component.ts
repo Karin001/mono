@@ -79,38 +79,33 @@ export class ItemlistComponent implements OnInit {
     this.itemModify.getItemState().subscribe(state => {
       if (state === 'modified') {
         this.getDatas();
-      } else if(state === 'localModified') {
+      } else if (state === 'localModified') {
         console.log(1);
         this.rows = [...this.restapi.localItemList.items];
-      } else if(state === 'loading') {
+      } else if (state === 'loading') {
         this.progressBarSet = true;
+      } else if (state === 'err') {
+        this.progressBarSet = false;
       }
     });
     this.itemModify.getSearchState().subscribe(state => {
-     if(state) {
-      const serachState = state['state'];
-      if (serachState === 'search') {
-        this.rows = state['data'];
-      } else if (serachState === 'search-over') {
-        this.rows = this.restapi.localItemList.items;
+      if (state) {
+        const serachState = state['state'];
+        if (serachState === 'search') {
+          this.rows = state['data'];
+        } else if (serachState === 'search-over') {
+          this.rows = this.restapi.localItemList.items;
+        }
       }
-     }
     })
 
   }
   public onSelect({ selected }): void {
     this.zone.run(() => {
       console.log('Select Event', selected);
-      if (this.selectedMarking === selected[0]['marking']) {
-        this.selectedChange = false;
-      } else {
-        this.itemSelect.doSelect(selected[0]['marking']);
-        this.selectedChange = true;
-        this.selectedMarking = selected[0]['marking'];
-
-        // this.router.navigateByUrl("/itemlist/" + this.selectedNumber);
-      }
-    });
+      this.itemSelect.doSelect(selected.map(item => item['marking']));
+    }
+    );
   }
   // onSelect({ selected }) {
   //   console.log('Select Event', selected);
