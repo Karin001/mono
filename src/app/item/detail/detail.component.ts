@@ -1,4 +1,4 @@
-import { Component, OnInit, Input,ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { UpdateComponent } from '../update/update.component';
 import { ItemSelectService } from '../../service/item-select.service';
@@ -35,20 +35,28 @@ export class DetailComponent implements OnInit {
   onclick(item) {
     item['state'] = item['state'] === true ? false : true;
     console.log('itemStat', item['state']);
-    if (item['state']) {
-
-      this.findOptions['marking'] =
+    this.detailInfo.property.forEach(item => {
+      if (item['state']) {
         this.findOptions['name'] = item['bigname'];
-      this.findOptions[item['name']] = item['value'];
-      this.findOptions.selected.push(item['name']);
+        this.findOptions[item['name']] = item['value'];
+        if (!this.findOptions.selected.includes(item['name'])) {
+          console.log(123123213);
+          this.findOptions.selected.push(item['name']);
+          console.log(this.findOptions.selected);
+        }
 
-    } else {
-      this.findOptions[item['name']] = undefined;
-      this.findOptions.selected.splice(this.findOptions.selected.indexOf(item['name']), 1);
-      this.itemModify.searchOver();
-    }
+
+      } else {
+        this.findOptions[item['name']] = undefined;
+        this.findOptions.selected = this.findOptions.selected.filter(name => name!==item['name']);
+        //this.findOptions.selected.splice(this.findOptions.selected.indexOf(item['name']), 1);
+        //this.itemModify.searchOver();
+      }
+    })
     if (this.findOptions.selected.length > 0) {
       this.itemModify.doSearch(this.restapi.localFind(this.findOptions));
+    } else{
+      this.itemModify.searchOver();
     }
 
   }
@@ -75,7 +83,7 @@ export class DetailComponent implements OnInit {
 
     const mayCheckPro = this.itemFormatDataService.baseSets[this.selectedName]
       .filter(v => !['marking', 'quantity', 'description', 'customtag', 'submit'].includes(v));
-     this.checkPro = mayCheckPro.map(v => {
+    this.checkPro = mayCheckPro.map(v => {
       const value = { [v]: false };
       return value;
     });
@@ -147,9 +155,16 @@ export class DetailComponent implements OnInit {
             value: item.childType,
             pro: '子类:' + item.childType
           });
+          this.detailInfo.property.push({
+            bigname: item.name,
+            name: 'brand',
+            value: item.brand,
+            pro: '品牌:' + item.brand
+          });
           this.detailInfo['quantity'] = item.quantity;
           this.detailInfo['marking'] = item.marking;
           this.detailInfo['project'] = item.project || [];
+          this.detailInfo['brand'] = item.brand ;
 
           console.log(this.detailInfo);
           this.findUncomplateProperty(item);

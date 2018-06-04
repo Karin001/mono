@@ -63,6 +63,7 @@ export class ItemlistComponent implements OnInit {
           this.rows = res['fb']['items'];
 
           this.restapi.localItemList = res['fb'];
+          console.log('itemlist',this.restapi.localItemList);
           this.itemModify.updateComplate();
           console.log('base', this.itemFormat.baseSets);
           console.log(this.restapi.localItemList);

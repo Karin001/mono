@@ -21,6 +21,7 @@ interface ValidatorFns {
 class IMPdataObj {
   _souce: XLSX.Sheet;
   _range: string[] = [];
+  _project_able = false;
   _startCol = '';
   _startColIndex = 0;
   _startRow = '';
@@ -34,6 +35,7 @@ class IMPdataObj {
   usedMarking = [];
   useditemTypes = {}
   distItems = [];
+  duplicateMarkings = [];
 
   constructor(souce, localItems = [], itemType) {
     this._souce = souce;
@@ -63,10 +65,15 @@ class IMPdataObj {
         this._errorMessage.push(`${ele['v']} duplicate`);
         throw new Error(this._errorMessage.join(';'));
       }
+      if(ele['v'].toLowerCase() === 'num') {
+        this._project_able = true;
+      }
       this.impProperties[ele['v']] = {};
       this.impProperties[ele['v']]['col_addr'] = col_addr;
       i++;
     }
+    console.log('imp', this.impProperties);
+    
   }
   chargeItem() {
     let i = 0;
@@ -117,14 +124,12 @@ class IMPdataObj {
       })
       .map(item => item['name']);
     if (Array.from(new Set(Kulaberu)).length === Kulaberu.length) {
-      this._valid = false;
-      this._errorMessage.push('你提交的marking有重复！');
-      throw new Error(this._errorMessage.join(';'));
+      this._hintMessage.push('你提交的marking有重复,系统将忽略重复项！');
     }
     Kulaberu.forEach(marking => {
       if (this.usedMarking.map(item => item.toUpperCase()).includes(marking.toUpperCase())) {
-        this._valid = false;
-        this._errorMessage.push(`${marking.toUpperCase()}与数据库中的重复了`)
+        this._hintMessage.push(`${marking.toUpperCase()}与数据库中的重复！`)
+        this.duplicateMarkings.push(marking);
       }
     });
     Array.from(new Set(impName)).forEach(name => {
@@ -290,7 +295,7 @@ export class ImpItemsComponent implements OnInit {
               if (!Object.keys(this.itemFormatData.baseSets).includes(item[pro])) {
                 this.itemFormatData.baseSets[item[pro]] = [];
                 this.itemFormatData.itemTypes[item[pro]] = ['无', '使用自定义子类'];
-                this.itemFormatData.baseSets[item[pro]].push('marking', 'childType', 'footprint', 'quantity', 'description', 'customtag');
+                this.itemFormatData.baseSets[item[pro]].push('marking', 'childType', 'footprint', 'quantity', 'description', 'customtag','brand');
                 if (item['value']) {
                   this.itemFormatData.baseSets[item[pro]].push('value');
                 }
@@ -315,7 +320,9 @@ export class ImpItemsComponent implements OnInit {
     reader.readAsBinaryString(file);
   }
   onSubmit() {
-    const items = this.dataObj.distItems.map(item => {
+    const items = this.dataObj.distItems
+    .filter(item=>!this.dataObj.duplicateMarkings.includes(item.marking))
+    .map(item => {
       const obj = {};
       obj['property'] = {};
       obj['setUpTime'] = new Date();
@@ -328,12 +335,19 @@ export class ImpItemsComponent implements OnInit {
       }
       if (item['description']) {
         obj['description'] = item['description'];
+      } else {
+        obj['description'] = '暂未添加描述';
       }
       if (item['brand']) {
         obj['brand'] = item['brand'];
+      } else {
+        obj['brand'] = '无'
       }
       if (item['value']) {
         obj['property']['value'] = item['value'];
+      }
+      if (item['unit']) {
+        obj['property']['unit'] = item['unit'];
       }
       if (item['precise']) {
         obj['property']['precise'] = item['precise'];

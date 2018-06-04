@@ -18,6 +18,7 @@ interface FormsVal {
   useprecise?: string;
   usevolt?: string;
   childType: String;
+  brand?:string;
   footprint: String;
   marking: String;
   customtag?: string;
@@ -90,7 +91,7 @@ export class AdditemComponent implements OnInit, AfterViewInit {
     this.dialogRef.close();
     if (this.dynamicForm.valid && this.selectedBomType === 'ADD NEW TYPE') {
       this.itemFormatData.baseSets[ev.formVal.name] = [];
-      this.itemFormatData.baseSets[ev.formVal.name].push('marking', 'childType', 'footprint', 'quantity', 'description', 'customtag');
+      this.itemFormatData.baseSets[ev.formVal.name].push('marking', 'childType', 'footprint', 'quantity', 'description', 'customtag','brand',);
       if (ev.formVal.usevalue === '需要') {
         this.itemFormatData.baseSets[ev.formVal.name].push('value');
       }
@@ -105,7 +106,7 @@ export class AdditemComponent implements OnInit, AfterViewInit {
       return;
     }
     console.log(ev);
-    let _quantity, marking, setUpTime, childType, footprint, description, _property: any;
+    let _quantity, marking, setUpTime, childType, footprint, description,brand, _property: any;
     setUpTime = new Date();
     _property = {};
     for (const key in ev.formVal) {
@@ -131,7 +132,9 @@ export class AdditemComponent implements OnInit, AfterViewInit {
         } else if (key === 'description') {
           description = ev.formVal.description || '该器件未添加描述';
           console.log('description', description);
-        } else {
+        } else if(key === 'brand') {
+          brand = ev.formVal.brand || '无';
+        }else {
           _property[key] =  ev.formVal[key];
         }
       }
@@ -147,6 +150,7 @@ export class AdditemComponent implements OnInit, AfterViewInit {
         footprint: footprint,
         childType: childType,
         description: description,
+        brand:brand,
         property: _property
       };
 
@@ -176,6 +180,7 @@ export class AdditemComponent implements OnInit, AfterViewInit {
         setUpTime: setUpTime,
         description: description,
         footprint: footprint,
+        brand:brand,
         property: _property
       })
       .concat(this.restApi.updateTypes({

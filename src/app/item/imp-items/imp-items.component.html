@@ -10,3 +10,9 @@
   <p *ngFor="let item of dataObj._hintMessage">{{item}}</p>
 </div>
 <button mat-raised-button [disabled]="!dataObj || !dataObj._valid" (click)="onSubmit()">同意并提交</button>
+<div *ngIf="dataObj && dataObj._project_able">
+  <mat-form-field>
+    <input matInput placeholder="项目名称" value="value" #project>
+  </mat-form-field>
+  <button mat-button [disabled]="!project.value.length || project.value.length === 0 || project.value.length > 25"  >提交到项目</button>
+</div>

@@ -89,7 +89,7 @@ export class RestapiService {
 
   }
   localFind(options: FindOption) {
-    console.log('000');
+    console.log('000',options);
     if (this.localItemList && this.localItemList.items) {
       console.log('111');
       return this.localItemList.items.filter(items => {
