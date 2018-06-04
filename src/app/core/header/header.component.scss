@@ -43,7 +43,25 @@ a{
                 font-family: '微软雅黑';
             }
         }
-
+        .mode{
+          height: 50px;
+          display: flex;
+          p{
+            font-size: 16px;
+            text-align: center;
+            height: 50px;
+            padding: 0 15px;
+            color: #2B2B2B;
+            margin: 0 5px;
+            width: 100px;
+            line-height: 50px;
+            background: #398DEE;
+            &:hover{
+              color:#FFFFFF;
+              background: #4298EE;
+            }
+          }
+        }
 
         .user{
             height: 100%;

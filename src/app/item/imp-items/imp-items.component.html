@@ -1,11 +1,11 @@
 <div class="file-drop-area" (drop)="onDrop($event)"  (dragover)="onOver($event)">
   <p>将表格文件拖动至此</p>
 </div>
-<div *ngIf="dataObj && dataObj['_errorMessage'].length !== 0">
+<div *ngIf="dataObj && dataObj['_errorMessage'].length !== 0" class="errbox">
   错误信息：
   <p *ngFor="let item of dataObj._errorMessage">{{item}}</p>
 </div>
-<div *ngIf="dataObj && dataObj['_hintMessage'].length !== 0">
+<div *ngIf="dataObj && dataObj['_hintMessage'].length !== 0" class="hintbox">
   提示:
   <p *ngFor="let item of dataObj._hintMessage">{{item}}</p>
 </div>

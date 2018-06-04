@@ -4,7 +4,7 @@
       <span>参数</span>
       <button class="triger-button" *ngIf="selectedMarking" mat-button [matMenuTriggerFor]="menu"><mat-icon svgIcon="modify"></mat-icon></button>
     </div>
-    
+
     <mat-menu #menu="matMenu">
       <button class="menu" mat-menu-item (click)="update('marking')"><mat-icon svgIcon="marking"></mat-icon> <span>marking</span></button>
       <ng-container>
@@ -17,7 +17,6 @@
     </mat-menu>
     <div class="chip" *ngIf="detailInfo.property">
       <span  (click)="onclick(item)" [ngClass]="{'unselected': !item.state, 'selected':item.state}" *ngFor="let item of detailInfo.property">{{item.pro}}</span>
-
 
   </div>
 
