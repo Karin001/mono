@@ -19,6 +19,7 @@ import { ItemModifyService } from './service/item-modify.service';
 import { SnackBarService } from './service/snack-bar.service';
 import { ItemFormatFactoryService } from './service/item-format-factory.service';
 import { ItemFormatDataService } from './service/item-format-data.service';
+import { ItemUncomplateCheckService } from './service/item-uncomplate-check.service';
 const routes: Routes = [
   { path: '', redirectTo: '/itemlist', pathMatch: 'full' },
   { path: 'itemlist', component: ItemlistComponent, pathMatch: 'full' },
@@ -53,6 +54,7 @@ const routes: Routes = [
     ItemModifyService,
     ItemFormatFactoryService,
     ItemFormatDataService,
+    ItemUncomplateCheckService,
     SnackBarService
   ],
   bootstrap: [AppComponent]

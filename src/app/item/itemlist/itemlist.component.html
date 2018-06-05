@@ -4,6 +4,7 @@
     [ngClass]="{'dark':dackMode === true, 'material':dackMode === false}"
     [headerHeight]="50"
     [columnMode]="'force'"
+    [rowClass]="getRowClass"
     [rows]="rows"
     [scrollbarV]="true"
     [footerHeight]="50"

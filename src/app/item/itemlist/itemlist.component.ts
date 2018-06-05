@@ -6,6 +6,7 @@ import { LocaldataService } from '../../localdata.service';
 import { ItemSelectService } from '../../service/item-select.service';
 import { ItemModifyService } from '../../service/item-modify.service';
 import { ItemFormatDataService } from '../../service/item-format-data.service';
+import { ItemUncomplateCheckService } from '../../service/item-uncomplate-check.service';
 @Component({
   selector: 'app-itemlist',
   templateUrl: './itemlist.component.html',
@@ -23,6 +24,9 @@ export class ItemlistComponent implements OnInit {
   rowHeight = 25;
   selectedMarking;
   selectedChange;
+  get items() {
+    return this.restapi.localItemList ? this.restapi.localItemList.items : [];
+  }
   constructor(
     private router: Router,
     private restapi: RestapiService,
@@ -30,7 +34,8 @@ export class ItemlistComponent implements OnInit {
     private itemSelect: ItemSelectService,
     private zone: NgZone,
     private itemModify: ItemModifyService,
-    private itemFormat: ItemFormatDataService
+    private itemFormat: ItemFormatDataService,
+    private itemUncomplateCheckService: ItemUncomplateCheckService,
   ) {
     this.getDatas();
     // this.restapi.stream_allItem().subscribe((data) => {
@@ -60,15 +65,19 @@ export class ItemlistComponent implements OnInit {
         this.progressBarSet = false;
 
         if (res['fb']) {
-          this.rows = res['fb']['items'];
+
 
           this.restapi.localItemList = res['fb'];
-          console.log('itemlist',this.restapi.localItemList);
+
+          console.log('itemlist', this.restapi.localItemList);
           this.itemModify.updateComplate();
           console.log('base', this.itemFormat.baseSets);
           console.log(this.restapi.localItemList);
+          this.itemFormat.loadTypes();
+          this.itemUncomplateCheckService.resetAllUncomplateItem();
+          this.rows = this.restapi.localItemList.items;
         }
-        this.itemFormat.loadTypes();
+
       });
   }
   ngOnInit() {
@@ -147,5 +156,12 @@ export class ItemlistComponent implements OnInit {
     this.rows = temp;
     // Whenever the filter changes, always go back to the first page
 
+  }
+  getRowClass(row) {
+
+
+    return {
+      'uncomplate': row['uncomplate'] && (row['uncomplate']['status'] === true),
+    };
   }
 }

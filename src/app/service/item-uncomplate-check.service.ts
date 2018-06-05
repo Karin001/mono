@@ -1,27 +1,31 @@
 import { Injectable } from '@angular/core';
-
+import { RestapiService } from './restapi.service';
+import { ItemModifyService } from './item-modify.service';
+import { ItemFormatDataService } from './item-format-data.service';
 @Injectable()
 export class ItemUncomplateCheckService {
 
-  constructor() { }
-  findUncomplateProperty(item) {
+  constructor(
+    private itemFormatDataService: ItemFormatDataService,
+    private itemModify: ItemModifyService,
+    private restApi: RestapiService
+  ) { }
 
-    const mayCheckPro = this.itemFormatDataService.baseSets[this.selectedName]
-      .filter(v => !['marking', 'quantity', 'description', 'customtag', 'submit'].includes(v));
-    this.checkPro = mayCheckPro.map(v => {
-      const value = { [v]: false };
-      return value;
+  resetAllUncomplateItem() {
+    if (!this.restApi.localItemList || !this.restApi.localItemList.items) {
+      throw new Error('unable to find localItemlist');
+    }
+    this.restApi.localItemList.items.forEach(item => {
+      item['uncomplate'] = { status: false, property: [] };
+      const mayCheckPro = this.itemFormatDataService.baseSets[item.name].filter(v => !['submit', 'customtag', 'childType'].includes(v));
+      mayCheckPro.forEach(pro => {
+        if (!item[pro] || item[pro] === '无') {
+          item['uncomplate']['status'] = true;
+          item['uncomplate']['property'].push(pro);
+        }
+      });
     });
-    this.checkPro.forEach(pro => {
-      const key = Object.keys(pro)[0];
-      this.unComplateTag = false;
-      if (!item['hasOwnProperty'](key) || item[key]==='无') {
-        pro[key] = true;
-        item['unComplate'] = true;
-        this.unComplateTag = true;
-      }
-    });
-    console.log('itemComplate', item['unComplate']);
+    this.itemModify.doModify('uncomplateCheckOver');
   }
 
 }
