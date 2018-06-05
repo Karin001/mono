@@ -1,0 +1,27 @@
+<div class="inOut">
+  <div class="childbox">
+     <h3>收入</h3>
+     <ul *ngIf="detailInfo.setUpTime">
+       <li>
+         <p class="in">{{detailInfo.quantity}}pic</p>
+         <p class="time">{{detailInfo.setUpTime |  date: 'medium'}}</p>
+
+        </li>
+
+
+     </ul>
+  </div>
+  <div class="childbox">
+     <h3>支出</h3>
+     <ul *ngIf="detailInfo.setUpTime">
+       <li>
+         <p class="in">{{detailInfo.quantity}}pic</p>
+         <p class="time">{{detailInfo.setUpTime |  date: 'medium'}}</p>
+
+        </li>
+
+
+     </ul>
+  </div>
+
+ </div>

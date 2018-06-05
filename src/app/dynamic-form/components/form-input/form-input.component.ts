@@ -13,6 +13,9 @@ export class FormInputComponent implements OnInit,AfterViewInit {
   config: FieldConfig;
   progressBarSet = false;
   duplicate = false;
+  get controll(){
+    return this.group.controls[this.config.name];
+  }
   constructor(
     public restapi: RestapiService
   ) {
@@ -23,16 +26,21 @@ export class FormInputComponent implements OnInit,AfterViewInit {
   
 
   }
+  onBlur() {
+    if(this.controll.value){
+      this.controll.setValue(this.controll.value.toUpperCase());
+    }
+  }
   ngAfterViewInit() {
-    this.group.controls[this.config.name].valueChanges
-    .filter(v=>!!v)
-    .subscribe(v => {
-      console.log(v);
-      if (v !== v.toUpperCase()) {
-        this.group.controls[this.config.name].setValue(v.toUpperCase());
-      }
+    // this.group.controls[this.config.name].valueChanges
+    // .filter(v=>!!v)
+    // .subscribe(v => {
+    //   console.log(v);
+    //   if (v !== v.toUpperCase()) {
+    //     this.group.controls[this.config.name].setValue(v.toUpperCase());
+    //   }
 
-    })
+    // })
   }
 
 

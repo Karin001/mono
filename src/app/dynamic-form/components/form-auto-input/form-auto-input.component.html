@@ -2,7 +2,7 @@
   <label>{{config.label}}</label>
   <div class="input-box">
     <mat-form-field floatPlaceholder="never">
-      <input matInput [formControlName]="config.name" [matAutocomplete]="auto" >
+      <input matInput [formControlName]="config.name" [matAutocomplete]="auto" (blur)="onBlur()">
     </mat-form-field>
     <mat-autocomplete  #auto="matAutocomplete"  [displayWith]="displayFn">
       <mat-option *ngFor="let option of showOptions" [value]="option">

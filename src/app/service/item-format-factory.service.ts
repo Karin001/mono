@@ -47,7 +47,7 @@ export class ItemFormatFactoryService {
       error: { name: 'eng_numChar,maxlength', message: '输入限定为英文和数字,最多30个字符' }
     },
     'brand': {
-      type: 'input',
+      type: 'autoInput',
       label: '品牌',
       name: 'brand',
       placeholder: '',

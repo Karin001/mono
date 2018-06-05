@@ -172,7 +172,7 @@ export class MyValidators {
   dupilicateMarkingFn(): ValidatorFn {
     return (c: FormControl): ValidationErrors => {
       if (this.rest.localItemList && this.rest.localItemList.items) {
-        if (this.rest.localItemList.items.some(v => c.value === v.marking)) {
+        if (this.rest.localItemList.items.some(v => c.value && (c.value.toUpperCase() === v.marking.toUpperCase()))) {
           return { duplicationMarking: true };
         } else {
           return null;
@@ -186,7 +186,7 @@ export class MyValidators {
   dupilicateTypeFn(): ValidatorFn {
     return (c: FormControl): ValidationErrors => {
       if (this.itemFormatData.itemTypes) {
-        if (Object.keys(this.itemFormatData.itemTypes).includes(c.value)) {
+        if (c.value && Object.keys(this.itemFormatData.itemTypes).map(type=>type.toUpperCase()).includes(c.value.toUpperCase())) {
           return { duplicationType: true };
         } else {
           return null;

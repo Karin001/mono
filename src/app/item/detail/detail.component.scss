@@ -1,60 +1,8 @@
 
-.menu {
-  height:27px;
-  line-height: 27px;
-}
-
-.triger-button{
-    line-height: 20px;
-    min-width:50px;
-    padding:0 10px;
-}
-.title{
-    margin-bottom: 10px;
-}
-mat-icon{
-  height: 20px;
-}
-.unComplate{
-  background: red;
-  &:hover {
-    background: #881E1E;
-  }
-}
 .container{
    height: 100%;
     width: 500px;
-    .property{
-        height: 30%;
-        width: 100%;
-        border-bottom: 1px solid rgb(188, 188, 250);
-        h3{
-            font:16px '微软雅黑';
-            margin:10px;
-        }
-    .chip{
-        span{
-
-            margin: 5px 10px;
-            padding:5px 10px;
-            font: 12px "微软雅黑";
-            &:hover{
-                cursor: pointer;
-            }
-        }
-        .unselected{
-            background: rgb(216, 216, 216);
-            transition: all .1s;
-        }
-        .selected{
-            background: rgb(104, 115, 212);
-            color:white;
-            box-shadow: rgba(0, 0, 0,.6) 1px 3px 6px;
-            transition: all .1s;
-        }
-    }
-
-    }
+   
     .inOut{
 
         border-bottom: 1px solid rgb(188, 188, 250);

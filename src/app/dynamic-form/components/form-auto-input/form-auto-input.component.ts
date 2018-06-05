@@ -19,31 +19,28 @@ export class FormAutoInputComponent implements OnInit, AfterViewInit{
   filteredOptions;
   progressBarSet = false;
   duplicate = false;
+  get controll(){
+    return this.group.controls[this.config.name];
+  }
   constructor(
     private auto: AutoComplateService,
     private restapi: RestapiService,
     private itemModify: ItemModifyService
   ) {
-
-
-
-
-
-
-
   }
 
   ngOnInit() {
-    this.group.controls[this.config.name].valueChanges.subscribe(v => {
-      console.log(v);
-      if (v !== v.toUpperCase()) {
-        this.group.controls[this.config.name].setValue(v.toUpperCase());
-      }
+    // this.group.controls[this.config.name].valueChanges.subscribe(v => {
+    //   console.log(v);
+    //   if (v !== v.toUpperCase()) {
+    //     this.group.controls[this.config.name].setValue(v.toUpperCase());
+    //   }
 
-    })
+    // })
     this.itemModify.getItemUpdate().filter(v => v === 'complate').subscribe(v => {
 
-                  this.options = this.restapi.localItemList.items.map(item => item.footprint);
+                  this.options = this.restapi.localItemList.items.filter(item => item[this.config.name])
+                  .map(item => item[this.config.name]);
                   this.options = Array.from(new Set(this.options));
                   console.log('options', this.options);
                   if (this.filteredOptions) {
@@ -54,6 +51,11 @@ export class FormAutoInputComponent implements OnInit, AfterViewInit{
                     .subscribe(val => this.showOptions = val);
                 });
 
+  }
+  onBlur() {
+    if(this.controll.value){
+      this.controll.setValue(this.controll.value.toUpperCase());
+    }
   }
   ngAfterViewInit() {
 

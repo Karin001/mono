@@ -1,54 +1,6 @@
 <div class="container">
-  <div class="property">
-    <div class="title">
-      <span>参数</span>
-      <button class="triger-button" *ngIf="selectedMarking" mat-button [matMenuTriggerFor]="menu"><mat-icon svgIcon="modify"></mat-icon></button>
-    </div>
-
-    <mat-menu #menu="matMenu">
-      <button class="menu" mat-menu-item (click)="update('marking')"><mat-icon svgIcon="marking"></mat-icon> <span>marking</span></button>
-      <ng-container>
-        <button [ngClass]="{'menu': true, unComplate: checkPro[item.name]}" mat-menu-item (click)="update(item.name)"
-        *ngFor="let item of detailInfo.property">
-        <mat-icon [svgIcon]="item.name"></mat-icon>
-        <span>{{item.name}}</span>
-      </button>
-      </ng-container>
-    </mat-menu>
-    <div class="chip" *ngIf="detailInfo.property">
-      <span  (click)="onclick(item)" [ngClass]="{'unselected': !item.state, 'selected':item.state}" *ngFor="let item of detailInfo.property">{{item.pro}}</span>
-
-  </div>
-
-
-  </div>
-  <div class="inOut">
-   <div class="childbox">
-      <h3>收入</h3>
-      <ul *ngIf="detailInfo.setUpTime">
-        <li>
-          <p class="in">{{detailInfo.quantity}}pic</p>
-          <p class="time">{{detailInfo.setUpTime |  date: 'medium'}}</p>
-
-         </li>
-
-
-      </ul>
-   </div>
-   <div class="childbox">
-      <h3>支出</h3>
-      <ul *ngIf="detailInfo.setUpTime">
-        <li>
-          <p class="in">{{detailInfo.quantity}}pic</p>
-          <p class="time">{{detailInfo.setUpTime |  date: 'medium'}}</p>
-
-         </li>
-
-
-      </ul>
-   </div>
-
-  </div>
+<app-show-property></app-show-property>
+  
   <div class="program">
     <h3>项目</h3>
     <ul>

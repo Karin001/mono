@@ -17,6 +17,8 @@ import { ImpItemsComponent } from './imp-items/imp-items.component';
 import { UpdateComponent } from './update/update.component';
 import { InOutComponent } from './in-out/in-out.component';
 import { DeleteComponent } from './delete/delete.component';
+import { ShowPropertyComponent } from './show-property/show-property.component';
+import { ItemInOutViewComponent } from './item-in-out-view/item-in-out-view.component';
 const routes: Routes = [{
   path: 'itemlist', component: ItemlistComponent,
   children: [{
@@ -48,7 +50,9 @@ const routes: Routes = [{
     ImpItemsComponent,
     UpdateComponent,
     InOutComponent,
-    DeleteComponent
+    DeleteComponent,
+    ShowPropertyComponent,
+    ItemInOutViewComponent
   ],
   entryComponents: [
     AdditemComponent,

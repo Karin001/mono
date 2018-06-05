@@ -130,7 +130,7 @@ export class AdditemComponent implements OnInit, AfterViewInit {
         } else if (key === 'footprint') {
           footprint = ev.formVal.footprint;
         } else if (key === 'description') {
-          description = ev.formVal.description || '该器件未添加描述';
+          description = ev.formVal.description || '无';
           console.log('description', description);
         } else if(key === 'brand') {
           brand = ev.formVal.brand || '无';
